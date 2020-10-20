@@ -23,3 +23,7 @@ def load_supersection_shapes():
     ss = gpd.read_file('/Users/darryl/proj/carbonplan/retro/data/geometry/2015_arb_supersections')
     ss["ss_id"] = ss["SSection"].map(ss_cd_map)
     return ss
+
+
+def get_arb_id_map():
+    return pd.read_csv('../data/issuance.csv', usecols=['arb_id', 'proj_id']).set_index('arb_id').proj_id.to_dict()
