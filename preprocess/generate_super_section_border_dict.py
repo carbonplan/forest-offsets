@@ -13,7 +13,7 @@ def generate_border_dict():
     store = defaultdict(list)
     for pair in permutations(supersections.itertuples(), 2):
         if pair[0].geometry.intersects(pair[1].geometry):
-            store[pair[0].ss_id].append(pair[1].ss_id)
+            store[pair[0].Index].append(pair[1].Index)
     return store
 
 

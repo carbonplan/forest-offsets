@@ -2,7 +2,7 @@ import pandas as pd
 
 def process_issuance_table(fname):
     df = pd.read_excel(fname, sheet_name="ARB Offset Credit Issuance")
-    df = df[df['Project Type'] == 'Forest']
+    #df = df[df['Project Type'] == 'Forest']
 
     rename_d = {"OPR Project ID": "proj_id",
                 }
