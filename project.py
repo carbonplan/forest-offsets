@@ -86,24 +86,8 @@ class ARBProject(object):
         """
 
         """
-        aa_lst =  self._data["project"]["assessment_areas"].item()
-        for aa_d in aa_lst:
-            aa_d['species_lst'] = self._get_assessment_area_species_arr(aa_d['code']) # append species_arr
-        return aa_lst
+        return self._data["project"]["assessment_areas"].item()
 
-    def _get_assessment_area_species_arr(self, aa_code):
-        """
-        Return project specific species_lst for asssessment area
-        There is a fair bit of logic that needs to go in here...
-        """
-        proj_species = self._data["project"]["species"].item()
-        try:
-            # TODO: right, more json typing baggage
-            return proj_species[str(aa_code)]
-        except KeyError:
-            raise NotImplementedError("For now, assuming that all KeyErrors are problem w data entry")
-        except:
-            raise
 
     @property
     def border_lst(self):

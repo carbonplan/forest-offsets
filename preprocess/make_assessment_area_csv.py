@@ -29,7 +29,7 @@ def preprocess_assessment_area_file(params):
     )
 
     # TODO: fix ton of species typos
-
+    df["site_class"] = df['site_class'].map({"All*": "all", "All": "all", "High": "high", "Low": "low"})
     df["aa_code"] = df["assessment_area"].map(utils.load_aa_codes())
     df["ss_code"] = df["supersection"].map(utils.load_ss_codes())
     return df
@@ -96,6 +96,7 @@ def main():
         lut.to_csv(
             f"../data/{protocol_version}_aa_lut.csv", index=False, float_format="%.2f"
         )
+
 
 
 if __name__ == "__main__":

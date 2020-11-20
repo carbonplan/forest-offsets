@@ -1,6 +1,7 @@
 from glob import glob
 import json
 
+import subprocess
 import geopandas as gpd
 
 from utils import get_arb_id_map
@@ -23,7 +24,12 @@ def process_raw_file(fname):
         single_row = gdf.head(i).tail(1)
         arb_id = single_row['arb_id'].item()
         proj_id = arb_id_to_proj_id.get(arb_id)
-        single_row.to_file(f"../data/geometry/projects/{proj_id}.json", driver='GeoJSON')
+        fname = f'/Users/darryl/proj/carbonplan/retro/data/geometry/projects/{proj_id}.json'
+        single_row.to_file(fname, driver='GeoJSON')
+        cmd = f"mapshaper {fname} -clean -simplify 0.5 -o force {fname}"
+        print(cmd)
+        subprocess.call(cmd, shell=1)
+
 
 
 if __name__ == '__main__':
