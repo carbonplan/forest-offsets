@@ -1,7 +1,10 @@
-import statsmodels.formula.api as smf # looks like this is outdated -- but backward compatibility ftw!
-import utils
-import pandas as pd
 import geopandas as gpd
+import pandas as pd
+from shapely.geometry import Point
+import statsmodels.formula.api as smf # looks like this is outdated -- but backward compatibility ftw!
+
+import utils
+
 
 def build_cp_to_baseline_model(plot=False):
     proj_df = utils.load_retro_from_json('data/projects.json')
@@ -79,26 +82,23 @@ def assign_assessment_area(df, lon_var, lat_var, locid_var, shp_path):
         Name of series to return.
     """
 
-    import geopandas
-    from shapely.geometry import Point
-
     # make a copy since we will modify lats and lons
     localdf = df[[lon_var, lat_var]].copy()
 
     # no nans
     localdf = localdf.dropna(subset=[lon_var, lat_var])
 
-    shape_df = geopandas.read_file(shp_path)
+    shape_df = gpd.read_file(shp_path)
     shape_df = shape_df.reset_index()
     shape_df = shape_df.to_crs({'init': 'epsg:4326'})
 
     try:
-        local_gdf = geopandas.GeoDataFrame(
+        local_gdf = gpd.GeoDataFrame(
             localdf, crs={'init': 'epsg:4326'},
             geometry=[Point(xy) for xy in
                       zip(localdf[lon_var], localdf[lat_var])])
 
-        local_gdf = geopandas.sjoin(
+        local_gdf = gpd.sjoin(
             local_gdf, shape_df, how='left', op='within')
 
         return local_gdf['index'].rename(locid_var)
