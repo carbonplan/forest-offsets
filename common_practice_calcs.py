@@ -1,6 +1,7 @@
 import statsmodels.formula.api as smf # looks like this is outdated -- but backward compatibility ftw!
 import utils
 import pandas as pd
+import geopandas as gpd
 
 def build_cp_to_baseline_model(plot=False):
     proj_df = utils.load_retro_from_json('data/projects.json')
