@@ -53,7 +53,7 @@ def load_fia_data(postal_code, kind=None, filter_data=True):
 
     if filter_data:
         if postal_code == 'ak':
-            criteria = (df['INVYR'] > 2000) & (df['INVYR'] < 2013) & (~df['OWNCD'].isin(21, 31, 32))
+            criteria = (df['INVYR'] > 2000) & (df['INVYR'] < 2013) & (~df['OWNCD'].isin([21, 31, 32]))
         else:
             criteria = (df['INVYR'] > 2000) & (df['INVYR'] < 2013) & (df['OWNCD'] == 46)
         df = df[criteria]
