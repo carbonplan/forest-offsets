@@ -94,6 +94,11 @@ def load_supersection_shapes():
     ss = ss.set_index('ss_id')
     return ss
 
+def load_ecomap_shapes():
+
+    gdf = gpd.read_file(pathlib.Path(__file__).parent / 'data/geometry/S_USA.EcomapSections')
+    gdf = gdf.set_index('MAP_UNIT_S')
+    return gdf
 
 def get_arb_id_map():
     return (

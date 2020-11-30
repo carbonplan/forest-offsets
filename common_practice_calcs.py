@@ -1,7 +1,7 @@
 import geopandas as gpd
 import pandas as pd
 from shapely.geometry import Point
-import statsmodels.formula.api as smf # looks like this is outdated -- but backward compatibility ftw!
+import statsmodels.formula.api as smf  # looks like this is outdated -- but backward compatibility ftw!
 
 import utils
 
@@ -11,51 +11,35 @@ def build_cp_to_baseline_model(plot=False):
     ea_d = proj_df['project']['early_action'].str.startswith('CAR').to_dict()
     non_ea = [proj_id for proj_id, is_ea in ea_d.items() if is_ea == False]
 
-
     sub = proj_df.loc[non_ea]
     sub = sub.loc[sub['baseline']['initial_carbon_stock'] > sub['baseline']['common_practice']]
     # TODO: see how baselines deal with ifm_3 -- i suspect some harvest, others dont
-    baseline_carbon = (sub['baseline']['components']['ifm_1'] + sub['baseline']['components']['ifm_3'])/sub['project']['acreage']
+    baseline_carbon = (
+        sub['baseline']['components']['ifm_1'] + sub['baseline']['components']['ifm_3']
+    ) / sub['project']['acreage']
     baseline_carbon.name = 'baseline_carbon'
 
-    for_reg = pd.concat([ sub['baseline']['common_practice'], baseline_carbon], axis=1)
+    for_reg = pd.concat([sub['baseline']['common_practice'], baseline_carbon], axis=1)
     if plot:
-        sns.lmplot('common_practice', 'baseline_carbon', data=for_reg, scatter_kws={'s': 175, 'color': 'k', 'alpha': 0.5},
-           ci=False, line_kws={'color':'k'})
-        plt.plot((0,250), (0,250), ls='--', lw=3, c='r')
-        plt.xlim(0,250)
-        plt.ylim(0,250)
-        #plt.grid()
+        sns.lmplot(
+            'common_practice',
+            'baseline_carbon',
+            data=for_reg,
+            scatter_kws={'s': 175, 'color': 'k', 'alpha': 0.5},
+            ci=False,
+            line_kws={'color': 'k'},
+        )
+        plt.plot((0, 250), (0, 250), ls='--', lw=3, c='r')
+        plt.xlim(0, 250)
+        plt.ylim(0, 250)
+        # plt.grid()
         plt.xlabel("Project Common Practice\n(MtCO2e acre$^{-1}$)")
         plt.ylabel("Baseline Onsite Carbon\n(MtCO2e acre$^{-1}$)")
     mod = smf.ols('baseline_carbon~common_practice', data=for_reg)
     res = mod.fit()
     return res
 
-def load_fia_for_cp_calcs(postal_code):
 
-    fn = f'gs://carbonplan-data/processed/fia-states/long/{postal_code.lower()}.parquet'
-
-    usecols = ['adj_ag_biomass', 'OWNCD', 'CONDID', 'STDAGE',
-                                   'SITECLCD', 'FORTYPCD', 'FLDTYPCD', 'CONDPROP_UNADJ',
-                                   'COND_STATUS_CD', 'SLOPE', 'ASPECT', 'INVYR',  'LAT',
-                                   'LON', 'ELEV']
-
-    df = pd.read_parquet(fn, columns=usecols)
-    df = df.dropna(subset=["LAT", "LON", 'adj_ag_biomass'])
-
-    df['slag_co2e_acre'] = df['adj_ag_biomass'] * (44/12) * (1/2.47) * 0.5
-    df['site_class'] = 'low'
-    df.loc[df['SITECLCD'] <4, 'site_class'] = 'high'
-
-    df['is_private'] = 0
-    df.loc[df.OWNCD == 46, 'is_private'] = 1
-
-    df = gpd.GeoDataFrame(
-        df, crs='epsg:4326',
-        geometry=[Point(xy) for xy in
-                  zip(df["LON"], df["LAT"])])
-    return df
 
 
 def assign_assessment_area(df, lon_var, lat_var, locid_var, shp_path):
@@ -94,12 +78,12 @@ def assign_assessment_area(df, lon_var, lat_var, locid_var, shp_path):
 
     try:
         local_gdf = gpd.GeoDataFrame(
-            localdf, crs={'init': 'epsg:4326'},
-            geometry=[Point(xy) for xy in
-                      zip(localdf[lon_var], localdf[lat_var])])
+            localdf,
+            crs={'init': 'epsg:4326'},
+            geometry=[Point(xy) for xy in zip(localdf[lon_var], localdf[lat_var])],
+        )
 
-        local_gdf = gpd.sjoin(
-            local_gdf, shape_df, how='left', op='within')
+        local_gdf = gpd.sjoin(local_gdf, shape_df, how='left', op='within')
 
         return local_gdf['index'].rename(locid_var)
     except ValueError as ve:
