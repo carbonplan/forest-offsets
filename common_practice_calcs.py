@@ -40,8 +40,6 @@ def build_cp_to_baseline_model(plot=False):
     return res
 
 
-
-
 def assign_assessment_area(df, lon_var, lat_var, locid_var, shp_path):
     """Joins DataFrame with Taxi Zones shapefile.
     This function takes longitude values provided by `lon_var`, and latitude
