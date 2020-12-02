@@ -1,6 +1,5 @@
 from glob import glob
 import json
-
 # Log into ARB GIS portal,
 # in text, search `%_%` and make sure to tick 'return id only'
 # paste the output here :)
@@ -140,7 +139,6 @@ ALL_IDS = [
     176,
 ]
 
-
 def main():
     fnames = glob('/Users/darryl/forest-retro/shapes/*json')
     object_ids = []
@@ -153,7 +151,6 @@ def main():
             print(fname)
     still_need = [x for x in ALL_IDS if x not in object_ids]
     print(still_need)
-
 
 if __name__ == '__main__':
     main()
