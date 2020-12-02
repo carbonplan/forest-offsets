@@ -2,29 +2,40 @@ import gspread
 import json
 import numpy as np
 import os
+from pathlib import Path
 
 from oauth2client.service_account import ServiceAccountCredentials
 from pandas import DataFrame, MultiIndex, to_datetime, to_numeric, read_json
 
-LOCAL_RETRO_FN = Path(__file__).parent / 'data/local_retro.csv'
+LOCAL_DATA_PATH = Path(__file__).parents[2] / 'data'
 
 
-def retro(fn=None, save=True):
-    try:
-        df = load_retro_from_disk(fn=fn)
-    except:
-        if not fn:
-            raise FileNotFoundError(f"failed to load from disk -- specify google fname")
-        df = load_retro_from_sheets(fn=fn)
-        if save:
-            df.to_csv(LOCAL_RETRO_FN)
-    return df
+def retro(fn=None, save=True, use_cache=True):
+    if use_cache and fn:
+        try:
+            print(f'loading load {fn} from {LOCAL_DATA_PATH}')
+            cache_fn = LOCAL_DATA_PATH / fn
+            return load_retro_from_disk(fn=cache_fn)
+        except:
+            print(f'failed to load from disk -- grabbing {fn} from google')
+            return load_retro_from_sheets(fn=fn, save=save)
+    else:
+        return load_retro_from_sheets(fn=fn, save=save)
 
 
 def load_retro_from_disk(fn=None):
-    if not fn:  # load from cache
-        return pd.read_csv(LOCAL_RETRO_FN)
-    return pd.read_csv(fn)
+    def str_to_tuple(s):
+        strip = lambda x: x.strip()
+        return tuple(map(strip, s[1:-1].replace("'", "").split(',')))
+
+    if Path(fn).suffix != '.json':
+        fn = Path(fn).parent / (Path(fn).name + '.json')
+    try:
+        df = read_json(fn, orient='index', convert_dates=True)
+        df.columns = MultiIndex.from_tuples(map(str_to_tuple, df.columns))
+    except ValueError:
+        raise ValueError("malformed (or missing) json file")
+    return df
 
 
 def get_sheet(sheet, doc, keypath=None):
@@ -34,7 +45,7 @@ def get_sheet(sheet, doc, keypath=None):
     scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
 
     if not keypath:
-        keypath = os.expanduser("~/.config/googleapis/carbonplan-key.json")
+        keypath = os.path.expanduser("~/.config/googleapis/carbonplan-key.json")
 
     credentials = ServiceAccountCredentials.from_json_keyfile_name(keypath, scope)
 
@@ -99,12 +110,15 @@ def cast_col(col, type_str):
             raise
 
 
-def load_retro_from_sheets(fname="Forest-Offset-Projects-v0.3"):
-    sheet = get_sheet("ifm", fname)
+def load_retro_from_sheets(fn=None, save=True):
+    sheet = get_sheet("ifm", fn)
 
     df, types = get_df(sheet)
 
     for index, col in df.iteritems():
         type_str = types[index]
         df[index] = cast_col(col, type_str)
+    if save:
+        out_path = LOCAL_DATA_PATH / f'{fn}.json'
+        df.to_json(out_path, orient='index', date_format='iso', date_unit='s', indent=2)
     return df
