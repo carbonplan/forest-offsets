@@ -130,9 +130,6 @@ dmypy.json
 .pyre/
 
 # file system and text editors
-__pycache__/
-data/
-.ipynb_checkpoints
-scratch/
-.DS_STORE
+.DS_Store
 .idea/
+*.swp
