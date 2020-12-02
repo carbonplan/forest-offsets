@@ -53,7 +53,6 @@ def issuance(fn=ISSUANCE_URL):
         'Retired 3rd Compliance Period (CA)',
         'Retired for Compliance in Quebec',
         'Comment',
-
     ]
 
     return df[new_order]

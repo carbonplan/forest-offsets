@@ -6,9 +6,7 @@ from utils import load_aa_codes, load_aa_to_ss_map
 
 
 def main():
-    """ ARB repo
-
-    """
+    """ARB repo"""
     in_fn = pathlib.Path(__file__).parents[1] / 'data/assessment_area_forest_typs.csv'
     df = pd.read_csv(in_fn)
     df['fortypcds'] = (

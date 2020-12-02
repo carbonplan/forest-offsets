@@ -3,8 +3,6 @@ import numpy as np
 import pandas as pd
 
 
-
-
 def species_lst_to_arr(lst, n_species=999):
     """
     cast sparse list of species FIA numbers to array for cosine comparison
@@ -13,5 +11,3 @@ def species_lst_to_arr(lst, n_species=999):
     arr = np.zeros(n_species)
     arr[lst] = 1
     return arr
-
-

@@ -20,13 +20,7 @@ def generate_assessment_fia_species_map():
     )  # list of lists.
 
     full_species_lst = list(
-        set(
-            [
-                species.lower().strip()
-                for species_lst in aa_species_lst
-                for species in species_lst
-            ]
-        )
+        set([species.lower().strip() for species_lst in aa_species_lst for species in species_lst])
     )
 
     spp_name_to_fia_code = {}
@@ -35,9 +29,7 @@ def generate_assessment_fia_species_map():
         for match in matches:
             fia_spp_name, conf = match
             if conf > 80:
-                fia_code = fia[fia["COMMON_NAME"] == fia_spp_name].iloc[0][
-                    "FHM_SPECIES"
-                ]
+                fia_code = fia[fia["COMMON_NAME"] == fia_spp_name].iloc[0]["FHM_SPECIES"]
 
                 # `.item()` casts from numpy.int to python int
                 spp_name_to_fia_code[spp] = fia_code.item()

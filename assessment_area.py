@@ -12,12 +12,7 @@ with open("data/species_name_to_fia_code.json") as f:
 
 
 def compare_species_lists(comparison_lst: list, benchmark_lst: list):
-    return len(
-        [
-            species
-            for species in comparison_lst
-            if species in benchmark_lst
-        ])
+    return len([species for species in comparison_lst if species in benchmark_lst])
 
 
 def clean_species_str(species_str):
@@ -26,12 +21,10 @@ def clean_species_str(species_str):
         "",
         "lowland",
         "tropical hardwoods",  # too vague to map, and unused...
-        "mixed upland hardwoods"
+        "mixed upland hardwoods",
     ]
     species_lst = species_str.split(",")
-    return [
-        species.strip().lower() for species in species_lst if species not in black_lst
-    ]
+    return [species.strip().lower() for species in species_lst if species not in black_lst]
 
 
 def encode_species_lst(spp_lst):
@@ -49,6 +42,7 @@ def get_species_lst(species_str):
 
 class AssessmentAreaLUT(object):
     """Wrapper around LUT with convenience methods to do aa/ss lookups"""
+
     _data = None
 
     def __init__(self, fname):
@@ -67,7 +61,11 @@ class AssessmentAreaLUT(object):
         return self._data.loc[self._data['aa_code'] == aa_code].max()['species_lst']
 
     def get_common_practice(self, aa_code, site_class=None):
-        cps = self._data.loc[self._data['aa_code'] == aa_code].set_index('site_class')['common_practice'].to_dict()
+        cps = (
+            self._data.loc[self._data['aa_code'] == aa_code]
+            .set_index('site_class')['common_practice']
+            .to_dict()
+        )
 
         if site_class:
             try:
@@ -78,24 +76,24 @@ class AssessmentAreaLUT(object):
                     return cps['all']
                 # reassigned from All to High/Low
                 if site_class == 'all':
-                    return sum([val for val in cps.values()])/len(cps)
+                    return sum([val for val in cps.values()]) / len(cps)
             except:
                 raise
         else:
             return cps
 
     def get_assessment_areas(self, ss_code):
-        """ For superseciton, generate list of assessment_area dicts.
-        """
+        """For superseciton, generate list of assessment_area dicts."""
         aa_codes = self._list_assessment_areas(ss_code)
         # NB -- this collapses high/low site class.
-        candidates = [{'code': aa_code, 'species_lst': self.get_aa_species_lst(aa_code)} for aa_code in aa_codes]
+        candidates = [
+            {'code': aa_code, 'species_lst': self.get_aa_species_lst(aa_code)}
+            for aa_code in aa_codes
+        ]
         return candidates
 
     def cross_map_ss_assesment_areas(self, from_ss, to_ss):
-        """ take all aa within `from_ss` and assign to an aa in `to_ss`
-
-        """
+        """take all aa within `from_ss` and assign to an aa in `to_ss`"""
         from_assessment_areas = self.get_assessment_areas(from_ss)
 
         for from_assessment_area in from_assessment_areas:
