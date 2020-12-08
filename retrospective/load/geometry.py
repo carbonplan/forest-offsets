@@ -1,3 +1,11 @@
+import pathlib
+
+import geopandas as gpd
+import pandas as pd
+
+from retrospective.utils import load_ss_codes
+
+
 def load_ak_supersection():
     ss_cd_map = load_ss_codes()
 
@@ -34,7 +42,7 @@ def load_ecomap(postal_code):
     return ecomap.to_crs('epsg:4326')
 
 
-def load_supersection_shapes():
+def load_supersection_shapes(fn=None):
     ss_cd_map = load_ss_codes()
 
     # the 2015 arb shapefile misspells a few supersections so fix those here
@@ -49,12 +57,32 @@ def load_supersection_shapes():
     for proper_spelling, typo_spelling in typos.items():
         ss_cd_map[typo_spelling] = ss_cd_map[proper_spelling]
 
-    ss = gpd.read_file('/Users/darryl/proj/carbonplan/retro/data/geometry/2015_arb_supersections')
-    ss["ss_id"] = ss["SSection"].map(ss_cd_map)
-    ss = ss.set_index('ss_id')
-    return ss
+    if not fn:
+        fn = pathlib.Path(__file__).parents[2] / 'data/geometry/2015_arb_supersections'
+    gdf = gpd.read_file(fn)
+
+    gdf["ss_id"] = gdf["SSection"].map(ss_cd_map)
+    return gdf.set_index('ss_id')
 
 
-def load_ecomap_shapes():
+def ifm_shapes(opr_ids='all', load_series=True):
+    # TODO: move somewhere @ config level.
+    IFM_SHAPE_DIR = pathlib.Path(__file__).parents[2] / 'data/geometry/projects'
+    if opr_ids == 'all':
+        fns = IFM_SHAPE_DIR.glob('*.json')
+    else:
+        if isinstance(opr_ids, str):
+            fns = [IFM_SHAPE_DIR / f'{opr_ids}.json']
+        elif isinstance(opr_ids, list):
+            fns = [IFM_SHAPE_DIR / f'{opr_id}.json' for opr_id in opr_ids]
+        else:
+            raise NotImplementedError("pass a single opr_id as a str or a list of opr_ids")
 
-    return gdf
+    project_shapes = {fn.stem: gpd.read_file(fn) for fn in fns}
+    df = pd.concat(project_shapes)
+
+    df = df.droplevel(1)  # not sure where multi-index is coming from but ditch it here.
+    if load_series:
+        return df.geometry.reset_index().rename(columns={'index': 'opr_id'})
+    else:
+        return df

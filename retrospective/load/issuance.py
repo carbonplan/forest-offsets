@@ -3,14 +3,11 @@ import pandas as pd
 ISSUANCE_URL = 'https://ww3.arb.ca.gov/cc/capandtrade/offsets/issuance/arboc_issuance.xlsx'
 
 
-def issuance(fn=ISSUANCE_URL):
+def issuance(fn=ISSUANCE_URL, forest_only=True):
     """Load and clean ARB issuance table.
     Default is to pull a clean sheet from ARB website -- but can also specify fn.
     """
     df = pd.read_excel(fn, sheet_name='ARB Offset Credit Issuance')
-
-    df['arb_id'] = df['CARB Issuance ID'].str[:8]
-    df['is_ea'] = df['Early Action/ Compliance'] == 'EA'
 
     rename_d = {
         'OPR Project ID': 'opr_id',
@@ -24,11 +21,20 @@ def issuance(fn=ISSUANCE_URL):
     }
     df = df.rename(columns=rename_d)
 
+    df['project_type'] = df['project_type'].str.lower()
+
+    # can be multiple issuance in single RP -- grab issuance ID so can aggregate later
+    df['arb_rp_id'] = df['CARB Issuance ID'].str[9]
+    df['arb_id'] = df['CARB Issuance ID'].str[:8]
+
+    df['is_ea'] = df['Early Action/ Compliance'] == 'EA'
+
     new_order = [
         'project_type',
         'opr_id',
         'arb_id',
         'is_ea',
+        'arb_rp_id',
         'rp_start_at',
         'rp_end_at',
         'vintage',
@@ -55,4 +61,9 @@ def issuance(fn=ISSUANCE_URL):
         'Comment',
     ]
 
-    return df[new_order]
+    df = df[new_order]
+
+    if forest_only:
+        return df[df['project_type'] == 'forest']
+    else:
+        return df

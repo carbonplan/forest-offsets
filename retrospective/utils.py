@@ -37,7 +37,7 @@ def get_state_boundaries(state_abbrs: list):
     )
 
     states = states[states.postal.isin([x.upper() for x in state_abbrs])]
-    return states
+    return states[['name', 'postal', 'geometry']]
 
 
 def load_aa_to_ss_map():

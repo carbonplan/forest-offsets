@@ -3,6 +3,7 @@ import geopandas as gpd
 
 from utils import load_ss_codes
 
+
 def repackage_arb_supersections():
     ss_cd_map = load_ss_codes()
 

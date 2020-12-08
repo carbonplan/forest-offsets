@@ -95,9 +95,9 @@ def cast_col(col, type_str):
     elif type_str == 'bool':
         return col.replace('', '0').astype(int).astype(bool)
     elif type_str == 'int':
-        return to_numeric(col.str.replace(',', ''), errors='coerce', downcast='float')
+        return to_numeric(col.str.replace(',', ''), errors='coerce')
     elif type_str == 'float':
-        return to_numeric(col.str.replace(',', ''), errors='coerce', downcast='float')
+        return to_numeric(col.str.replace(',', ''), errors='coerce')
     elif type_str == '[lon:float, lat:float]' or type_str == '[int]':
         return [json_loads(v) if v else [] for v in col]
     elif type_str == '[(is_intentional, size)]':
@@ -114,6 +114,10 @@ def load_retro_from_sheets(fn=None, save=True):
     sheet = get_sheet("ifm", fn)
 
     df, types = get_df(sheet)
+
+    df = df.replace(
+        to_replace='visually_identical', value='-999'
+    )  # needs to be string otherwise cast_col casts to NaN --
 
     for index, col in df.iteritems():
         type_str = types[index]
