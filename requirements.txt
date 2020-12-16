@@ -1,0 +1,12 @@
+fire
+fsspec
+fuzzywuzzy
+geopandas
+gspread
+numpy
+oauth2client
+pandas
+regionmask
+shapely
+statsmodels
+xarray
