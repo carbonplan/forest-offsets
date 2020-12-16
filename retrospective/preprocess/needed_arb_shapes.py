@@ -1,5 +1,5 @@
-from glob import glob
 import json
+from glob import glob
 
 # Log into ARB GIS portal,
 # in text, search `%_%` and make sure to tick 'return id only'

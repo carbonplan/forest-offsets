@@ -1,6 +1,3 @@
-import numpy as np
-
-
 def calculate_allocation(data, rp=1, round_intermediates=False):
     baseline_carbon = (
         data['baseline']['components']['ifm_1'] + data['baseline']['components']['ifm_3']

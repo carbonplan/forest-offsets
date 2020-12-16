@@ -1,6 +1,4 @@
-import json
 import geopandas as gpd
-
 from utils import load_ss_codes
 
 

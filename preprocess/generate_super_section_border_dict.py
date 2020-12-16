@@ -1,7 +1,6 @@
+import json
 from collections import defaultdict
 from itertools import permutations
-import json
-
 
 from utils import load_supersection_shapes
 

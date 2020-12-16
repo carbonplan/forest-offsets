@@ -1,6 +1,4 @@
-from fuzzywuzzy import process
 import numpy as np
-import pandas as pd
 
 
 def species_lst_to_arr(lst, n_species=999):

@@ -1,15 +1,17 @@
 import geopandas as gpd
+import matplotlib.pyplot as plt
+import numpy as np
 import pandas as pd
-from shapely.geometry import Point
+import seaborn as sns
 import statsmodels.formula.api as smf  # looks like this is outdated -- but backward compatibility ftw!
-
 import utils
+from shapely.geometry import Point
 
 
 def build_cp_to_baseline_model(plot=False):
     proj_df = utils.load_retro_from_json('data/projects.json')
     ea_d = proj_df['project']['early_action'].str.startswith('CAR').to_dict()
-    non_ea = [proj_id for proj_id, is_ea in ea_d.items() if is_ea == False]
+    non_ea = [proj_id for proj_id, is_ea in ea_d.items() if not is_ea]
 
     sub = proj_df.loc[non_ea]
     sub = sub.loc[sub['baseline']['initial_carbon_stock'] > sub['baseline']['common_practice']]
