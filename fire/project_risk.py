@@ -26,11 +26,11 @@ def average_risk(da, mask):
     )
 
 
-def query_by_ecoregion(da, lon, lat, regions):
+def query_by_region(da, lon, lat, regions):
     p = Point(lon, lat)
     masks = rm.mask_3D_geopandas(regions, da)
-    ecoregion = [i for i in regions.index if regions.geometry[i].contains(p)][0]
-    return average_risk(da, masks[ecoregion])
+    region = [i for i in regions.index if regions.geometry[i].contains(p)][0]
+    return average_risk(da, masks[region])
 
 
 def query_by_shape(da, shape):
@@ -46,7 +46,7 @@ def query_by_location(da, lon, lat):
     return average_risk(da, mask)
 
 
-def project_risk(store='local', mode='ecoregion', lat=None, lon=None, id=None):
+def project_risk(store='local', mode='supersection', lat=None, lon=None, id=None):
     if store == 'local':
         prefix = os.path.expanduser('~/workdir/carbonplan-data')
 
@@ -56,9 +56,14 @@ def project_risk(store='local', mode='ecoregion', lat=None, lon=None, id=None):
     mapper = fsspec.get_mapper(prefix + '/processed/mtbs/conus/4000m/monthly.zarr')
     da = xr.open_zarr(mapper)['monthly']
 
-    if mode == 'ecoregion':
+    if mode == 'supersection':
         regions = gp.read_file(prefix + '/raw/ecoregions/supersections.geojson')
-        risk = integrated_risk(query_by_ecoregion(da, lon, lat, regions))
+        risk = integrated_risk(query_by_region(da, lon, lat, regions))
+        print(risk)
+
+    if mode == 'baileys':
+        regions = gp.read_file(prefix + '/raw/ecoregions/baileys.geojson')
+        risk = integrated_risk(query_by_region(da, lon, lat, regions))
         print(risk)
 
     if mode == 'shape':
