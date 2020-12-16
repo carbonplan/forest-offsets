@@ -10,20 +10,20 @@ from pandas import DataFrame, MultiIndex, to_datetime, to_numeric, read_json
 LOCAL_DATA_PATH = Path(__file__).parents[2] / 'data'
 
 
-def retro(fn=None, save=True, use_cache=True):
+def load_project_db(fn=None, save=True, use_cache=True):
     if use_cache and fn:
         try:
             print(f'loading load {fn} from {LOCAL_DATA_PATH}')
             cache_fn = LOCAL_DATA_PATH / fn
-            return load_retro_from_disk(fn=cache_fn)
+            return load_project_db_from_disk(fn=cache_fn)
         except:
             print(f'failed to load from disk -- grabbing {fn} from google')
-            return load_retro_from_sheets(fn=fn, save=save)
+            return load_project_db_from_sheets(fn=fn, save=save)
     else:
-        return load_retro_from_sheets(fn=fn, save=save)
+        return load_project_db_from_sheets(fn=fn, save=save)
 
 
-def load_retro_from_disk(fn=None):
+def load_project_db_from_disk(fn=None):
     def str_to_tuple(s):
         strip = lambda x: x.strip()
         return tuple(map(strip, s[1:-1].replace("'", "").split(',')))
@@ -90,8 +90,10 @@ def json_loads(v):
 def cast_col(col, type_str):
     if type_str == 'YYYY-MM-DD':
         return to_datetime(col, errors='coerce')
-    elif type_str == 'str' or type_str == 'str:previous_project_id':
+    elif type_str == 'str':
         return col.astype(str)
+    elif type_str == '[str]':
+        return [json_loads(v) if v else [] for v in col]
     elif type_str == 'bool':
         return col.replace('', '0').astype(int).astype(bool)
     elif type_str == 'int':
@@ -110,7 +112,7 @@ def cast_col(col, type_str):
             raise
 
 
-def load_retro_from_sheets(fn=None, save=True):
+def load_project_db_from_sheets(fn=None, save=True):
     sheet = get_sheet("ifm", fn)
 
     df, types = get_df(sheet)

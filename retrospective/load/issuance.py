@@ -1,9 +1,106 @@
+import numpy as np
 import pandas as pd
 
 ISSUANCE_URL = 'https://ww3.arb.ca.gov/cc/capandtrade/offsets/issuance/arboc_issuance.xlsx'
 
+ifm_opr_ids = [
+    'CAR1013',
+    'CAR1217',
+    'ACR210',
+    'ACR288',
+    'CAR973',
+    'ACR423',
+    'ACR281',
+    'ACR211',
+    'VCSOPR10',
+    'CAR1041',
+    'ACR273',
+    'ACR425',
+    'CAR1046',
+    'ACR280',
+    'ACR274',
+    'CAR1070',
+    'CAR1102',
+    'CAR1134',
+    'CAR1160',
+    'CAR1103',
+    'CAR1104',
+    'CAR1161',
+    'ACR192',
+    'CAR1159',
+    'ACR371',
+    'CAR1175',
+    'ACR378',
+    'CAR1314',
+    'ACR173',
+    'CAR1173',
+    'CAR1180',
+    'CAR1174',
+    'ACR189',
+    'ACR377',
+    'ACR324',
+    'ACR267',
+    'ACR260',
+    'CAR1099',
+    'ACR256',
+    'CAR1063',
+    'CAR1205',
+    'ACR202',
+    'CAR1062',
+    'ACR257',
+    'CAR993',
+    'CAR1257',
+    'CAR1098',
+    'ACR292',
+    'CAR1204',
+    'CAR1086',
+    'ACR247',
+    'CAR1088',
+    'ACR427',
+    'ACR249',
+    'ACR276',
+    'ACR282',
+    'CAR1213',
+    'ACR248',
+    'ACR284',
+    'ACR279',
+    'ACR417',
+    'CAR1215',
+    'CAR1197',
+    'CAR1190',
+    'ACR199',
+    'ACR360',
+    'ACR393',
+    'CAR1139',
+    'CAR1130',
+    'ACR361',
+    'CAR1191',
+    'CAR1162',
+    'ACR303',
+    'CAR1100',
+    'CAR1140',
+    'CAR1147',
+    'ACR182',
+    'CAR1183',
+    'ACR373',
+    'CAR1141',
+    'CAR1208',
+    'CAR1297',
+    'CAR1264',
+    'CAR1094',
+    'ACR255',
+    'CAR1067',
+    'CAR1209',
+    'ACR458',
+    'CAR1032',
+    'ACR200',
+    'CAR1066',
+    'CAR1095',
+    'ACR262',
+]
 
-def issuance(fn=ISSUANCE_URL, forest_only=True):
+
+def load_issuance_table(fn=ISSUANCE_URL, forest_only=True):
     """Load and clean ARB issuance table.
     Default is to pull a clean sheet from ARB website -- but can also specify fn.
     """
@@ -28,6 +125,9 @@ def issuance(fn=ISSUANCE_URL, forest_only=True):
     df['arb_id'] = df['CARB Issuance ID'].str[:8]
 
     df['is_ea'] = df['Early Action/ Compliance'] == 'EA'
+
+    # fill reforest defer as nan
+    df = df.replace("reforest defer", np.nan)
 
     new_order = [
         'project_type',
