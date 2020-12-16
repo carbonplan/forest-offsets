@@ -2,7 +2,7 @@ import geopandas as gpd
 import pandas as pd
 from shapely.geometry import Point
 
-from .load.geometry import load_ecomap, load_omernik, load_arb_shapes
+from .geometry import load_ecomap, load_omernik, load_arb_shapes
 
 
 def to_geodataframe(df, lat_key='LAT', lon_key='LON'):
@@ -125,6 +125,7 @@ def load_fia_tree(postal_code):
             'CN',
             'PLT_CN',
             'SPCD',
+            'DIA',
             'CONDID',
         ],
     )

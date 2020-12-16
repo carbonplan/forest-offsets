@@ -1,6 +1,6 @@
 import pandas as pd
 
-import utils
+from retrospective import utils
 
 
 def preprocess_assessment_area_file(params):

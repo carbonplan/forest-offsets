@@ -41,7 +41,7 @@ def get_state_boundaries(state_abbrs: list):
 
 
 def load_aa_to_ss_map():
-    fn = pathlib.Path(__file__).parent / 'data/2015_aa_lut.csv'
+    fn = pathlib.Path(__file__).parents[1] / 'data/2015_aa_lut.csv'
     df = pd.read_csv(fn, usecols=['aa_code', 'ss_code'])
     return df.set_index('aa_code')['ss_code'].to_dict()
 
