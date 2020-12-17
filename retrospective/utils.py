@@ -1,10 +1,9 @@
+import json
 import pathlib
-
-from pandas import MultiIndex, read_json
 
 import geopandas as gpd
 import pandas as pd
-import json
+from pandas import MultiIndex, read_json
 
 
 def load_retro_from_json(fname):

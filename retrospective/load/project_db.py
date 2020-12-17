@@ -1,11 +1,11 @@
-import gspread
 import json
-import numpy as np
 import os
 from pathlib import Path
 
+import gspread
+import numpy as np
 from oauth2client.service_account import ServiceAccountCredentials
-from pandas import DataFrame, MultiIndex, to_datetime, to_numeric, read_json
+from pandas import DataFrame, MultiIndex, read_json, to_datetime, to_numeric
 
 LOCAL_DATA_PATH = Path(__file__).parents[2] / 'data'
 

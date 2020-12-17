@@ -7,8 +7,6 @@ from retrospective.utils import load_ss_codes
 
 
 def load_ak_supersection():
-    ss_cd_map = load_ss_codes()
-
     return gpd.read_file(
         '/Users/darryl/proj/carbonplan/retro/data/geometry/ak.se.sc.supersection.shp.5.4.15'
     )

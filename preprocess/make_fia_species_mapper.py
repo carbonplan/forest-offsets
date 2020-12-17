@@ -1,9 +1,9 @@
-from glob import glob
 import json
+from glob import glob
 
-from fuzzywuzzy import process
 import numpy as np
 import pandas as pd
+from fuzzywuzzy import process
 
 
 def generate_assessment_fia_species_map():

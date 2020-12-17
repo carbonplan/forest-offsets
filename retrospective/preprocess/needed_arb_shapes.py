@@ -1,5 +1,5 @@
-from glob import glob
 import json
+from glob import glob
 
 
 # https://gis.arb.ca.gov/fedarcgis/rest/services/ARBOC_issuance_map/MapServer/0/query

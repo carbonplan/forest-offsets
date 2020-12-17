@@ -1,9 +1,7 @@
-from glob import glob
-import json
-
 import subprocess
-import geopandas as gpd
+from glob import glob
 
+import geopandas as gpd
 from utils import get_arb_id_map
 
 

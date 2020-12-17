@@ -2,7 +2,7 @@ import geopandas as gpd
 import pandas as pd
 from shapely.geometry import Point
 
-from .geometry import load_ecomap, load_omernik, load_arb_shapes
+from .geometry import load_arb_shapes, load_ecomap, load_omernik
 
 
 def to_geodataframe(df, lat_key='LAT', lon_key='LON'):

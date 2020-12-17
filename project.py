@@ -1,8 +1,8 @@
 import json
+from itertools import chain
 
 import geopandas as gpd
 import pandas as pd
-from itertools import chain
 
 # from utils import load_borders
 

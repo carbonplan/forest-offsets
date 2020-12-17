@@ -1,7 +1,6 @@
 import pathlib
 
 import pandas as pd
-
 from utils import load_aa_codes, load_aa_to_ss_map
 
 
@@ -10,7 +9,7 @@ def main():
     in_fn = pathlib.Path(__file__).parents[1] / 'data/assessment_area_forest_typs.csv'
     df = pd.read_csv(in_fn)
     df['fortypcds'] = (
-        df['rest'].str.extract('\(([\d,\s]+)\)')[0].apply(lambda x: [int(y) for y in x.split(',')])
+        df['rest'].str.extract(r'\(([\d,\s]+)\)')[0].apply(lambda x: [int(y) for y in x.split(',')])
     )
     df['aa_code'] = df['Community'].map(load_aa_codes())
     df['ss_code'] = df['aa_code'].map(load_aa_to_ss_map())
