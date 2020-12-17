@@ -6,6 +6,7 @@ gspread
 numpy
 oauth2client
 pandas
+pygraphviz
 regionmask
 shapely
 statsmodels

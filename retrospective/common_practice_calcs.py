@@ -4,8 +4,9 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 import statsmodels.formula.api as smf  # looks like this is outdated -- but backward compatibility ftw!
-import utils
 from shapely.geometry import Point
+
+from retrospective import utils
 
 
 def build_cp_to_baseline_model(plot=False):

@@ -1,13 +1,15 @@
 import json
-import os
 from pathlib import Path
 
 import gspread
 import numpy as np
+import pandas as pd
 from oauth2client.service_account import ServiceAccountCredentials
-from pandas import DataFrame, MultiIndex, read_json, to_datetime, to_numeric
 
 LOCAL_DATA_PATH = Path(__file__).parents[2] / 'data'
+SECRET_FILE = Path(__file__).parents[2] / 'secrets/google-sheets-key.json'
+
+VISUALLY_IDENTICAL = '-999'
 
 
 def load_project_db(fn=None, save=True, use_cache=True):
@@ -31,8 +33,8 @@ def load_project_db_from_disk(fn=None):
     if Path(fn).suffix != '.json':
         fn = Path(fn).parent / (Path(fn).name + '.json')
     try:
-        df = read_json(fn, orient='index', convert_dates=True)
-        df.columns = MultiIndex.from_tuples(map(str_to_tuple, df.columns))
+        df = pd.read_json(fn, orient='index', convert_dates=True)
+        df.columns = pd.MultiIndex.from_tuples(map(str_to_tuple, df.columns))
     except ValueError:
         raise ValueError("malformed (or missing) json file")
     return df
@@ -45,7 +47,7 @@ def get_sheet(sheet, doc, keypath=None):
     scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
 
     if not keypath:
-        keypath = os.path.expanduser("~/.config/googleapis/carbonplan-key.json")
+        keypath = SECRET_FILE
 
     credentials = ServiceAccountCredentials.from_json_keyfile_name(keypath, scope)
 
@@ -58,12 +60,12 @@ def get_sheet(sheet, doc, keypath=None):
 def get_df(sheet):
     data = sheet.get_all_values()
     data = np.asarray(data)
-    df = DataFrame(data[1:], columns=data[0])
+    df = pd.DataFrame(data[1:], columns=data[0])
     # ffill sparse to dense index.
     levels = ['level0', 'level1', 'level2']
     left = df[levels].copy()
     left[levels[:2]] = left[levels[:2]].mask(left == '', None).ffill()
-    index = MultiIndex.from_frame(left)
+    index = pd.MultiIndex.from_frame(left)
 
     types = df['type']
 
@@ -89,17 +91,17 @@ def json_loads(v):
 
 def cast_col(col, type_str):
     if type_str == 'YYYY-MM-DD':
-        return to_datetime(col, errors='coerce')
+        return pd.to_datetime(col, errors='coerce')
     elif type_str == 'str':
         return col.astype(str)
     elif type_str == '[str]':
         return [json_loads(v) if v else [] for v in col]
     elif type_str == 'bool':
-        return col.replace('', '0').astype(int).astype(bool)
+        return col.astype(bool)  # col.replace('', '0').astype(int).astype(bool)
     elif type_str == 'int':
-        return to_numeric(col.str.replace(',', ''), errors='coerce')
+        return pd.to_numeric(col.str.replace(',', ''), errors='coerce', downcast='integer')
     elif type_str == 'float':
-        return to_numeric(col.str.replace(',', ''), errors='coerce')
+        return pd.to_numeric(col.str.replace(',', ''), errors='coerce', downcast='float')
     elif type_str == '[lon:float, lat:float]' or type_str == '[int]':
         return [json_loads(v) if v else [] for v in col]
     elif type_str == '[(is_intentional, size)]':
@@ -118,7 +120,7 @@ def load_project_db_from_sheets(fn=None, save=True):
     df, types = get_df(sheet)
 
     df = df.replace(
-        to_replace='visually_identical', value='-999'
+        to_replace='visually_identical', value=VISUALLY_IDENTICAL
     )  # needs to be string otherwise cast_col casts to NaN --
 
     for index, col in df.iteritems():
