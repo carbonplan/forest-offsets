@@ -28,7 +28,7 @@ def calculate_allocation(data, rp=1, round_intermediates=False):
     leakage_adjusted_delta_wood_products = (actual_wood_products - baseline_wood_products) * 0.8
 
     secondary_effects = data[f'rp_{rp}']['secondary_effects']
-    secondary_effects[leakage_adjusted_delta_wood_products > 0] = 0
+    secondary_effects[secondary_effects > 0] = 0  # Never allowed to have positive SE.
 
     if round_intermediates:
         leakage_adjusted_delta_wood_products = leakage_adjusted_delta_wood_products.round()

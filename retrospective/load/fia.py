@@ -126,6 +126,8 @@ def load_fia_tree(postal_code):
             'PLT_CN',
             'SPCD',
             'DIA',
+            'CARBON_AG',
+            'TPA_UNADJ',
             'CONDID',
         ],
     )
