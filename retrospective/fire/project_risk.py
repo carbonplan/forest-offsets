@@ -68,7 +68,7 @@ def get_baileys(prefix):
     return regions
 
 
-def project_risk(store='local', mode='ecoregion', lat=None, lon=None, id=None):
+def project_risk(store='local', mode='supersection', lat=None, lon=None, id=None):
     if store == 'local':
         prefix = os.path.expanduser('~/workdir/carbonplan-data')
 
