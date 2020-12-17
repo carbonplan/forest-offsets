@@ -1,5 +1,6 @@
 import geopandas as gpd
-from utils import load_ss_codes
+
+from retrospective.utils import load_ss_codes
 
 
 def repackage_arb_supersections():

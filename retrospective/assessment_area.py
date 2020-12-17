@@ -1,11 +1,13 @@
 import json
+from functools import lru_cache
 
 import pandas as pd
 
-# TODO: This probably shouldnt be here but whatever
-# TODO: Ask Joe/Jeremy on how to handle this -- dont want to reload 100x
-with open("data/species_name_to_fia_code.json") as f:
-    FIA_SPECIES_MAP = json.load(f)
+
+@lru_cache(maxsize=None)
+def get_fia_species_map():
+    with open("data/species_name_to_fia_code.json") as f:
+        return json.load(f)
 
 
 def compare_species_lists(comparison_lst: list, benchmark_lst: list):
@@ -25,7 +27,8 @@ def clean_species_str(species_str):
 
 
 def encode_species_lst(spp_lst):
-    return [FIA_SPECIES_MAP[spp] for spp in spp_lst if spp in FIA_SPECIES_MAP]
+    fia_species_map = get_fia_species_map()
+    return [fia_species_map[spp] for spp in spp_lst if spp in fia_species_map]
 
 
 def get_species_lst(species_str):
