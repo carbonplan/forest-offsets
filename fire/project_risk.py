@@ -28,7 +28,7 @@ def average_risk(da, mask):
 
 def query_by_region(da, lon, lat, regions):
     p = Point(lon, lat)
-    masks = rm.mask_3D_geopandas(regions, da)
+    masks = rm.mask_3D_geopandas(regions, da, drop=False)
     region = [i for i in regions.index if regions.geometry[i].contains(p)][0]
     return average_risk(da, masks[region])
 
