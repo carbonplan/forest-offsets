@@ -64,7 +64,9 @@ def load_aa_codes():
 
 def get_arb_id_map():
     return (
-        pd.read_csv('../data/issuance.csv', usecols=['arb_id', 'proj_id'])
+        pd.read_csv(
+            '/Users/darryl/proj/carbonplan/retro/data/issuance.csv', usecols=['arb_id', 'proj_id']
+        )
         .set_index('arb_id')
         .proj_id.to_dict()
     )
