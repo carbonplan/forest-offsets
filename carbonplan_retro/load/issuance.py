@@ -1,7 +1,6 @@
 import numpy as np
-import pandas as pd
 
-ISSUANCE_URL = 'https://ww3.arb.ca.gov/cc/capandtrade/offsets/issuance/arboc_issuance.xlsx'
+from ..data import cat
 
 ifm_opr_ids = [
     'CAR1013',
@@ -100,11 +99,21 @@ ifm_opr_ids = [
 ]
 
 
-def load_issuance_table(fn=ISSUANCE_URL, forest_only=True):
+def load_issuance_table(forest_only=True):
     """Load and clean ARB issuance table.
-    Default is to pull a clean sheet from ARB website -- but can also specify fn.
+
+    Parameters
+    ----------
+
+    forest_only : bool, optional
+        Return only forest projects.
+
+    Returns
+    -------
+    df : pandas.DataFrame
+        Issuance table returned as a Pandas.DataFrame
     """
-    df = pd.read_excel(fn, sheet_name='ARB Offset Credit Issuance')
+    df = cat.issuance_table.read()
 
     rename_d = {
         'OPR Project ID': 'opr_id',

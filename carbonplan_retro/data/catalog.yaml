@@ -18,6 +18,7 @@ sources:
       urlpath: https://carbonplan.blob.core.windows.net/carbonplan-retro/ancillary/arboc_issuance_2020-09-09.xlsx
       excel_kwargs:
         sheet_name: 'ARB Offset Credit Issuance'
+        engine: openpyxl
 
   mtbs:
     description: TODO

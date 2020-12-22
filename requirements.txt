@@ -5,7 +5,7 @@ geopandas
 gspread
 intake
 intake-geopandas
-git+https://github.com/edjdavid/intake-excel.git
+intake-excel
 numpy
 oauth2client
 pandas

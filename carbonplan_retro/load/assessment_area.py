@@ -1,5 +1,4 @@
 import pandas as pd
-
 from retrospective import utils
 
 ASSESSMENT_AREA_CONFIGS = {
