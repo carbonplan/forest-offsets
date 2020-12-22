@@ -1,0 +1,56 @@
+sources:
+  supersections:
+    description: TODO
+    driver: geojson
+    args:
+      urlpath: https://carbonplan.blob.core.windows.net/carbonplan-data/raw/ecoregions/supersections.geojson
+
+  baileys_ecoregions:
+    description: TODO
+    driver: geojson
+    args:
+      urlpath: https://carbonplan.blob.core.windows.net/carbonplan-data/raw/ecoregions/baileys.geojson
+
+  issuance_table:
+    description: TODO
+    driver: excel
+    args:
+      urlpath: https://carbonplan.blob.core.windows.net/carbonplan-retro/ancillary/arboc_issuance_2020-09-09.xlsx
+      excel_kwargs:
+        sheet_name: 'ARB Offset Credit Issuance'
+
+  mtbs:
+    description: TODO
+    driver: zarr
+    args:
+      urlpath: https://carbonplan.blob.core.windows.net/carbonplan-data/processed/mtbs/conus/4000m/monthly.zarr
+      consolidated: True
+
+  arb_geometries:
+    description: TODO
+    driver: geojson
+    parameters:
+      opr_id:
+        description: Project ID
+        type: str
+        default: ACR173
+    args:
+      urlpath: https://carbonplan.blob.core.windows.net/carbonplan-retro/projects/{{ opr_id }}/shape.json
+
+  fire_risk:
+    description: TODO
+    driver: geojson
+    parameters:
+      regions:
+        description: Spatial regions to use
+        type: str
+        default: baileys
+        allowed: [baileys, supersections]
+    args:
+      urlpath: https://carbonplan.blob.core.windows.net/carbonplan-retro/fire/{{ regions }}.json
+
+  retro_db_light:
+    description: TODO
+    driver: csv
+    args:
+      urlpath: https://carbonplan.blob.core.windows.net/carbonplan-retro/projects/retro-db-light-v1.0.csv

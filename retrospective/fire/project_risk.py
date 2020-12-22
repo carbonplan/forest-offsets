@@ -12,7 +12,7 @@ from shapely.geometry import Point
 def integrated_risk(p):
     from scipy.stats import binom
 
-    return (1 - binom.cdf(0, 100, p)) * 100
+    return 1 - binom.cdf(0, 100, p)
 
 
 def average_risk(da, mask):
