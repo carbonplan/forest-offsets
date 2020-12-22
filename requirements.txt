@@ -3,6 +3,9 @@ fsspec
 fuzzywuzzy
 geopandas
 gspread
+intake
+intake-geopandas
+git+https://github.com/edjdavid/intake-excel.git
 numpy
 oauth2client
 pandas
