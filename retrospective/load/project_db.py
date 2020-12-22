@@ -101,7 +101,7 @@ def cast_col(col, type_str):
     elif type_str == 'int':
         return pd.to_numeric(col.str.replace(',', ''), errors='coerce', downcast='integer')
     elif type_str == 'float':
-        return pd.to_numeric(col.str.replace(',', ''), errors='coerce', downcast='float')
+        return pd.to_numeric(col.str.replace(',', ''), errors='coerce')
     elif type_str == '[lon:float, lat:float]' or type_str == '[int]':
         return [json_loads(v) if v else [] for v in col]
     elif type_str == '[(is_intentional, size)]':
