@@ -131,12 +131,11 @@ def load_fia_tree(postal_code):
             'STATUSCD',
             'DIA',
             'CARBON_AG',
-            'TPA_UNADJ',
             'CONDID',
         ],
     )
 
-    tree_df = tree_df[tree_df['STATUSCD'] == 1]
+    tree_df = tree_df[tree_df['STATUSCD'] == 1]  # only looking at live trees
     tree_df['unadj_basal_area'] = math.pi * (tree_df['DIA'] / (2 * 12)) ** 2 * tree_df['TPA_UNADJ']
     tree_df = tree_df.join(plot_df.set_index(['CN']), on='PLT_CN', how='inner')
     tree_df = tree_df.join(cond_agg, rsuffix='_cond', on=['PLT_CN', 'CONDID'])
