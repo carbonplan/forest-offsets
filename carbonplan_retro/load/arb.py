@@ -1,8 +1,9 @@
 import pandas as pd
-from retrospective import utils
+
+from .. import utils
 
 
-def load_olaf_common_practice():
+def load_olaf_common_practice() -> pd.DataFrame:
     """
     Load mdb-dump output of Olaf's output.accdb that retreived from ARB website
     """
@@ -22,7 +23,7 @@ def load_olaf_common_practice():
     return olaf_cp
 
 
-def load_olaf_df():
+def load_olaf_df() -> pd.DataFrame:
     """Loading Olaf's CP and "tabling" sheet.
     Tabling data found on ARB website in FIA data dump. Contains intermediary data on
     which FORTYPCDs map to each assessment area -- as well as sum of cond_prop_group which

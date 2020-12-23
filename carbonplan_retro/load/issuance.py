@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 
 from ..data import cat
 
@@ -99,7 +100,7 @@ ifm_opr_ids = [
 ]
 
 
-def load_issuance_table(forest_only=True):
+def load_issuance_table(forest_only: bool = True) -> pd.DataFrame:
     """Load and clean ARB issuance table.
 
     Parameters
@@ -176,3 +177,9 @@ def load_issuance_table(forest_only=True):
         return df[df['project_type'] == 'forest']
     else:
         return df
+
+
+def get_arb_id_map() -> dict:
+    df = load_issuance_table(forest_only=False)[['opr_id', 'arb_id']].set_index('arb_id')
+    # TODO: confirm with @grayson that proj_id (old) == 'opr_id' (new)
+    return df.opr_id.to_dict()

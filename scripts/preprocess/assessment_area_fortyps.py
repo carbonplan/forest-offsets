@@ -1,7 +1,8 @@
 import pathlib
 
 import pandas as pd
-from utils import load_aa_codes, load_aa_to_ss_map
+
+from carbonplan_retro.utils import load_aa_codes, load_aa_to_ss_map
 
 
 def main():

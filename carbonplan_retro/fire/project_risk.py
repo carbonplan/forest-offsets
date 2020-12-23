@@ -1,26 +1,49 @@
-import os
-from functools import lru_cache
-
 import fire
-import fsspec
-import geopandas as gp
-import regionmask as rm
+import regionmask
 import xarray as xr
+from scipy.stats import binom
 from shapely.geometry import Point
 
+from ..data import cat
 
-def integrated_risk(p):
-    from scipy.stats import binom
 
+def integrated_risk(p: float):
+    """Calculate the integrated 100-yr risk given an annualized risk
+
+    Parameters
+    ----------
+    p : float
+        Annualized risk probability
+
+    Returns
+    -------
+    float
+        Integrated 100-yr riskå
+    """
     return 1 - binom.cdf(0, 100, p)
 
 
-def average_risk(da, mask):
+def average_risk(da: xr.DataArray, mask: xr.DataArray) -> xr.DataArray:
+    """Calculate the average fire risk over a masked region
+
+    Parameters
+    ----------
+    da : xr.DataArray
+        Fractional area burned array with dims: (time, y, x)
+    mask : xr.DataArray
+        Mask to subset `da` before calculating the average fire risk, dims: (region, y, x)
+
+    Returns
+    -------
+    float
+        Average (observed) burn risk aggregated over regions
+    """
     return (
         da.where(mask)
         .mean(['x', 'y'])
         .groupby('time.year')
         .sum()
+        .clip(0, 1)
         .sel(year=slice('2001', '2018'))
         .mean()
     )
@@ -28,13 +51,13 @@ def average_risk(da, mask):
 
 def query_by_region(da, lon, lat, regions):
     p = Point(lon, lat)
-    masks = rm.mask_3D_geopandas(regions, da, drop=False)
+    masks = regionmask.mask_3D_geopandas(regions, da, drop=False)
     region = [i for i in regions.index if regions.geometry[i].contains(p)][0]
     return average_risk(da, masks[region])
 
 
-def query_by_shape(da, shape):
-    mask = rm.mask_3D_geopandas(shape.simplify(0.002).buffer(0.005), da)[0]
+def query_by_shape(da, shape, simplify=0.002, buffer=0.005):
+    mask = regionmask.mask_3D_geopandas(shape.simplify(simplify).buffer(buffer), da)[0]
     return average_risk(da, mask)
 
 
@@ -46,57 +69,30 @@ def query_by_location(da, lon, lat):
     return average_risk(da, mask)
 
 
-@lru_cache(maxsize=None)
-def get_mtbs(prefix, load=True):
-    mapper = fsspec.get_mapper(prefix + '/processed/mtbs/conus/4000m/monthly.zarr')
-    da = xr.open_zarr(mapper, consolidated=True)['monthly']
-    if load:
-        print('loading mtbs')
-        da = da.load()
-    return da
+def project_risk(mode='supersection', lat=None, lon=None, id=None):
 
+    da = cat.mtbs.to_dask()
 
-@lru_cache(maxsize=None)
-def get_supersections(prefix):
-    regions = gp.read_file(prefix + '/raw/ecoregions/supersections.geojson')
-    return regions
-
-
-@lru_cache(maxsize=None)
-def get_baileys(prefix):
-    regions = gp.read_file(prefix + '/raw/ecoregions/baileys.geojson')
-    return regions
-
-
-def project_risk(store='local', mode='supersection', lat=None, lon=None, id=None):
-    if store == 'local':
-        prefix = os.path.expanduser('~/workdir/carbonplan-data')
-
-    if store == 'gs':
-        prefix = 'https://storage.googleapis.com/carbonplan-data'
-
-    da = get_mtbs(prefix)
+    if mode in ['supersection', 'baileys', 'location'] and (lat is None or lon is None):
+        raise ValueError(f'{mode} mode requires lat/lon parameters')
+    if mode == 'shape' and id is None:
+        raise ValueError('shape mode requires id parameter')
 
     if mode == 'supersection':
-        regions = get_supersections(prefix)
-        risk = integrated_risk(query_by_region(da, lon, lat, regions))
-        print(risk)
-
+        regions = cat.supersections.read()
+        risk = query_by_region(da, lon, lat, regions)
     elif mode == 'baileys':
-        regions = get_baileys(prefix)
-        risk = integrated_risk(query_by_region(da, lon, lat, regions))
-        print(risk)
+        regions = cat.baileys_ecoregions.read()
+        risk = query_by_region(da, lon, lat, regions)
     elif mode == 'shape':
-        shape = gp.read_file(prefix + f'/raw/projects/{id}.json')
-        risk = integrated_risk(query_by_shape(da, shape))
-        print(risk)
+        shape = cat.arb_geometries(opr_id=id).read()
+        risk = query_by_shape(da, shape)
     elif mode == 'location':
-        risk = integrated_risk(query_by_location(da, lon, lat))
-        print(risk)
+        risk = query_by_location(da, lon, lat)
     else:
-        raise ValueError('invalid mode')
+        raise ValueError(f'invalid mode: {mode}')
 
-    return risk
+    return integrated_risk(risk)
 
 
 if __name__ == '__main__':
