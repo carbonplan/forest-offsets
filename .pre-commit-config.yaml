@@ -35,3 +35,4 @@ repos:
     rev: f5bdb72a400f1a56fe88109936c83aa12cc349fa
     hooks:
     - id: prenotebook
+      args: ["--line-width", "100", "--no-verify-order", "--prettier-code", "--verbose"]
