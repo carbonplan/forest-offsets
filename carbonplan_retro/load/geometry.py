@@ -2,7 +2,6 @@ import pathlib
 
 import geopandas as gpd
 import pandas as pd
-
 from retrospective.utils import load_ss_codes
 
 

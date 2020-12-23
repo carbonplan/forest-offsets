@@ -3,6 +3,9 @@ fsspec
 fuzzywuzzy
 geopandas
 gspread
+intake
+intake-geopandas
+intake-excel
 numpy
 oauth2client
 pandas

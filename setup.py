@@ -15,7 +15,7 @@ PYTHON_REQUIRES = ">=3.7"
 description = "forest carbon potential and risks"
 
 setup(
-    name="retrospective",
+    name="carbonplan_retro",
     description=description,
     long_description=LONG_DESCRIPTION,
     long_description_content_type="text/markdown",

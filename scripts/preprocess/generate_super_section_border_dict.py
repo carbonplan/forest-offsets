@@ -2,7 +2,7 @@ import json
 from collections import defaultdict
 from itertools import permutations
 
-from utils import load_supersection_shapes
+from carbonplan_retro.utils import load_supersection_shapes
 
 
 def generate_border_dict():
