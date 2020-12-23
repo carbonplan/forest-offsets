@@ -1,4 +1,25 @@
-def calculate_allocation(data, rp=1, round_intermediates=False):
+import pandas as pd
+
+
+def calculate_allocation(
+    data: pd.DataFrame, rp: int = 1, round_intermediates: bool = False
+) -> pd.Series:
+    """Calculate the allocation of ARBOCs based on project report IFM components
+
+    Parameters
+    ----------
+    data : pd.DataFrame
+        Project database
+    rp : int
+        Reporting period
+    round_intermediates : bool
+        If true, round intermeiate calculations before calculating the final allocation
+
+    Returns
+    -------
+    allocation : pd.Series
+    """
+
     baseline_carbon = (
         data['baseline']['components']['ifm_1'] + data['baseline']['components']['ifm_3']
     )

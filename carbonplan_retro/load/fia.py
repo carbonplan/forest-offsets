@@ -1,24 +1,39 @@
 import math
 
-import geopandas as gpd
+import geopandas
 import pandas as pd
 from shapely.geometry import Point
 
+from ..data import cat
 from .geometry import load_arb_shapes, load_ecomap, load_omernik
 
 
-def to_geodataframe(df, lat_key='LAT', lon_key='LON'):
-    geo_df = gpd.GeoDataFrame(
+def to_geodataframe(
+    df: pd.DataFrame, lat_key: str = 'LAT', lon_key: str = 'LON'
+) -> geopandas.GeoDataFrame:
+    """ helper function to covert DataFrame to GeoDataFrame """
+    geo_df = geopandas.GeoDataFrame(
         df, crs='epsg:4326', geometry=[Point(xy) for xy in zip(df[lon_key], df[lat_key])]
     )
     return geo_df
 
 
-def fia(postal_code, kind=None, filter_data=True):
-    """
-    postal_code: two letter state abbr
-    kind: return processed `long` data from carbonplan_forests or raw plot/cond/tree data
-    filter_data: filter data to ~approximate data used in CARB 2015 protocol CP calculations.
+def fia(postal_code: str, kind: str = 'long', filter_data: bool = True) -> geopandas.GeoDataFrame:
+    """Load fia data
+
+    Parameters
+    ----------
+    postal_code : str
+        Two letter state abbr
+    kind : str
+        Return processed `long` data from carbonplan_forests or raw plot/cond/tree data
+    filter_data : bool
+        If true, filter data to ~approximate data used in CARB 2015 protocol CP calculations
+
+    Returns
+    -------
+    df : geopandas.GeoDataFrame
+        FIA data (either long or tree)
     """
     if kind not in ['long', 'tree']:
         raise NotImplementedError('kind must be in ["long", "tree"]')
@@ -45,26 +60,24 @@ def fia(postal_code, kind=None, filter_data=True):
     # assign all regions we might be interested in!
     # this is slower for tree bc we assign EACH tree as opposed to each plot...but yolo.
     arb_shapes = load_arb_shapes(postal_code)
-    df = gpd.sjoin(df, arb_shapes, how='left', op='within', rsuffix='supersection')
+    df = geopandas.sjoin(df, arb_shapes, how='left', op='within', rsuffix='supersection')
     if postal_code == 'ak':
         omernik = load_omernik(postal_code)
-        df = gpd.sjoin(
+        df = geopandas.sjoin(
             df, omernik[['US_L3CODE', 'geometry']], how='left', op='within', rsuffix='omernik'
         )
 
         ecomap = load_ecomap(postal_code)
-        df = gpd.sjoin(
+        df = geopandas.sjoin(
             df, ecomap[['COMMONER', 'geometry']], how='left', op='within', rsuffix='ecomap'
         )
 
     return df
 
 
-def load_fia_long(postal_code):
-
-    fn = f'gs://carbonplan-data/processed/fia-states/long/{postal_code.lower()}.parquet'
-
-    usecols = [
+def load_fia_long(postal_code: str) -> geopandas.GeoDataFrame:
+    '''helper function to pre-process the fia-long table'''
+    columns = [
         'adj_ag_biomass',
         'OWNCD',
         'CONDID',
@@ -82,8 +95,7 @@ def load_fia_long(postal_code):
         'LON',
         'ELEV',
     ]
-
-    df = pd.read_parquet(fn, columns=usecols)
+    df = cat.fia_long(columns=columns).read()
     df = df.dropna(subset=["LAT", "LON", 'adj_ag_biomass'])
 
     df['slag_co2e_acre'] = df['adj_ag_biomass'] * (44 / 12) * (1 / 2.47) * 0.5
@@ -110,19 +122,17 @@ def load_fia_long(postal_code):
 
 
 def load_fia_tree(postal_code):
-    cond_df = pd.read_parquet(
-        f'gs://carbonplan-data/raw/fia-states/cond_{postal_code.lower()}.parquet',
-        columns=['CN', 'PLT_CN', 'CONDID', 'OWNCD', 'FORTYPCD', 'FLDTYPCD'],
-    )
+    '''helper function to pre-process the fia-tree table'''
+
+    cond_df = cat.fia(
+        table='cond', columns=['CN', 'PLT_CN', 'CONDID', 'OWNCD', 'FORTYPCD', 'FLDTYPCD']
+    ).read()
     cond_agg = cond_df.groupby(['PLT_CN', 'CONDID']).max()
 
-    plot_df = pd.read_parquet(
-        f'gs://carbonplan-data/raw/fia-states/plot_{postal_code}.parquet',
-        columns=['CN', 'LAT', 'LON', 'ELEV', 'INVYR'],
-    )
+    plot_df = cat.fia(table='plot', columns=['CN', 'LAT', 'LON', 'ELEV', 'INVYR']).read()
 
-    tree_df = pd.read_parquet(
-        f'gs://carbonplan-data/raw/fia-states/tree_{postal_code.lower()}.parquet',
+    tree_df = cat.fia(
+        table='tree',
         columns=[
             'CN',
             'PLT_CN',
@@ -133,7 +143,7 @@ def load_fia_tree(postal_code):
             'CARBON_AG',
             'CONDID',
         ],
-    )
+    ).read()
 
     tree_df = tree_df[tree_df['STATUSCD'] == 1]  # only looking at live trees
     tree_df['unadj_basal_area'] = math.pi * (tree_df['DIA'] / (2 * 12)) ** 2 * tree_df['TPA_UNADJ']

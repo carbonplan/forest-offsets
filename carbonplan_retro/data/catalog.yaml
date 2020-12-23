@@ -20,6 +20,22 @@ sources:
         sheet_name: 'ARB Offset Credit Issuance'
         engine: openpyxl
 
+  super_section_lookup:
+    description: TODO
+    driver: csv
+    args:
+      urlpath: https://carbonplan.blob.core.windows.net/carbonplan-retro/ancillary/super_section_lookup.csv
+      csv_kwargs:
+        names: ["code", "ss"]
+
+  assessment_area_lookup:
+    description: TODO
+    driver: csv
+    args:
+      urlpath: https://carbonplan.blob.core.windows.net/carbonplan-retro/ancillary/assessment_area_lookup.csv
+      csv_kwargs:
+        names: ["code", "aa"]
+
   mtbs:
     description: TODO
     driver: zarr
@@ -38,6 +54,12 @@ sources:
     args:
       urlpath: https://carbonplan.blob.core.windows.net/carbonplan-retro/projects/{{ opr_id }}/shape.json
 
+  states:
+    description: TODO
+    driver: shapefile
+    args:
+      urlpath: https://www.naturalearthdata.com/http//www.naturalearthdata.com/download/110m/cultural/ne_110m_admin_1_states_provinces.zip
+
   fire_risk:
     description: TODO
     driver: geojson
@@ -55,3 +77,34 @@ sources:
     driver: csv
     args:
       urlpath: https://carbonplan.blob.core.windows.net/carbonplan-retro/projects/retro-db-light-v1.0.csv
+
+  fia_long:
+    description: TODO
+    driver: parquet
+    parameters:
+      postal_code:
+        description: Two letter postal code
+        type: str
+        default: ca
+    args:
+      urlpath: az://carbonplan-data/processed/fia-states/long/{{ postal_code.lower() }}.parquet
+      storage_options:
+        account_name: carbonplan
+
+  fia:
+    description: TODO
+    driver: parquet
+    parameters:
+      postal_code:
+        description: Two letter postal code (lower-case)
+        type: str
+        default: ca
+      table:
+        description: FIA type name
+        type: str
+        default: cond
+        allowed: [cond, plot, tree]
+    args:
+      urlpath: az://carbonplan-data/raw/fia-states/{{ table }}_{{postal_code.lower()}}.parquet
+      storage_options:
+        account_name: carbonplan

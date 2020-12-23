@@ -1,5 +1,6 @@
 import pandas as pd
-from retrospective import utils
+
+from .. import utils
 
 ASSESSMENT_AREA_CONFIGS = {
     "2011": {
@@ -57,11 +58,12 @@ ASSESSMENT_AREA_CONFIGS = {
 }
 
 
-def load_assessment_areas(year=2015):
+def load_assessment_areas(year: int = 2015) -> pd.DataFrame:
     """Load ARB official assessment area look up table.
     Each version has its own little differences that are handled here, including dealing with typos
     """
-    df = pd.read_excel(**ASSESSMENT_AREA_CONFIGS[year]).fillna(
+    kwargs = ASSESSMENT_AREA_CONFIGS[str(year)]
+    df = pd.read_excel(**kwargs).fillna(
         method="ffill"
     )  # raw excel files has merged rows, ffill eliminates
 
