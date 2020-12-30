@@ -5,83 +5,45 @@ import pandas as pd
 from shapely.geometry import Point
 
 from ..data import cat
-from .geometry import load_arb_shapes, load_ecomap, load_omernik
 
 
 def to_geodataframe(
     df: pd.DataFrame, lat_key: str = 'LAT', lon_key: str = 'LON'
 ) -> geopandas.GeoDataFrame:
-    """ helper function to covert DataFrame to GeoDataFrame """
+    ''' helper function to covert DataFrame to GeoDataFrame '''
     geo_df = geopandas.GeoDataFrame(
         df, crs='epsg:4326', geometry=[Point(xy) for xy in zip(df[lon_key], df[lat_key])]
     )
     return geo_df
 
 
-def fia(postal_code: str, kind: str = 'long', filter_data: bool = True) -> geopandas.GeoDataFrame:
-    """Load fia data
+def load_fia_common_practice(postal_codes, min_year=2002, max_year=2012, private_only=True):
+    if isinstance(postal_codes, str):
+        postal_codes = [postal_codes]
 
-    Parameters
-    ----------
-    postal_code : str
-        Two letter state abbr
-    kind : str
-        Return processed `long` data from carbonplan_forests or raw plot/cond/tree data
-    filter_data : bool
-        If true, filter data to ~approximate data used in CARB 2015 protocol CP calculations
-
-    Returns
-    -------
-    df : geopandas.GeoDataFrame
-        FIA data (either long or tree)
-    """
-    if kind not in ['long', 'tree']:
-        raise NotImplementedError('kind must be in ["long", "tree"]')
-
-    if kind == 'long':
-        df = load_fia_long(postal_code)
-
-    if kind == 'tree':
-        df = load_fia_tree(postal_code)
-
-    if filter_data:
-        if postal_code == 'ak':
-            criteria = (
-                (df['inventory_year'] > 2000)
-                & (df['inventory_year'] < 2013)
-                & (~df['owner'].isin([21, 31, 32]))
-            )
-        else:
-            criteria = (
-                (df['inventory_year'] > 2000) & (df['inventory_year'] < 2013) & (df['owner'] == 46)
-            )
-        df = df[criteria]
-
-    # assign all regions we might be interested in!
-    # this is slower for tree bc we assign EACH tree as opposed to each plot...but yolo.
-    arb_shapes = load_arb_shapes(postal_code)
-    df = geopandas.sjoin(df, arb_shapes, how='left', op='within', rsuffix='supersection')
-    if postal_code == 'ak':
-        omernik = load_omernik(postal_code)
-        df = geopandas.sjoin(
-            df, omernik[['US_L3CODE', 'geometry']], how='left', op='within', rsuffix='omernik'
+    try:
+        df = pd.concat(
+            [
+                load_fia_state_long(
+                    postal_code, min_year=min_year, max_year=max_year, private_only=private_only
+                )
+                for postal_code in postal_codes
+            ]
         )
+        return df
 
-        ecomap = load_ecomap(postal_code)
-        df = geopandas.sjoin(
-            df, ecomap[['COMMONER', 'geometry']], how='left', op='within', rsuffix='ecomap'
-        )
-
-    return df
+    except:
+        raise
 
 
-def load_fia_long(postal_code: str) -> geopandas.GeoDataFrame:
+def load_fia_state_long(postal_code, min_year=2002, max_year=2012, private_only=True):
     '''helper function to pre-process the fia-long table'''
     columns = [
         'adj_ag_biomass',
         'OWNCD',
         'CONDID',
         'STDAGE',
+        'MEASYEAR',
         'SITECLCD',
         'FORTYPCD',
         'FLDTYPCD',
@@ -90,38 +52,31 @@ def load_fia_long(postal_code: str) -> geopandas.GeoDataFrame:
         'SLOPE',
         'ASPECT',
         'INVYR',
-        'MEASYEAR',
         'LAT',
         'LON',
         'ELEV',
     ]
     df = cat.fia_long(columns=columns).read()
-    df = df.dropna(subset=["LAT", "LON", 'adj_ag_biomass'])
+    df = df.dropna(subset=['LAT', 'LON', 'adj_ag_biomass'])
+    df = df[
+        (df['MEASYEAR'] >= min_year) & (df['MEASYEAR'] <= max_year)
+    ]  # CP data only uses 2002-2012; this will just mean we store less on disk
 
+    # 44/12 gets us to CO2.
+    # 0.5 gets us from biomass to carbon; see carbonplan_forests for more details
     df['slag_co2e_acre'] = df['adj_ag_biomass'] * (44 / 12) * (1 / 2.47) * 0.5
-    df['site_class'] = 'low'
-    df.loc[
-        df['SITECLCD'] < 4, 'site_class'
-    ] = 'high'  # NB this criteria changes between 2014 & 2015 CARB FOP.
+    df['postal_code'] = postal_code
 
+    if private_only:
+        df = df[df['OWNCD'] == 46]
+
+    # add in geometry for later spatial aggregations
     df = to_geodataframe(df)
-
-    rename_d = {
-        'FORTYPCD': 'forest_type',
-        'FLDTYPCD': 'field_type',
-        'MEASYEAR': 'year',
-        'INVYR': 'inventory_year',
-        "ELEV": 'elevation',
-        "OWNCD": 'owner',
-    }
-    df = df.rename(columns=rename_d)
-
-    df.columns = [column.lower() for column in df.columns]  # send rest of columns to lower case
 
     return df
 
 
-def load_fia_tree(postal_code):
+def load_fia_tree():
     '''helper function to pre-process the fia-tree table'''
 
     cond_df = cat.fia(
