@@ -56,7 +56,7 @@ def load_fia_state_long(postal_code, min_year=2002, max_year=2012, private_only=
         'LON',
         'ELEV',
     ]
-    df = cat.fia_long(columns=columns).read()
+    df = cat.fia_long(postal_code=postal_code, columns=columns).read()
     df = df.dropna(subset=['LAT', 'LON', 'adj_ag_biomass'])
     df = df[
         (df['MEASYEAR'] >= min_year) & (df['MEASYEAR'] <= max_year)
