@@ -6,17 +6,23 @@ import pandas as pd
 from ..utils import supersection_str_to_ss_code
 
 
-def load_ak_supersection():
-    return gp.read_file(
-        '/Users/darryl/proj/carbonplan/retro/data/geometry/ak.se.sc.supersection.shp.5.4.15'
+def load_ak_supersections():
+    '''load alaska assessment areas and rearrange so can append to CONUS supersections'''
+    gdf = gp.read_file(
+        'https://ww3.arb.ca.gov/cc/capandtrade/protocols/usforest/2015/ak.assessment.area.shapefiles.5.4.15.zip'
     )
+    # Refer to AK 'assessment areas' as three new 'supersections' that go by their assessment area names.
+    gdf['SSection'] = gdf['Assessment']
+    gdf = gdf.drop("Assessment", axis=1)
 
+    # For the three AK assessment areas qua supersection, ss_id == aa_id.
+    ak_supersection_str_to_ss_code = {
+        'Alaska Range Transition': 285,
+        'Alexander Archipelago - Kodiak': 286,
+        'Gulf-NorthCoast-Chugach': 287,
+    }
+    gdf['ss_id'] = gdf['SSection'].map(ak_supersection_str_to_ss_code)
 
-def load_arb_shapes(postal_code):
-    if postal_code == 'ak':
-        gdf = gp.read_file('/home/jovyan/carbonplan/forests/notebooks/ak_assessment_areas/')
-    else:
-        gdf = gp.read_file('/home/jovyan/carbonplan/forests/notebooks/2015_arb_supersections/')
     return gdf.to_crs('epsg:4326')
 
 
@@ -29,6 +35,7 @@ def load_omernik(postal_code):
 
 
 def load_ecomap(postal_code):
+    ''''''
     if postal_code == 'ak':
         ecomap = gp.read_file('/home/jovyan/carbonplan/retro/akecoregions-ShapeFile')
         ecomap = ecomap.set_crs('epsg:3338')
@@ -40,7 +47,7 @@ def load_ecomap(postal_code):
     return ecomap.to_crs('epsg:4326')
 
 
-def load_supersections(prefix=None):
+def load_supersections(prefix=None, include_ak=True):
     str_to_code = supersection_str_to_ss_code()
 
     gdf = gp.read_file(prefix + '/raw/ecoregions/supersections.geojson')
@@ -60,7 +67,12 @@ def load_supersections(prefix=None):
         str_to_code[shapefile_spelling] = str_to_code[assessment_lut_spelling]
 
     gdf["ss_id"] = gdf["SSection"].map(str_to_code)
-    return gdf.set_index('ss_id')
+
+    if include_ak:
+        ak = load_ak_supersections()
+        gdf = pd.concat([gdf, ak], ignore_index=True)
+
+    return gdf
 
 
 def ifm_shapes(opr_ids='all', load_series=True):
