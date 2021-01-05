@@ -76,17 +76,22 @@ def load_fia_state_long(postal_code, min_year=2002, max_year=2012, private_only=
     return df
 
 
-def load_fia_tree():
+def load_fia_tree(postal_code):
     '''helper function to pre-process the fia-tree table'''
 
     cond_df = cat.fia(
-        table='cond', columns=['CN', 'PLT_CN', 'CONDID', 'OWNCD', 'FORTYPCD', 'FLDTYPCD']
+        postal_code=postal_code,
+        table='cond',
+        columns=['CN', 'PLT_CN', 'CONDID', 'OWNCD', 'FORTYPCD', 'FLDTYPCD'],
     ).read()
     cond_agg = cond_df.groupby(['PLT_CN', 'CONDID']).max()
 
-    plot_df = cat.fia(table='plot', columns=['CN', 'LAT', 'LON', 'ELEV', 'INVYR']).read()
+    plot_df = cat.fia(
+        postal_code=postal_code, table='plot', columns=['CN', 'LAT', 'LON', 'ELEV', 'INVYR']
+    ).read()
 
     tree_df = cat.fia(
+        postal_code=postal_code,
         table='tree',
         columns=[
             'CN',
