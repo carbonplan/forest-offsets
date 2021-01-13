@@ -36,7 +36,77 @@ def load_fia_common_practice(postal_codes, min_year=2002, max_year=2012, private
         raise
 
 
-def load_fia_state_long(postal_code, min_year=2002, max_year=2012, private_only=True):
+def load_pnw_slag_data(postal_code):
+    """PNW states use different allometric equations from the national FIA database.
+    This function loads a fresh batch of data for those 4 states.
+    In practice, it looks like only AK uses these updated biomass values
+    """
+    pnw_states = ['ak', 'or', 'ca', 'wa']
+    if postal_code not in pnw_states:
+        raise NotImplementedError(f"Provide postal code for PNW state: {[x for x in pnw_states]}")
+
+    tree = cat.fia(
+        postal_code=postal_code,
+        table='tree',
+        columns=['CN', 'PLT_CN', 'CONDID', 'CARBON_AG', 'TPA_UNADJ', 'STATUSCD'],
+    ).read()
+    cond = cat.fia(
+        postal_code=postal_code,
+        table='cond',
+        columns=[
+            'CN',
+            'PLT_CN',
+            'INVYR',
+            'COND_STATUS_CD',
+            'SLOPE',
+            'STDAGE',
+            'ASPECT',
+            'CONDID',
+            'CONDPROP_UNADJ',
+            'OWNCD',
+            'FORTYPCD',
+            'FLDTYPCD',
+            'SITECLCD',
+        ],
+    ).read()
+    plot = cat.fia(
+        postal_code=postal_code,
+        table='plot',
+        columns=['CN', 'PLOT_STATUS_CD', 'MEASYEAR', 'LAT', 'LON', 'ECOSUBCD', 'ELEV'],
+    ).read()
+
+    regional_biomass = pd.read_csv(
+        'https://carbonplan.blob.core.windows.net/carbonplan-data/raw/fia/TREE_REGIONAL_BIOMASS.csv',
+        usecols=['TRE_CN', 'STATECD', 'REGIONAL_DRYBIOT'],
+    )
+
+    regional_tree = tree.join(
+        regional_biomass[['TRE_CN', 'REGIONAL_DRYBIOT']].set_index('TRE_CN'), on=['CN']
+    )
+
+    # regional starts as biomass, so just TPADJ and convert to ha; this is solely to align with FIA-long from carbonplan_forest/preprocess/fia
+    regional_tree['unadj_reg_biomass_ha'] = (
+        regional_tree['REGIONAL_DRYBIOT'] * regional_tree['TPA_UNADJ']
+    ) / 892.1791216197013
+    biomass_vars = ['unadj_reg_biomass_ha']
+    biomass_sums = (
+        regional_tree.loc[regional_tree['STATUSCD'] == 1]
+        .groupby(['PLT_CN', 'CONDID'])[biomass_vars]
+        .sum()
+    )
+
+    cond_agg = cond.groupby(['PLT_CN', 'CONDID']).max()
+
+    cond_agg = cond_agg.join(plot[plot['PLOT_STATUS_CD'] != 2].set_index('CN'), on='PLT_CN')
+
+    full = cond_agg.join(biomass_sums)
+    full['adj_ag_biomass'] = full['unadj_reg_biomass_ha'] / full['CONDPROP_UNADJ']
+
+    full = full.dropna(subset=['LAT', 'LON'])
+    return full
+
+
+def load_fia_state_long(postal_code, min_year=2002, max_year=10_000, private_only=True):
     '''helper function to pre-process the fia-long table'''
     columns = [
         'adj_ag_biomass',
@@ -57,6 +127,9 @@ def load_fia_state_long(postal_code, min_year=2002, max_year=2012, private_only=
         'LON',
         'ELEV',
     ]
+    if postal_code == 'ak':
+        df = load_pnw_slag_data(postal_code)
+        df = df[columns]
     df = cat.fia_long(postal_code=postal_code, columns=columns).read()
     df = df.dropna(subset=['LAT', 'LON', 'adj_ag_biomass'])
     df = df[

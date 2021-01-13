@@ -44,12 +44,13 @@ def spatial_subset(
     return data
 
 
-def supersection_subset(
+def geographic_id_subset(
     data: gpd.GeoDataFrame,
-    supersection_id: int,
+    geographic_id: int,
     temporal_filter: dict,
     fortyps: list,
     site_class: str,
+    geographic_var: str = 'supersection_id',
     use_fldtypcd=False,
 ):
     """Subset full CP data by space, time, forest community, and site class.
@@ -82,33 +83,34 @@ def supersection_subset(
         (data['SITECLCD'] <= site_class_ranges[site_class]['max'])
         & (data['SITECLCD'] >= site_class_ranges[site_class]['min'])
     ]
-    data = data[data['supersection_id'] == supersection_id]
+    data = data[data[geographic_var] == geographic_id]
 
     return data
 
 
-def get_arbocs_from_ifm1(new_ifm1, project_db, name='new_allocation'):
+def predict_ifm_1_from_cp(slag, acreage, bounds=False):
+    """given a value for slag (often CP) and acreage, calculate IFM-1
+    scaling parameter derived from analysis in notebook/0x_recalculate-arbocs
+    model is defined as ifm_1 ~ B1*(slag*acreage)
+
+    values here reported when fit model for
+    """
+    mean = slag * acreage * 1.240944
+    if bounds:
+        low = slag * acreage * 1.235
+        high = slag * acreage * 1.247
+        return (low, mean, high)
+    else:
+        return mean
+
+
+def get_arbocs_from_ifm1(new_ifm1, project_db, name='new_allocation', scale_components=False):
     """recalcualte arbocs as a function of predicted ifm1
     only ifm1 changes -- all other components are scaled to be proportional to observed <component>/ifm_1
+    scale_components: experimented with whether other bits of the baseline needed to move with changes in IFM-1 -- do
     """
 
-    # ratio terms
-    ratio_ifm_3_ifm_1 = (
-        project_db['baseline']['components']['ifm_3']
-        / project_db['baseline']['components']['ifm_1']
-    )
-
-    ratio_woodproducts_ifm_1 = (
-        project_db['baseline']['components']['ifm_7']
-        + project_db['baseline']['components']['ifm_8']
-    ) / (project_db['baseline']['components']['ifm_1'])
-
-    ratio_secondary_effects_ifm_1 = project_db['rp_1']['secondary_effects'] / (
-        project_db['baseline']['components']['ifm_1']
-    )
-
-    # ifm-1 + ifm-3
-    alt_baseline_carbon = new_ifm1 + (new_ifm1 * ratio_ifm_3_ifm_1)
+    alt_baseline_carbon = new_ifm1 + project_db['baseline']['components']['ifm_3']
 
     onsite_carbon = (
         project_db['rp_1']['components']['ifm_1'] + project_db['rp_1']['components']['ifm_3']
@@ -120,7 +122,10 @@ def get_arbocs_from_ifm1(new_ifm1, project_db, name='new_allocation'):
 
     delta_onsite = adjusted_onsite - alt_baseline_carbon
 
-    baseline_wood_products = new_ifm1 * ratio_woodproducts_ifm_1
+    baseline_wood_products = (
+        project_db['baseline']['components']['ifm_7']
+        + project_db['baseline']['components']['ifm_8']
+    )
 
     actual_wood_products = (
         project_db['rp_1']['components']['ifm_7'] + project_db['rp_1']['components']['ifm_8']
@@ -128,7 +133,7 @@ def get_arbocs_from_ifm1(new_ifm1, project_db, name='new_allocation'):
 
     leakage_adjusted_delta_wood_products = (actual_wood_products - baseline_wood_products) * 0.8
 
-    secondary_effects = new_ifm1 * ratio_secondary_effects_ifm_1
+    secondary_effects = project_db['rp_1']['secondary_effects']
     secondary_effects[secondary_effects > 0] = 0  # Never allowed to have positive SE.
 
     calculated_allocation = delta_onsite + leakage_adjusted_delta_wood_products + secondary_effects

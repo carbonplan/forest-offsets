@@ -9,8 +9,6 @@ from oauth2client.service_account import ServiceAccountCredentials
 LOCAL_DATA_PATH = Path(__file__).parents[2] / 'data'
 SECRET_FILE = Path(__file__).parents[2] / 'secrets/google-sheets-key.json'
 
-VISUALLY_IDENTICAL = '-999'
-
 
 def load_project_db(fn=None, save=True, use_cache=True):
     if use_cache and fn:
@@ -118,10 +116,6 @@ def load_project_db_from_sheets(fn=None, save=True):
     sheet = get_sheet("ifm", fn)
 
     df, types = get_df(sheet)
-
-    df = df.replace(
-        to_replace='visually_identical', value=VISUALLY_IDENTICAL
-    )  # needs to be string otherwise cast_col casts to NaN --
 
     for index, col in df.iteritems():
         type_str = types[index]
