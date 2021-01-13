@@ -102,11 +102,11 @@ def load_pnw_slag_data(postal_code):
     full = cond_agg.join(biomass_sums)
     full['adj_ag_biomass'] = full['unadj_reg_biomass_ha'] / full['CONDPROP_UNADJ']
 
-    full = full.dropna(subset=['LAT', 'LON'])
+    full = full.dropna(subset=['LAT', 'LON', 'adj_ag_biomass'])
     return full.reset_index()
 
 
-def load_fia_state_long(postal_code, min_year=2002, max_year=10_000, private_only=True):
+def load_fia_state_long(postal_code, private_only=True):
     '''helper function to pre-process the fia-long table'''
     columns = [
         'adj_ag_biomass',
@@ -132,10 +132,8 @@ def load_fia_state_long(postal_code, min_year=2002, max_year=10_000, private_onl
         df = df[columns]
     else:
         df = cat.fia_long(postal_code=postal_code, columns=columns).read()
+
     df = df.dropna(subset=['LAT', 'LON', 'adj_ag_biomass'])
-    df = df[
-        (df['MEASYEAR'] >= min_year) & (df['MEASYEAR'] <= max_year)
-    ]  # CP data only uses 2002-2012; this will just mean we store less on disk
 
     # 44/12 gets us to CO2.
     # 0.5 gets us from biomass to carbon; see carbonplan_forests for more details
