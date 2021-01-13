@@ -17,16 +17,14 @@ def to_geodataframe(
     return geo_df
 
 
-def load_fia_common_practice(postal_codes, min_year=2002, max_year=2012, private_only=True):
+def load_fia_common_practice(postal_codes, private_only=True):
     if isinstance(postal_codes, str):
         postal_codes = [postal_codes]
 
     try:
         df = pd.concat(
             [
-                load_fia_state_long(
-                    postal_code, min_year=min_year, max_year=max_year, private_only=private_only
-                )
+                load_fia_state_long(postal_code, private_only=private_only)
                 for postal_code in postal_codes
             ]
         )
