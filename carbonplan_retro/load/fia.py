@@ -130,7 +130,8 @@ def load_fia_state_long(postal_code, min_year=2002, max_year=10_000, private_onl
     if postal_code == 'ak':
         df = load_pnw_slag_data(postal_code)
         df = df[columns]
-    df = cat.fia_long(postal_code=postal_code, columns=columns).read()
+    else:
+        df = cat.fia_long(postal_code=postal_code, columns=columns).read()
     df = df.dropna(subset=['LAT', 'LON', 'adj_ag_biomass'])
     df = df[
         (df['MEASYEAR'] >= min_year) & (df['MEASYEAR'] <= max_year)
