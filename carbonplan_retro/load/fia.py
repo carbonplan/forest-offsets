@@ -103,7 +103,7 @@ def load_pnw_slag_data(postal_code):
     full['adj_ag_biomass'] = full['unadj_reg_biomass_ha'] / full['CONDPROP_UNADJ']
 
     full = full.dropna(subset=['LAT', 'LON'])
-    return full
+    return full.reset_index()
 
 
 def load_fia_state_long(postal_code, min_year=2002, max_year=10_000, private_only=True):
