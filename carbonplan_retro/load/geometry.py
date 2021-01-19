@@ -3,6 +3,8 @@ import pathlib
 import geopandas as gp
 import pandas as pd
 
+from carbonplan_retro.data import cat
+
 from ..utils import supersection_str_to_ss_code
 
 
@@ -50,7 +52,7 @@ def load_ecomap(postal_code):
 def load_supersections(prefix=None, include_ak=True):
     str_to_code = supersection_str_to_ss_code()
 
-    gdf = gp.read_file(prefix + '/raw/ecoregions/supersections.geojson')
+    gdf = cat.supersections.read()
     # the 2015 arb shapefile has spellings of supersections that differ from Assessment Area file.
     # we based numbering off the Assessment Area file, so need to change spelling :/
     typos = {
