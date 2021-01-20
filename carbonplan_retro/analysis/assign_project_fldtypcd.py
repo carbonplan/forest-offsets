@@ -97,11 +97,17 @@ def load_classification_data(postal_codes, target_var='FLDTYPCD'):
     data = data.loc[
         (data['FORTYPCD'] != 999)
     ]  # dont include non-stocked because projects cant unstocked!
+
+    data = data.loc[(data[target_var] < 962)]  # exclude wastebasket forest types
+    target_counts = data['targets'].value_counts()
+    valid_target_classes = target_counts[target_counts > 30].index.unique().tolist()
+    data = data[data[target_var].isin(valid_target_classes)]
+
     vec = DictVectorizer()
     X = vec.fit_transform(
         data["fraction_species"].values
     ).toarray()  # .toarray() explodes the sparse array returned from DictVectorizer() out into a dense array
-    y = data[target_var]
+    y = data[target_var].values
 
     return {'features': X, 'targets': y, 'dictvectorizer': vec}
 
@@ -109,7 +115,7 @@ def load_classification_data(postal_codes, target_var='FLDTYPCD'):
 def train_classifier(X, y, n_estimators=10_000):
     # params from grid-search -- in general lots and lots of shallow-ish trees seem to work well.
     X_train, X_calib, y_train, y_calib = train_test_split(
-        X, y.values, test_size=0.25, random_state=2020
+        X, y, test_size=0.25, random_state=2020, stratify=''
     )
     clf = RandomForestClassifier(
         random_state=2020,
