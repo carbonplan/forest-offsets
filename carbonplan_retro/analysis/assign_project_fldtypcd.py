@@ -115,7 +115,7 @@ def load_classification_data(postal_codes, target_var='FLDTYPCD'):
 def train_classifier(X, y, n_estimators=10_000):
     # params from grid-search -- in general lots and lots of shallow-ish trees seem to work well.
     X_train, X_calib, y_train, y_calib = train_test_split(
-        X, y, test_size=0.25, random_state=2020, stratify=''
+        X, y, test_size=0.25, random_state=2020, stratify=y
     )
     clf = RandomForestClassifier(
         random_state=2020,
