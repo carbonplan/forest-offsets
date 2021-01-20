@@ -103,7 +103,7 @@ def load_classification_data(postal_codes, target_var='FLDTYPCD'):
     ).toarray()  # .toarray() explodes the sparse array returned from DictVectorizer() out into a dense array
     y = data[target_var]
 
-    return (X, y)
+    return {'features': X, 'targets': y, 'dictvectorizer': vec}
 
 
 def train_classifier(X, y, n_estimators=10_000):

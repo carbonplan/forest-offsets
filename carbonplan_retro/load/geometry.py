@@ -2,6 +2,7 @@ import pathlib
 
 import geopandas as gp
 import pandas as pd
+from shapely.ops import cascaded_union
 
 from carbonplan_retro.data import cat
 
@@ -87,8 +88,7 @@ def get_overlapping_states(geometry):
 def get_bordering_supersections(supersection_ids: list):
     supersections = load_supersections()
     subset = supersections[supersections.ss_id.isin(supersection_ids)]
+    geom = cascaded_union(subset['geometry'])
     # buffer slightly to avoid touches/overlaps confusion [if just touch but no intersect overlaps wont return]
-    overlapping = supersections[
-        supersections.geometry.overlaps(subset['geometry'].buffer(0.01).item())
-    ]
+    overlapping = supersections[supersections.geometry.overlaps(geom.buffer(0.01))]
     return pd.concat([subset, overlapping])
