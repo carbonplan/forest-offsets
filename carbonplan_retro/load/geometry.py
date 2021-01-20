@@ -28,27 +28,6 @@ def load_ak_supersections():
     return gdf.to_crs('epsg:4326')
 
 
-def load_omernik(postal_code):
-    if postal_code == 'ak':
-        omernik = gp.read_file('/home/jovyan/carbonplan/retro/data/ak_omernik/')
-    else:
-        raise NotImplementedError('only have Omernik for AK right now')
-    return omernik.to_crs('epsg:4326')
-
-
-def load_ecomap(postal_code):
-    ''''''
-    if postal_code == 'ak':
-        ecomap = gp.read_file('/home/jovyan/carbonplan/retro/akecoregions-ShapeFile')
-        ecomap = ecomap.set_crs('epsg:3338')
-        ecomap = ecomap.dropna()
-    else:
-        ecomap = gp.read_file(pathlib.Path(__file__).parent / 'data/geometry/S_USA.EcomapSections')
-        ecomap = ecomap.set_index('MAP_UNIT_S')
-
-    return ecomap.to_crs('epsg:4326')
-
-
 def load_supersections(prefix=None, include_ak=True):
     str_to_code = supersection_str_to_ss_code()
 
@@ -98,3 +77,18 @@ def ifm_shapes(opr_ids='all', load_series=True):
         return df.geometry.reset_index().rename(columns={'index': 'opr_id'})
     else:
         return df
+
+
+def get_overlapping_states(geometry):
+    states = cat.states.read()
+    return states[states.intersects(geometry)]['postal'].str.lower().to_list()
+
+
+def get_bordering_supersections(supersection_ids: list):
+    supersections = load_supersections()
+    subset = supersections[supersections.ss_id.isin(supersection_ids)]
+    # buffer slightly to avoid touches/overlaps confusion [if just touch but no intersect overlaps wont return]
+    overlapping = supersections[
+        supersections.geometry.overlaps(subset['geometry'].buffer(0.01).item())
+    ]
+    return pd.concat([subset, overlapping])
