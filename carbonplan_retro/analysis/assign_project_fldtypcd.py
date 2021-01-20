@@ -108,11 +108,10 @@ def load_classification_data(postal_codes, target_var='FLDTYPCD'):
     X = vec.fit_transform(
         data["fraction_species"].values
     ).toarray()  # .toarray() explodes the sparse array returned from DictVectorizer() out into a dense array
-    X = X[~np.isnan(X).any(axis=1)]
-
     y = data[target_var].values
-    y = y[~np.isnan(X).any(axis=1)]
-    return {'features': X, 'targets': y, 'dictvectorizer': vec}
+    idx = ~np.isnan(X).any(axis=1)
+
+    return {'features': X[idx], 'targets': y[idx], 'dictvectorizer': vec}
 
 
 def train_classifier(X, y, n_estimators=10_000):
