@@ -103,10 +103,10 @@ def load_classification_data(postal_codes, target_var='FLDTYPCD'):
     ).toarray()  # .toarray() explodes the sparse array returned from DictVectorizer() out into a dense array
     y = data[target_var]
 
-    return (y, X)
+    return (X, y)
 
 
-def train_classification_model(y, X, n_estimators=10_000):
+def train_classifier(X, y, n_estimators=10_000):
     # params from grid-search -- in general lots and lots of shallow-ish trees seem to work well.
     X_train, X_calib, y_train, y_calib = train_test_split(
         X, y.values, test_size=0.25, random_state=2020
@@ -119,6 +119,7 @@ def train_classification_model(y, X, n_estimators=10_000):
         max_depth=15,
         min_samples_leaf=2,
     )
+    clf.fit(X_train, y_train)
 
     calibrated_clf = CalibratedClassifierCV(base_estimator=clf, cv='prefit')
     calibrated_clf.fit(X_calib, y_calib)
