@@ -99,7 +99,7 @@ def load_classification_data(postal_codes, target_var='FLDTYPCD'):
     ]  # dont include non-stocked because projects cant unstocked!
 
     data = data.loc[(data[target_var] < 962)]  # exclude wastebasket forest types
-    target_counts = data['targets'].value_counts()
+    target_counts = data[target_var].value_counts()
     valid_target_classes = target_counts[target_counts > 30].index.unique().tolist()
     data = data[data[target_var].isin(valid_target_classes)]
 
