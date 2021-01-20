@@ -1,6 +1,7 @@
 import math
 
 import dask.dataframe as dd
+import numpy as np
 from sklearn.calibration import CalibratedClassifierCV
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.feature_extraction import DictVectorizer
@@ -102,13 +103,15 @@ def load_classification_data(postal_codes, target_var='FLDTYPCD'):
     target_counts = data[target_var].value_counts()
     valid_target_classes = target_counts[target_counts > 30].index.unique().tolist()
     data = data[data[target_var].isin(valid_target_classes)]
-
+    data = data.dropna(subset=[target_var, 'fraction_species'])
     vec = DictVectorizer()
     X = vec.fit_transform(
         data["fraction_species"].values
     ).toarray()  # .toarray() explodes the sparse array returned from DictVectorizer() out into a dense array
-    y = data[target_var].values
+    X = X[~np.isnan(X).any(axis=1)]
 
+    y = data[target_var].values
+    y = y[~np.isnan(X).any(axis=1)]
     return {'features': X, 'targets': y, 'dictvectorizer': vec}
 
 
