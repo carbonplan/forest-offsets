@@ -36,6 +36,12 @@ sources:
       csv_kwargs:
         names: ["code", "aa"]
 
+  ak_assessment_areas:
+    description: TODO
+    driver: geojson
+    args:
+      urlpath: https://carbonplan.blob.core.windows.net/carbonplan-retro/ancillary/ak.assessment.area.shapefiles.5.4.15.json
+
   mtbs:
     description: TODO
     driver: zarr
@@ -56,9 +62,9 @@ sources:
 
   states:
     description: TODO
-    driver: shapefile
+    driver: geojson
     args:
-      urlpath: https://www.naturalearthdata.com/http//www.naturalearthdata.com/download/110m/cultural/ne_110m_admin_1_states_provinces.zip
+      urlpath: https://carbonplan.blob.core.windows.net/carbonplan-retro/ancillary/ne_110m_admin_1_states_provinces.json
 
   fire_risk:
     description: TODO
