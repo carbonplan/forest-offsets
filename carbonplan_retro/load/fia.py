@@ -35,14 +35,12 @@ def fia(postal_code: str, kind: str = 'long', filter_data: bool = True) -> geopa
     df : geopandas.GeoDataFrame
         FIA data (either long or tree)
     """
-    if kind not in ['long', 'tree']:
-        raise NotImplementedError('kind must be in ["long", "tree"]')
-
     if kind == 'long':
         df = load_fia_long(postal_code)
-
-    if kind == 'tree':
+    elif kind == 'tree':
         df = load_fia_tree(postal_code)
+    else:
+        raise NotImplementedError('kind must be in ["long", "tree"]')
 
     if filter_data:
         if postal_code == 'ak':
