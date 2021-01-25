@@ -96,6 +96,7 @@ def load_tree_classificaiton_data(postal_codes):
 def load_classification_data(postal_codes, target_var='FLDTYPCD'):
     tree_features = load_tree_classificaiton_data(postal_codes)
     conds = load_cond_classification_data(postal_codes)
+    conds = conds[(conds['INVYR'] >= 2002) & (conds['INVYR'] < 2013)]
     data = conds.join(tree_features, on=['PLT_CN', 'CONDID']).dropna(
         subset=[target_var, 'fraction_species']
     )
