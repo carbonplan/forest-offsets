@@ -14,8 +14,13 @@ def fractional_basal_area_by_species(data):
     """For group of trees, calcuate the fraction total basal area represented by each species"""
     # cast to str so can store sparsely :)
     fractional_ba = (
-        data.groupby(data["SPCD"].astype(str)).unadj_basal_area.sum() / data.unadj_basal_area.sum()
-    ).round(4)
+        (
+            data.groupby(data["SPCD"].astype(str)).unadj_basal_area.sum()
+            / data.unadj_basal_area.sum()
+        )
+        .round(4)
+        .dropna()
+    )
     return fractional_ba.to_dict()
 
 
@@ -107,7 +112,7 @@ def load_classification_data(postal_codes, target_var='FLDTYPCD'):
     vec = DictVectorizer()
     X = vec.fit_transform(
         data["fraction_species"].values
-    ).toarray()  # .toarray() explodes the sparse array returned from DictVectorizer() out into a dense array
+    )  # .toarray() explodes the sparse array returned from DictVectorizer() out into a dense array
     y = data[target_var].values
     idx = ~np.isnan(X).any(axis=1)
 
