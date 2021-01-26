@@ -26,7 +26,8 @@ def load_fia_common_practice(postal_codes, private_only=True):
             [
                 load_fia_state_long(postal_code, private_only=private_only)
                 for postal_code in postal_codes
-            ]
+            ],
+            ignore_index=True,
         )
         return df
 
