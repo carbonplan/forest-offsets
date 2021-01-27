@@ -46,7 +46,7 @@ def load_cond_data(postal_codes):
 
 
 def load_cond_classification_data(postal_codes):
-    cond_cols = ['CN', 'PLT_CN', 'CONDID', 'OWNCD', 'FORTYPCD', 'FLDTYPCD']
+    cond_cols = ['CN', 'PLT_CN', 'CONDID', 'OWNCD', 'FORTYPCD', 'FLDTYPCD', 'COND_STATUS_CD']
 
     plot_cols = ['CN', 'LAT', 'LON', 'ELEV', 'INVYR']
     cond_ddf = dd.concat(
@@ -55,6 +55,7 @@ def load_cond_classification_data(postal_codes):
             for postal_code in postal_codes
         ]
     )
+    cond_ddf = cond_ddf[cond_ddf['COND_STATUS_CD'] == 1]  # forest conditions only
     plot_ddf = dd.concat(
         [
             cat.fia(postal_code=postal_code.lower(), table='plot', columns=plot_cols).to_dask()
@@ -64,10 +65,11 @@ def load_cond_classification_data(postal_codes):
     conds = cond_ddf.compute()
     plots = plot_ddf.compute()
 
-    return conds.join(plots.set_index('CN'), on=['PLT_CN'])
+    conds = conds.join(plots.set_index('CN'), on=['PLT_CN'])
+    return conds
 
 
-def load_tree_classificaiton_data(postal_codes):
+def load_tree_classification_data(postal_codes):
     tree_cols = [
         'CN',
         'PLT_CN',
@@ -93,10 +95,18 @@ def load_tree_classificaiton_data(postal_codes):
     return features
 
 
-def load_classification_data(postal_codes, target_var='FLDTYPCD'):
-    tree_features = load_tree_classificaiton_data(postal_codes)
+def load_classification_data(postal_codes, bounds, target_var='FLDTYPCD'):
+    tree_features = load_tree_classification_data(postal_codes)
     conds = load_cond_classification_data(postal_codes)
     conds = conds[(conds['INVYR'] >= 2002) & (conds['INVYR'] < 2013)]
+
+    conds = conds[
+        (conds['LON'] > bounds[0])
+        & (conds['LAT'] > bounds[1])
+        & (conds['LON'] < bounds[2])
+        & (conds['LAT'] < bounds[3])
+    ]
+
     data = conds.join(tree_features, on=['PLT_CN', 'CONDID']).dropna(
         subset=[target_var, 'fraction_species']
     )
