@@ -1,10 +1,7 @@
 import math
 
 import dask.dataframe as dd
-from sklearn.calibration import CalibratedClassifierCV
-from sklearn.ensemble import RandomForestClassifier
 from sklearn.feature_extraction import DictVectorizer
-from sklearn.model_selection import train_test_split
 
 from carbonplan_retro.data import cat
 
@@ -46,7 +43,7 @@ def load_cond_data(postal_codes):
 
 
 def load_cond_classification_data(postal_codes):
-    cond_cols = ['CN', 'PLT_CN', 'CONDID', 'OWNCD', 'FORTYPCD', 'FLDTYPCD']
+    cond_cols = ['CN', 'PLT_CN', 'CONDID', 'OWNCD', 'FORTYPCD', 'FLDTYPCD', 'COND_STATUS_CD']
 
     plot_cols = ['CN', 'LAT', 'LON', 'ELEV', 'INVYR']
     cond_ddf = dd.concat(
@@ -55,6 +52,7 @@ def load_cond_classification_data(postal_codes):
             for postal_code in postal_codes
         ]
     )
+    cond_ddf = cond_ddf[cond_ddf['COND_STATUS_CD'] == 1]  # forest conditions only
     plot_ddf = dd.concat(
         [
             cat.fia(postal_code=postal_code.lower(), table='plot', columns=plot_cols).to_dask()
@@ -64,10 +62,11 @@ def load_cond_classification_data(postal_codes):
     conds = cond_ddf.compute()
     plots = plot_ddf.compute()
 
-    return conds.join(plots.set_index('CN'), on=['PLT_CN'])
+    conds = conds.join(plots.set_index('CN'), on=['PLT_CN'])
+    return conds
 
 
-def load_tree_classificaiton_data(postal_codes):
+def load_tree_classification_data(postal_codes):
     tree_cols = [
         'CN',
         'PLT_CN',
@@ -93,10 +92,18 @@ def load_tree_classificaiton_data(postal_codes):
     return features
 
 
-def load_classification_data(postal_codes, target_var='FLDTYPCD'):
-    tree_features = load_tree_classificaiton_data(postal_codes)
+def load_classification_data(postal_codes, target_var='FLDTYPCD', bounds=None):
+    tree_features = load_tree_classification_data(postal_codes)
     conds = load_cond_classification_data(postal_codes)
     conds = conds[(conds['INVYR'] >= 2002) & (conds['INVYR'] < 2013)]
+    if bounds:
+        conds = conds[
+            (conds['LON'] > bounds[0])
+            & (conds['LAT'] > bounds[1])
+            & (conds['LON'] < bounds[2])
+            & (conds['LAT'] < bounds[3])
+        ]
+
     data = conds.join(tree_features, on=['PLT_CN', 'CONDID']).dropna(
         subset=[target_var, 'fraction_species']
     )
@@ -117,23 +124,3 @@ def load_classification_data(postal_codes, target_var='FLDTYPCD'):
     # idx = ~np.isnan(X).any(axis=1)
 
     return {'features': X, 'targets': y, 'dictvectorizer': vec}
-
-
-def train_classifier(X, y, n_estimators=10_000):
-    # params from grid-search -- in general lots and lots of shallow-ish trees seem to work well.
-    X_train, X_calib, y_train, y_calib = train_test_split(
-        X, y, test_size=0.25, random_state=2020, stratify=y
-    )
-    clf = RandomForestClassifier(
-        random_state=2020,
-        n_estimators=n_estimators,
-        min_samples_split=5,
-        n_jobs=-1,
-        max_depth=15,
-        min_samples_leaf=2,
-    )
-    clf.fit(X_train, y_train)
-
-    calibrated_clf = CalibratedClassifierCV(base_estimator=clf, cv='prefit')
-    calibrated_clf.fit(X_calib, y_calib)
-    return calibrated_clf

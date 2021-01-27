@@ -11,9 +11,7 @@ from ..utils import supersection_str_to_ss_code
 
 def load_ak_supersections():
     '''load alaska assessment areas and rearrange so can append to CONUS supersections'''
-    gdf = gp.read_file(
-        'https://ww3.arb.ca.gov/cc/capandtrade/protocols/usforest/2015/ak.assessment.area.shapefiles.5.4.15.zip'
-    )
+    gdf = cat.ak_assessment_areas.read()
     # Refer to AK 'assessment areas' as three new 'supersections' that go by their assessment area names.
     gdf['SSection'] = gdf['Assessment']
     gdf = gdf.drop("Assessment", axis=1)
