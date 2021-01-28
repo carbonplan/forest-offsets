@@ -84,6 +84,13 @@ sources:
     args:
       urlpath: https://carbonplan.blob.core.windows.net/carbonplan-retro/projects/retro-db-light-v1.0.csv
 
+  retro_db_light_json:
+    description: TODO
+    driver: textfiles
+    args:
+      urlpath: https://carbonplan.blob.core.windows.net/carbonplan-retro/projects/retro-db-light-v1.0.json
+      decoder: 'json.loads'
+
   fia_long:
     description: TODO
     driver: parquet
