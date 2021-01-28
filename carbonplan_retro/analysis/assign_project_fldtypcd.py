@@ -1,0 +1,126 @@
+import math
+
+import dask.dataframe as dd
+from sklearn.feature_extraction import DictVectorizer
+
+from carbonplan_retro.data import cat
+
+
+def fractional_basal_area_by_species(data):
+    """For group of trees, calcuate the fraction total basal area represented by each species"""
+    # cast to str so can store sparsely :)
+    fractional_ba = (
+        (
+            data.groupby(data["SPCD"].astype(str)).unadj_basal_area.sum()
+            / data.unadj_basal_area.sum()
+        )
+        .round(4)
+        .dropna()
+    )
+    return fractional_ba.to_dict()
+
+
+def load_cond_data(postal_codes):
+    cond_cols = ['CN', 'PLT_CN', 'CONDID', 'OWNCD', 'FORTYPCD', 'FLDTYPCD']
+
+    plot_cols = ['CN', 'LAT', 'LON', 'ELEV', 'INVYR']
+    cond_ddf = dd.concat(
+        [
+            cat.fia(postal_code=postal_code.lower(), table='cond', columns=cond_cols).to_dask()
+            for postal_code in postal_codes
+        ]
+    )
+    plot_ddf = dd.concat(
+        [
+            cat.fia(postal_code=postal_code.lower(), table='plot', columns=plot_cols).to_dask()
+            for postal_code in postal_codes
+        ]
+    )
+    conds = cond_ddf.compute()
+    plots = plot_ddf.compute()
+
+    return conds.join(plots.set_index('CN'), on=['PLT_CN'])
+
+
+def load_cond_classification_data(postal_codes):
+    cond_cols = ['CN', 'PLT_CN', 'CONDID', 'OWNCD', 'FORTYPCD', 'FLDTYPCD', 'COND_STATUS_CD']
+
+    plot_cols = ['CN', 'LAT', 'LON', 'ELEV', 'INVYR']
+    cond_ddf = dd.concat(
+        [
+            cat.fia(postal_code=postal_code.lower(), table='cond', columns=cond_cols).to_dask()
+            for postal_code in postal_codes
+        ]
+    )
+    cond_ddf = cond_ddf[cond_ddf['COND_STATUS_CD'] == 1]  # forest conditions only
+    plot_ddf = dd.concat(
+        [
+            cat.fia(postal_code=postal_code.lower(), table='plot', columns=plot_cols).to_dask()
+            for postal_code in postal_codes
+        ]
+    )
+    conds = cond_ddf.compute()
+    plots = plot_ddf.compute()
+
+    conds = conds.join(plots.set_index('CN'), on=['PLT_CN'])
+    return conds
+
+
+def load_tree_classification_data(postal_codes):
+    tree_cols = [
+        'CN',
+        'PLT_CN',
+        'CONDID',
+        'STATUSCD',
+        'TPA_UNADJ',
+        'SPCD',
+        'DIA',
+    ]
+
+    trees = dd.concat(
+        [
+            cat.fia(postal_code=postal_code, table='tree', columns=tree_cols).to_dask()
+            for postal_code in postal_codes
+        ]
+    )
+    trees = trees[trees['STATUSCD'] == 1]  # only looking at live trees
+    trees['unadj_basal_area'] = math.pi * (trees['DIA'] / (2 * 12)) ** 2 * trees['TPA_UNADJ']
+    features = trees.groupby(['PLT_CN', 'CONDID']).apply(
+        fractional_basal_area_by_species, meta=('fraction_species', 'f4')
+    )
+    features = features.compute()
+    return features
+
+
+def load_classification_data(postal_codes, target_var='FLDTYPCD', bounds=None):
+    tree_features = load_tree_classification_data(postal_codes)
+    conds = load_cond_classification_data(postal_codes)
+    conds = conds[(conds['INVYR'] >= 2002) & (conds['INVYR'] < 2013)]
+    if bounds:
+        conds = conds[
+            (conds['LON'] > bounds[0])
+            & (conds['LAT'] > bounds[1])
+            & (conds['LON'] < bounds[2])
+            & (conds['LAT'] < bounds[3])
+        ]
+
+    data = conds.join(tree_features, on=['PLT_CN', 'CONDID']).dropna(
+        subset=[target_var, 'fraction_species']
+    )
+    data = data.loc[
+        (data['FORTYPCD'] != 999)
+    ]  # dont include non-stocked because projects cant unstocked!
+
+    data = data.loc[(data[target_var] < 962)]  # exclude wastebasket forest types
+    target_counts = data[target_var].value_counts()
+    valid_target_classes = target_counts[target_counts > 30].index.unique().tolist()
+    data = data[data[target_var].isin(valid_target_classes)]
+    data = data.dropna(subset=[target_var, 'fraction_species'])
+    vec = DictVectorizer()
+    X = vec.fit_transform(
+        data["fraction_species"].values
+    )  # .toarray() explodes the sparse array returned from DictVectorizer() out into a dense array
+    y = data[target_var].values
+    # idx = ~np.isnan(X).any(axis=1)
+
+    return {'features': X, 'targets': y, 'dictvectorizer': vec}
