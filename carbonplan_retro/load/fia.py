@@ -1,4 +1,5 @@
 import math
+from functools import lru_cache
 
 import geopandas
 import pandas as pd
@@ -35,6 +36,7 @@ def load_fia_common_practice(postal_codes, private_only=True):
         raise
 
 
+@lru_cache(maxsize=None)
 def load_pnw_slag_data(postal_code):
     """PNW states use different allometric equations from the national FIA database.
     This function loads a fresh batch of data for those 4 states.
@@ -105,6 +107,7 @@ def load_pnw_slag_data(postal_code):
     return full.reset_index()
 
 
+@lru_cache(maxsize=None)
 def load_fia_state_long(postal_code, private_only=True):
     '''helper function to pre-process the fia-long table'''
     columns = [
