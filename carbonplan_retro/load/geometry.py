@@ -27,24 +27,26 @@ def load_ak_supersections():
     return gdf.to_crs('epsg:4326')
 
 
-def load_supersections(prefix=None, include_ak=True):
+def load_supersections(prefix=None, include_ak=True, fix_typos=False):
     str_to_code = supersection_str_to_ss_code()
 
     gdf = cat.supersections.read()
-    # the 2015 arb shapefile has spellings of supersections that differ from Assessment Area file.
-    # we based numbering off the Assessment Area file, so need to change spelling :/
-    typos = {
-        "MW Broadleaf Forest SC Great Lakes & Lake Whittlesey": "MW Broadleaf Forest SC Great Lakes & Lake Whittles",
-        "Prairie Parkland Central Till Plains & Grand Prairies": "Prairie Parkland Central Till Plains & Grand",
-        "Central Interior Broadleaf Forest Central Till Plains": "Central Interior Broadleaf Forest Central Till",
-        "Central Interior Broadleaf Forest Eastern Low Plateau": "Central Interior Broadleaf Forest Eastern Low",
-        "Central Interior Broadleaf Forest Western Low Plateau": "Central Interior Broadleaf Forest Western Low",
-        "Eastern Broadleaf Forest Cumberland Plateau & Valley": "Eastern Broadleaf Forest Cumberland Plateau",
-        "Laurentian Mixed Forest Western Superior & Lake Plains": "Laurentian Mixed Forest Western Superior & Lake",
-    }
-    for assessment_lut_spelling, shapefile_spelling in typos.items():
-        # bit of a cheat -- append another k:v pair to the dict that maps shapefile_spelling to assessment spelling
-        str_to_code[shapefile_spelling] = str_to_code[assessment_lut_spelling]
+
+    if fix_typos:
+        # the 2015 arb shapefile has spellings of supersections that differ from Assessment Area file.
+        # we based numbering off the Assessment Area file, so need to change spelling :/
+        typos = {
+            "MW Broadleaf Forest SC Great Lakes & Lake Whittlesey": "MW Broadleaf Forest SC Great Lakes & Lake Whittles",
+            "Prairie Parkland Central Till Plains & Grand Prairies": "Prairie Parkland Central Till Plains & Grand",
+            "Central Interior Broadleaf Forest Central Till Plains": "Central Interior Broadleaf Forest Central Till",
+            "Central Interior Broadleaf Forest Eastern Low Plateau": "Central Interior Broadleaf Forest Eastern Low",
+            "Central Interior Broadleaf Forest Western Low Plateau": "Central Interior Broadleaf Forest Western Low",
+            "Eastern Broadleaf Forest Cumberland Plateau & Valley": "Eastern Broadleaf Forest Cumberland Plateau",
+            "Laurentian Mixed Forest Western Superior & Lake Plains": "Laurentian Mixed Forest Western Superior & Lake",
+        }
+        for assessment_lut_spelling, shapefile_spelling in typos.items():
+            # bit of a cheat -- append another k:v pair to the dict that maps shapefile_spelling to assessment spelling
+            str_to_code[shapefile_spelling] = str_to_code[assessment_lut_spelling]
 
     gdf["ss_id"] = gdf["SSection"].map(str_to_code)
 
