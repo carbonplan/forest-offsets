@@ -86,7 +86,7 @@ def get_overlapping_states(geometry):
     @lru_cache(maxsize=None)
     def _load_states():
         states = cat.states.read()
-        states = states[~states['postal'] == 'DC']  # never want to consider DC
+        states = states[states['postal'] != 'DC']  # never want to consider DC
         return states
 
     states = _load_states()
