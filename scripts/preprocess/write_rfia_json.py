@@ -48,37 +48,28 @@ if __name__ == '__main__':
     aa_ss_dict = aa_code_to_ss_code()
 
     if args.all:
-        project_list = list(range(1, 98))
+        supersection_list = list(range(1, 98))
         out_fn = 'rfia_assessment_areas_all.json'
     else:
-        project_list = PROJECT_SUPERSECTIONS
+        supersection_list = PROJECT_SUPERSECTIONS
         out_fn = 'rfia_assessment_areas_subset.json'
 
     store = []
-    for aa_id, fortypcds in arb_fortyps.items():
-        ss_id = aa_ss_dict.get(aa_id)
+    for supersection_id in supersection_list:
 
-        if ss_id == 62:
-            # skipping Ouachita Mixed Forest, because it doesnt have a shape!
-            continue
+        supersections = load_supersections(include_ak=False, fix_typos=True)
 
-        if ss_id in project_list:
+        supersection = supersections.loc[supersections['ss_id'] == supersection_id]
+        record = {
+            'supersection_name': supersection['SSection'].item(),
+            'supersection_id': supersection['ss_id'].item(),
+            'postal_codes': [
+                postal_code.upper()
+                for postal_code in get_overlapping_states(supersection.geometry.item())
+            ],
+        }
 
-            supersections = load_supersections(include_ak=False, fix_typos=True)
-
-            supersection = supersections.loc[supersections['ss_id'] == ss_id]
-            record = {
-                'assessment_area_id': aa_id,
-                'fortypcds': fortypcds,
-                'supersection_name': supersection['SSection'].item(),
-                'supersection_id': supersection['ss_id'].item(),
-                'postal_codes': [
-                    postal_code.upper()
-                    for postal_code in get_overlapping_states(supersection.geometry.item())
-                ],
-            }
-
-            store.append(record)
+        store.append(record)
 
     fn = os.path.join('/home/jovyan/lost+found/', out_fn)
     with fsspec.open(fn, mode='w') as f:
