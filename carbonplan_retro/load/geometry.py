@@ -1,4 +1,5 @@
 import pathlib
+from functools import lru_cache
 
 import geopandas as gp
 import pandas as pd
@@ -27,7 +28,8 @@ def load_ak_supersections():
     return gdf.to_crs('epsg:4326')
 
 
-def load_supersections(prefix=None, include_ak=True, fix_typos=False):
+@lru_cache(maxsize=None)
+def load_supersections(include_ak=True, fix_typos=True):
     str_to_code = supersection_str_to_ss_code()
 
     gdf = cat.supersections.read()
@@ -81,7 +83,12 @@ def ifm_shapes(opr_ids='all', load_series=True):
 
 
 def get_overlapping_states(geometry):
-    states = cat.states.read()
+    @lru_cache(maxsize=None)
+    def _load_states():
+        states = cat.states.read()
+        return states
+
+    states = _load_states()
     return states[states.intersects(geometry)]['postal'].str.lower().to_list()
 
 
