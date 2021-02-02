@@ -24,6 +24,15 @@ def load_conus_mesh():
     return mesh
 
 
+def load_supersection_mesh(supersection_id):
+    fn = f'az://carbonplan-retro/arbitrage/base_meshes/{supersection_id}.geojson'
+    with fsspec.open(
+        fn, account_name='carbonplan', mode='r', account_key=os.environ['BLOB_ACCOUNT_KEY']
+    ) as f:
+        mesh = geopandas.read_file(f)
+    return mesh
+
+
 def get_supersection_mesh(supersection_id, save=False):
     mesh = load_conus_mesh()
 
