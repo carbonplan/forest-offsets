@@ -5,7 +5,7 @@ import geopandas
 import numpy as np
 from sklearn.neighbors import KDTree
 
-from carbonplan_retro.arbitrage.arbitrage_mesh import load_supersection_mesh
+from carbonplan_retro.arbitrage.arbitrage_mesh import load_conus_mesh, load_supersection_mesh
 from carbonplan_retro.load.arb_fortypcds import load_arb_fortypcds
 from carbonplan_retro.load.fia import load_fia_common_practice
 from carbonplan_retro.load.geometry import get_overlapping_states, load_supersections
@@ -35,7 +35,26 @@ def get_neighborhood_slag(sample_mesh, data, k_neighbors=200, max_radius=250_000
     return mean_slag
 
 
-def create_assessment_area_arbitrage(assessment_area_id, crs, save=False):
+def load_assessment_area_arbitrage(assessment_area_id):
+    try:
+        bucket = 'az://carbonplan-retro/arbitrage/assessment_meshes/'
+        fn = os.path.join(bucket, f"{assessment_area_id}.json")
+
+        with fsspec.open(
+            fn, account_name='carbonplan', mode='r', account_key=os.environ['BLOB_ACCOUNT_KEY']
+        ) as f:
+            # geojson store col names for every row. shorten to be nice in the event we pull right into the browser
+            mesh = geopandas.read_file(f)
+    except:
+        mesh = create_assessment_area_arbitrage(assessment_area_id)
+    return mesh
+
+
+def create_assessment_area_arbitrage(assessment_area_id, save=False):
+
+    mesh = load_conus_mesh()
+    crs = mesh.crs
+
     fortypcds = load_arb_fortypcds().get(assessment_area_id)
     if not fortypcds:
         raise ValueError('Assessment area didnt map to any fortypcds')
@@ -65,6 +84,13 @@ def create_assessment_area_arbitrage(assessment_area_id, crs, save=False):
     sample_mesh["relative_slag"] = (
         sample_mesh["mean_local_slag"] / supersection_df["slag_co2e_acre"].mean()
     )
+
+    geojson_names = {"mean_local_slag": 'mls', 'relative_slag': 'rs', 'delta_slag': 'ds'}
+
+    sample_mesh[['geometry', 'mean_local_slag', 'relative_slag', 'delta_slag']].rename(
+        columns=geojson_names
+    )
+
     if save:
         bucket = 'az://carbonplan-retro/arbitrage/assessment_meshes/'
         fn = os.path.join(bucket, f"{assessment_area_id}.json")
@@ -73,13 +99,7 @@ def create_assessment_area_arbitrage(assessment_area_id, crs, save=False):
             fn, account_name='carbonplan', mode='w', account_key=os.environ['BLOB_ACCOUNT_KEY']
         ) as f:
             # geojson store col names for every row. shorten to be nice in the event we pull right into the browser
-            geojson_names = {"mean_local_slag": 'mls', 'relative_slag': 'rs', 'delta_slag': 'ds'}
 
-            f.write(
-                sample_mesh[['geometry', 'mean_local_slag', 'relative_slag', 'delta_slag']]
-                .rename(columns=geojson_names)
-                .to_crs('epsg:4326')
-                .to_json()
-            )
+            f.write(sample_mesh.to_crs('epsg:4326').to_json())
 
     return sample_mesh
