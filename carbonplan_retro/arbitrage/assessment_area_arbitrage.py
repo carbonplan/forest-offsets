@@ -28,7 +28,7 @@ def get_neighborhood_slag(sample_mesh, data, k_neighbors=200, max_radius=250_000
     mean_slag = []
     for p in sample_mesh.geometry:
         xy = p.x, p.y
-        distances, inds = tree.query([xy], k=k_neighbors, return_distance=True)
+        distances, inds = tree.query([xy], k=min(k_neighbors, len(data)), return_distance=True)
         # Limit distance to prevent straying outside the neighborhood too far.  Not strictly necessary.
         radius_inds = inds[distances < max_radius]
         mean_slag.append(data["slag_co2e_acre"].iloc[radius_inds].mean())
