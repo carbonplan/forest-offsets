@@ -103,3 +103,43 @@ def create_assessment_area_arbitrage(assessment_area_id, save=False):
             f.write(sample_mesh.to_crs('epsg:4326').to_json())
 
     return sample_mesh
+
+
+if __name__ == '__main__':
+    print("creating all relevant arbitrage maps")
+    supersections_with_projects = [
+        1,
+        2,
+        4,
+        15,
+        18,
+        22,
+        24,
+        25,
+        32,
+        35,
+        37,
+        38,
+        39,
+        41,
+        42,
+        43,
+        44,
+        55,
+        58,
+        60,
+        69,
+        76,
+        79,
+        86,
+        88,
+        94,
+        95,
+    ]
+    for supersection_id in supersections_with_projects:
+        assessment_area_ids = [
+            aa_id for aa_id, ss_id in aa_code_to_ss_code().items() if ss_id == supersection_id
+        ]
+        for assessment_area_id in assessment_area_ids:
+            print(f"creating {assessment_area_id}")
+            create_assessment_area_arbitrage(assessment_area_id, save=True)
