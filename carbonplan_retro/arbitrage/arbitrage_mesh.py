@@ -25,7 +25,7 @@ def load_conus_mesh():
 
 
 def load_supersection_mesh(supersection_id):
-    fn = f'az://carbonplan-retro/arbitrage/base_meshes/{supersection_id}.geojson'
+    fn = f'az://carbonplan-retro/arbitrage/base_meshes/{supersection_id}.json'
     with fsspec.open(
         fn, account_name='carbonplan', mode='r', account_key=os.environ['BLOB_ACCOUNT_KEY']
     ) as f:
@@ -33,7 +33,7 @@ def load_supersection_mesh(supersection_id):
     return mesh
 
 
-def get_supersection_mesh(supersection_id, save=False):
+def create_supersection_mesh(supersection_id, save=False):
     mesh = load_conus_mesh()
 
     working_crs = mesh.crs
@@ -49,7 +49,7 @@ def get_supersection_mesh(supersection_id, save=False):
     supersection_mesh = geopandas.clip(mesh, supersection)
 
     if save:
-        fn = f'az://carbonplan-retro/arbitrage/base_meshes/{int(supersection["ss_id"].item())}.json'
+        fn = f'az://carbonplan-retro/arbitrage/base_meshes/{supersection_id}.json'
         with fsspec.open(
             fn, account_name='carbonplan', mode='w', account_key=os.environ['BLOB_ACCOUNT_KEY']
         ) as f:
@@ -89,4 +89,4 @@ if __name__ == '__main__':
         95,
     ]
     for supersection_id in supersections_with_projects:
-        get_supersection_mesh(supersection_id, save=True)
+        create_supersection_mesh(supersection_id, save=True)

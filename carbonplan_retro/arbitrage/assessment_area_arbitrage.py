@@ -35,7 +35,7 @@ def get_neighborhood_slag(sample_mesh, data, k_neighbors=200, max_radius=250_000
     return mean_slag
 
 
-def get_assessment_area_arbitrage(assessment_area_id, crs, save=False):
+def create_assessment_area_arbitrage(assessment_area_id, crs, save=False):
     fortypcds = load_arb_fortypcds().get(assessment_area_id)
     if not fortypcds:
         raise ValueError('Assessment area didnt map to any fortypcds')
