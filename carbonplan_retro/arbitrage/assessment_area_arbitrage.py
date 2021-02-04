@@ -138,7 +138,7 @@ if __name__ == '__main__':
     ]
     for supersection_id in supersections_with_projects:
         assessment_area_ids = [
-            aa_id for aa_id, ss_id in aa_code_to_ss_code().items() if ss_id == supersection_id
+            int(aa_id) for aa_id, ss_id in aa_code_to_ss_code().items() if ss_id == supersection_id
         ]
         for assessment_area_id in assessment_area_ids:
             print(f"creating {assessment_area_id}")
