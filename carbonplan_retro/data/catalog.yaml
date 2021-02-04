@@ -121,3 +121,14 @@ sources:
       urlpath: az://carbonplan-data/raw/fia-states/{{ table }}_{{postal_code.lower()}}.parquet
       storage_options:
         account_name: carbonplan
+
+  rfia:
+    description: per assessment area outputs from rFIA, when limiting plots to supersections/ownership/species subset
+    driver: csv
+    parameters:
+      assessment_area_id:
+        description: Assessment Area ID
+        type: int
+        default: 279
+    args:
+      urlpath: https://carbonplan.blob.core.windows.net/carbonplan-retro/rfia/{{ assessment_area_id }}.csv
