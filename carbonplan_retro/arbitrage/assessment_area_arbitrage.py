@@ -87,9 +87,9 @@ def create_assessment_area_arbitrage(assessment_area_id, save=False):
 
     geojson_names = {"mean_local_slag": 'mls', 'relative_slag': 'rs', 'delta_slag': 'ds'}
 
-    sample_mesh[['geometry', 'mean_local_slag', 'relative_slag', 'delta_slag']].rename(
-        columns=geojson_names
-    )
+    sample_mesh = sample_mesh[
+        ['geometry', 'mean_local_slag', 'relative_slag', 'delta_slag']
+    ].rename(columns=geojson_names)
 
     if save:
         bucket = 'az://carbonplan-retro/arbitrage/assessment_areas/'
