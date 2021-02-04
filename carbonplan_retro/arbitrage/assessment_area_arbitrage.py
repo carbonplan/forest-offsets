@@ -37,7 +37,7 @@ def get_neighborhood_slag(sample_mesh, data, k_neighbors=200, max_radius=250_000
 
 def load_assessment_area_arbitrage(assessment_area_id):
     try:
-        bucket = 'az://carbonplan-retro/arbitrage/assessment_meshes/'
+        bucket = 'az://carbonplan-retro/arbitrage/assessment_areas/'
         fn = os.path.join(bucket, f"{assessment_area_id}.json")
 
         with fsspec.open(
@@ -92,7 +92,7 @@ def create_assessment_area_arbitrage(assessment_area_id, save=False):
     )
 
     if save:
-        bucket = 'az://carbonplan-retro/arbitrage/assessment_meshes/'
+        bucket = 'az://carbonplan-retro/arbitrage/assessment_areas/'
         fn = os.path.join(bucket, f"{assessment_area_id}.json")
 
         with fsspec.open(
