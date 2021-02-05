@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import os
 
 import fsspec
@@ -99,7 +100,7 @@ def create_assessment_area_arbitrage(assessment_area_id, save=False):
             fn, account_name='carbonplan', mode='w', account_key=os.environ['BLOB_ACCOUNT_KEY']
         ) as f:
             # geojson store col names for every row. shorten to be nice in the event we pull right into the browser
-
+            print(supersection_id, assessment_area_id, len(sample_mesh))
             f.write(sample_mesh.to_crs('epsg:4326').to_json())
 
     return sample_mesh

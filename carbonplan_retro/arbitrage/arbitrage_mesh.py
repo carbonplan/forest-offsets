@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import os
 from functools import lru_cache
 
@@ -10,8 +11,11 @@ from carbonplan_retro.load.geometry import load_supersections
 
 
 @lru_cache(maxsize=None)
-def load_conus_mesh():
+def load_conus_mesh(coarsen=2):
     ds = core_cat.grids.conus4k.to_dask()
+
+    if coarsen:
+        ds = ds.coarsen(x=coarsen, y=coarsen, boundary='trim').mean()
 
     crs = ds.crs.attrs["crs_wkt"]
     mask = ds.mask.values.flat > 0
@@ -34,7 +38,7 @@ def load_supersection_mesh(supersection_id):
 
 
 def create_supersection_mesh(supersection_id, save=False):
-    mesh = load_conus_mesh()
+    mesh = load_conus_mesh(coarsen=2)
 
     working_crs = mesh.crs
 
@@ -47,6 +51,8 @@ def create_supersection_mesh(supersection_id, save=False):
     supersection = supersections.loc[supersections['ss_id'] == supersection_id]
 
     supersection_mesh = geopandas.clip(mesh, supersection)
+
+    print(supersection_id, len(supersection_mesh))
 
     if save:
         fn = f'az://carbonplan-retro/arbitrage/base_meshes/{supersection_id}.json'
