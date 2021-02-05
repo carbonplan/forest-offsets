@@ -22,28 +22,6 @@ def fractional_basal_area_by_species(data):
     return fractional_ba.to_dict()
 
 
-def load_cond_data(postal_codes):
-    cond_cols = ['CN', 'PLT_CN', 'CONDID', 'OWNCD', 'FORTYPCD', 'FLDTYPCD']
-
-    plot_cols = ['CN', 'LAT', 'LON', 'ELEV', 'INVYR']
-    cond_ddf = dd.concat(
-        [
-            cat.fia(postal_code=postal_code.lower(), table='cond', columns=cond_cols).to_dask()
-            for postal_code in postal_codes
-        ]
-    )
-    plot_ddf = dd.concat(
-        [
-            cat.fia(postal_code=postal_code.lower(), table='plot', columns=plot_cols).to_dask()
-            for postal_code in postal_codes
-        ]
-    )
-    conds = cond_ddf.compute()
-    plots = plot_ddf.compute()
-
-    return conds.join(plots.set_index('CN'), on=['PLT_CN'])
-
-
 def load_cond_classification_data(postal_codes):
     cond_cols = ['CN', 'PLT_CN', 'CONDID', 'OWNCD', 'FORTYPCD', 'FLDTYPCD', 'COND_STATUS_CD']
 
@@ -52,14 +30,14 @@ def load_cond_classification_data(postal_codes):
         [
             cat.fia(postal_code=postal_code.lower(), table='cond', columns=cond_cols).to_dask()
             for postal_code in postal_codes
-        ]
+        ], ignore_index=True
     )
     cond_ddf = cond_ddf[cond_ddf['COND_STATUS_CD'] == 1]  # forest conditions only
     plot_ddf = dd.concat(
         [
             cat.fia(postal_code=postal_code.lower(), table='plot', columns=plot_cols).to_dask()
             for postal_code in postal_codes
-        ]
+        ], ignore_index=True
     )
     conds = cond_ddf.compute()
     plots = plot_ddf.compute()
@@ -83,7 +61,7 @@ def load_tree_classification_data(postal_codes):
         [
             cat.fia(postal_code=postal_code, table='tree', columns=tree_cols).to_dask()
             for postal_code in postal_codes
-        ]
+        ], ignore_index=True
     )
     trees = trees[trees['STATUSCD'] == 1]  # only looking at live trees
     trees['unadj_basal_area'] = math.pi * (trees['DIA'] / (2 * 12)) ** 2 * trees['TPA_UNADJ']
