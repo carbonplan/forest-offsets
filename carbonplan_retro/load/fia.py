@@ -1,21 +1,11 @@
 import math
 from functools import lru_cache
 
-import geopandas
 import pandas as pd
-from shapely.geometry import Point
+
+from carbonplan_retro.utils import to_geodataframe
 
 from ..data import cat
-
-
-def to_geodataframe(
-    df: pd.DataFrame, lat_key: str = 'LAT', lon_key: str = 'LON'
-) -> geopandas.GeoDataFrame:
-    ''' helper function to covert DataFrame to GeoDataFrame '''
-    geo_df = geopandas.GeoDataFrame(
-        df, crs='epsg:4326', geometry=[Point(xy) for xy in zip(df[lon_key], df[lat_key])]
-    )
-    return geo_df
 
 
 def load_fia_common_practice(postal_codes, private_only=True):

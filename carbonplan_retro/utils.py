@@ -3,8 +3,19 @@ import pathlib
 
 import geopandas
 import pandas as pd
+from shapely.geometry import Point
 
 from .data import cat
+
+
+def to_geodataframe(
+    df: pd.DataFrame, lat_key: str = 'LAT', lon_key: str = 'LON'
+) -> geopandas.GeoDataFrame:
+    ''' helper function to covert DataFrame to GeoDataFrame '''
+    geo_df = geopandas.GeoDataFrame(
+        df, crs='epsg:4326', geometry=[Point(xy) for xy in zip(df[lon_key], df[lat_key])]
+    )
+    return geo_df
 
 
 def load_retro_from_json(fname: str) -> pd.DataFrame:
