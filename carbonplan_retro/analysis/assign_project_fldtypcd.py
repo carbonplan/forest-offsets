@@ -1,13 +1,15 @@
 import math
 
 import dask.dataframe as dd
+import geopandas
 from sklearn.feature_extraction import DictVectorizer
 
 from carbonplan_retro.data import cat
+from carbonplan_retro.utils import to_geodataframe
 
 
 def fractional_basal_area_by_species(data):
-    """For group of trees, calcuate the fraction total basal area represented by each species"""
+    """For group of trees, calculate the fraction total basal area represented by each species"""
     # cast to str so can store sparsely :)
     fractional_ba = (
         (
@@ -92,28 +94,28 @@ def load_tree_classification_data(postal_codes):
     return features
 
 
-def load_classification_data(postal_codes, target_var='FLDTYPCD', bounds=None):
+def load_classification_data(postal_codes, target_var='FORTYPCD', aoi=None):
     tree_features = load_tree_classification_data(postal_codes)
     conds = load_cond_classification_data(postal_codes)
     conds = conds[(conds['INVYR'] >= 2002) & (conds['INVYR'] < 2013)]
-    if bounds:
-        conds = conds[
-            (conds['LON'] > bounds[0])
-            & (conds['LAT'] > bounds[1])
-            & (conds['LON'] < bounds[2])
-            & (conds['LAT'] < bounds[3])
-        ]
+    if aoi:
+        conds = to_geodataframe(conds)
+        conds = geopandas.clip(conds, aoi)
 
     data = conds.join(tree_features, on=['PLT_CN', 'CONDID']).dropna(
         subset=[target_var, 'fraction_species']
     )
     data = data.loc[
         (data['FORTYPCD'] != 999)
-    ]  # dont include non-stocked because projects cant unstocked!
+    ]  # dont include non-stocked because projects cant be unstocked!
 
-    data = data.loc[(data[target_var] < 962)]  # exclude wastebasket forest types
+    # exclude wastebasket forest types, filtering on both for and fld typ
+    data = data.loc[(data['FORTYPCD'] < 962) & (data['FLDTYPCD'] < 962)]
+
+    # only include fortypcs with at least 30 conds
     target_counts = data[target_var].value_counts()
     valid_target_classes = target_counts[target_counts > 30].index.unique().tolist()
+
     data = data[data[target_var].isin(valid_target_classes)]
     data = data.dropna(subset=[target_var, 'fraction_species'])
     vec = DictVectorizer()
