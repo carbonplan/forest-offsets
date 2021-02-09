@@ -1,5 +1,8 @@
+import json
+import os
 from functools import lru_cache
 
+import fsspec
 import geopandas
 import numpy as np
 from carbonplan_data import cat as core_cat
@@ -17,9 +20,8 @@ def get_crs():
 
 def get_project_arbitrage(project):
     crs = get_crs()
-    project_geom = (
-        cat.arb_geometries(opr_id=project['opr_id']).read().to_crs(crs).buffer(16_000)
-    )  # 8km
+    # buffer to ensure we dont miss a sampled point in the sampling grid; some projects are quite small relative
+    project_geom = cat.arb_geometries(opr_id=project['opr_id']).read().to_crs(crs).buffer(16_000)
 
     arbitrage = []
     for assessment_area in project['assessment_areas']:
@@ -40,6 +42,24 @@ def get_project_arbitrage(project):
 
 if __name__ == '__main__':
     arbitrage = {}
-    for project in cat.retro_db_light_json.read():
+    retro_json = cat.retro_db_light_json.read()
+
+    projects = [project for project in retro_json if len(project['assessment_areas']) > 0]
+
+    # exclude the three alaska assessment areas because no arbitrage maps up there
+    projects = [project for project in projects if 285 not in project['supersection_ids']]
+    projects = [project for project in projects if 286 not in project['supersection_ids']]
+    projects = [project for project in projects if 287 not in project['supersection_ids']]
+
+    for project in projects:
+        print(project['opr_id'])
         arbitrage_scores = get_project_arbitrage(project)
         arbitrage[project['opr_id']] = arbitrage_scores
+
+    with fsspec.open(
+        "az://carbonplan-scratch/project_arbitrage.json",
+        account_name="carbonplan",
+        mode="w",
+        account_key=os.environ["BLOB_ACCOUNT_KEY"],
+    ) as f:
+        json.dump(arbitrage, f)
