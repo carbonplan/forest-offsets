@@ -129,6 +129,5 @@ sources:
       assessment_area_id:
         description: Assessment Area ID
         type: int
-        default: 279
     args:
       urlpath: https://carbonplan.blob.core.windows.net/carbonplan-retro/rfia/{{ assessment_area_id }}.csv
