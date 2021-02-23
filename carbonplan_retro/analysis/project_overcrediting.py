@@ -1,5 +1,6 @@
 import json
 import os
+from collections import defaultdict
 
 import dask
 import fsspec
@@ -37,17 +38,34 @@ def get_recalculated_arbocs(project, alternate_cp):
 
 
 @dask.delayed(pure=True, traverse=True)
-def get_project_overcrediting(project, fortyp_weights, n_obs=30):
-    store = []
+def get_project_overcrediting(project, fortyp_weights, n_obs=100):
+    store = defaultdict(list)
     i = 0
+
+    baseline_rfia_slag = rfia.get_rfia_arb_common_practice(project, use_site_class='all')
+
     with dask.config.set(scheduler='single-threaded'):
         while i < n_obs:
             alt_slag = rfia.get_project_weighted_slag(
                 project, fortyp_weights, use_site_class='all', uncertainty=True
             )
-            alt_arbocs = get_recalculated_arbocs(project, alt_slag)
+            scaled_alt_slag = (
+                project['carbon']['common_practice']['value'] * alt_slag / baseline_rfia_slag
+            )
+
+            # CAR1183 has CP of zero.
+            if scaled_alt_slag == 0:
+                scaled_alt_slag = alt_slag
+
+            alt_arbocs = get_recalculated_arbocs(project, scaled_alt_slag)
+
+            if scaled_alt_slag > project['carbon']['initial_carbon_stock']['value']:
+                alt_arbocs = 0
+
             delta_arbocs = project['arbocs']['issuance'] - alt_arbocs
-            store.append(delta_arbocs)
+            store['alt_slag'].append(scaled_alt_slag)
+            store['alt_arbocs'].append(alt_arbocs)
+            store['delta_arbocs'].append(delta_arbocs)
             i += 1
     return store
 
@@ -89,9 +107,9 @@ if __name__ == '__main__':
 
     # @badgley fix me
     with fsspec.open(
-        'az://carbonplan-scratch/overcrediting_probabilities.json',
+        'az://carbonplan-scratch/overcredited_arbocs.json',
         account_key=os.environ["BLOB_ACCOUNT_KEY"],
         account_name="carbonplan",
         mode='w',
     ) as f:
-        json.dump(overcrediting, f)
+        json.dump(overcrediting[0], f)
