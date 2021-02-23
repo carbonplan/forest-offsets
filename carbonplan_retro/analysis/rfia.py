@@ -1,6 +1,5 @@
 # given a classificaiton dict, spit out some common practice values
 import json
-import os
 from collections import Counter
 from functools import lru_cache
 
@@ -8,13 +7,12 @@ import fsspec
 import numpy as np
 import pandas as pd
 
+from carbonplan_retro.data import cat
 from carbonplan_retro.utils import aa_code_to_ss_code
 
 
 @lru_cache(maxsize=None)
-def load_rfia_data(
-    assessment_area_id, site_class='all', read_dir='/home/jovyan/rfia/processed_data/buffered'
-):
+def load_rfia_data(assessment_area_id, site_class='all'):
     site_class_ranges = {
         'high': {'max': 4, 'min': 1},
         'low': {'max': 7, 'min': 5},
@@ -26,30 +24,21 @@ def load_rfia_data(
         raise ValueError(f"site class must be in {[x for x in valid_site_classes]}")
     site_class_range = site_class_ranges[site_class]
 
-    if not read_dir:
-        raise ValueError("Specify directory you'd like to pull rFIA data from, please")
-
-    fn = os.path.join(read_dir, f'{int(assessment_area_id)}.csv')
-    data = pd.read_csv(fn)
-    # data = cat.rfia(
-    #    assessment_area_id=assessment_area_id,
-    # ).read()
-    data = data[
-        [
-            'YEAR',
-            'FORTYPCD',
-            'SITECLCD',
-            'POOL',
-            'CARB_ACRE',
-            'CARB_TOTAL',
-            'AREA_TOTAL',
-            'CARB_TOTAL_VAR',
-            'AREA_TOTAL_VAR',
-            'nPlots_TREE',
-            'nPlots_AREA',
-        ]
+    keys = [
+        'YEAR',
+        'FORTYPCD',
+        'SITECLCD',
+        'POOL',
+        'CARB_ACRE',
+        'CARB_TOTAL',
+        'AREA_TOTAL',
+        'CARB_TOTAL_VAR',
+        'AREA_TOTAL_VAR',
+        'nPlots_TREE',
+        'nPlots_AREA',
     ]
 
+    data = cat.rfia(assessment_area_id=int(assessment_area_id)).read()[keys]
     data = data[data['CARB_TOTAL'] > 0]
     data = data[
         (data['SITECLCD'] <= site_class_range['max'])
@@ -91,9 +80,7 @@ def summarize_project_by_ss(project, supersection_id):
     ]
 
 
-def get_rfia_arb_common_practice(
-    project, use_site_class=None, read_dir='/home/jovyan/rfia/processed_data/no_buffer'
-):
+def get_rfia_arb_common_practice(project, use_site_class=None):
     """Recalculate ARB CP using underlying rFIA-processed data
 
     use_site_class: fixes site_class to constant as opposed to using per-assessment-area value
@@ -105,12 +92,10 @@ def get_rfia_arb_common_practice(
             continue
 
         if use_site_class:
-            rfia_data = load_rfia_data(
-                assessment_area['code'], site_class=use_site_class, read_dir=read_dir
-            )
+            rfia_data = load_rfia_data(assessment_area['code'], site_class=use_site_class)
         else:
             rfia_data = load_rfia_data(
-                assessment_area['code'], site_class=assessment_area['site_class'], read_dir=read_dir
+                assessment_area['code'], site_class=assessment_area['site_class']
             )
 
         cp_per_inventory = rfia_data.groupby('YEAR').apply(get_rfia_slag_co2e_acre)
