@@ -1,8 +1,10 @@
 import argparse
 import json
 import os
+import pathlib
 
 import fsspec
+import geopandas
 
 from carbonplan_retro.load.arb_fortypcds import load_arb_fortypcds
 from carbonplan_retro.load.geometry import get_overlapping_states, load_supersections
@@ -41,7 +43,9 @@ PROJECT_SUPERSECTIONS = [
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("--all", action="store_true")
-
+    parser.add_argument(
+        "-f", "--filename", help='specify filename for loading alternative geometries'
+    )
     args = parser.parse_args()
 
     arb_fortyps = load_arb_fortypcds()
@@ -54,6 +58,13 @@ if __name__ == '__main__':
         project_list = PROJECT_SUPERSECTIONS
         out_fn = 'rfia_assessment_areas_subset.json'
 
+    if args.filename:
+        supersections = geopandas.read_file(args.filename)
+        out_fn = f'rfia_assessment_areas_{pathlib.Path(args.filename).stem}.json'
+
+    else:
+        supersections = load_supersections(include_ak=False, fix_typos=True)
+
     store = []
     for aa_id, fortypcds in arb_fortyps.items():
         ss_id = aa_ss_dict.get(aa_id)
@@ -63,8 +74,6 @@ if __name__ == '__main__':
             continue
 
         if ss_id in project_list:
-
-            supersections = load_supersections(include_ak=False, fix_typos=True)
 
             supersection = supersections.loc[supersections['ss_id'] == ss_id]
             record = {
