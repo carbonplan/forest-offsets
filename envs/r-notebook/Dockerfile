@@ -53,12 +53,14 @@ RUN conda install --quiet --yes \
     'r-tweenr=1.0*' \
     'r-dtplyr=1.0*' \
     'r-gganimate=1.0*' \
+    'r-remotes=2.2*' \
+    'r-rgeos=0.5*' \
     && \
     conda clean --all -f -y && \
     fix-permissions "${CONDA_DIR}" && \
     fix-permissions "/home/${NB_USER}"
 
-RUN R -e "install.packages('rFIA', dependencies=TRUE, repos='http://cran.rstudio.com/')"
+RUN R -e "remotes::install_github('hunter-stanke/rFIA@8df260a4e07f6d30cd71f4cad2321d6da8bc78be')"
 
 # Install e1071 R package (dependency of the caret R package)
 RUN conda install --quiet --yes r-e1071
