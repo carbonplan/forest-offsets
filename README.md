@@ -14,9 +14,11 @@ _Note: This project is under active development. We expect to make many breaking
 ![MIT License][]
 
 [github]: https://github.com/carbonplan/retro
-[github-badge]: https://flat.badgen.net/badge/-/github?icon=github&label
-[build status]: https://flat.badgen.net/github/checks/carbonplan/retro
-[mit license]: https://flat.badgen.net/badge/license/MIT/blue
+[github-badge]: https://badgen.net/badge/-/github?icon=github&label
+[build status]: https://github.com/carbonplan/retro/actions/workflows/main.yaml/badge.svg
+[mit license]: https://badgen.net/badge/license/MIT/blue
+
+[![CI]()](https://github.com/carbonplan/retro/actions/workflows/main.yaml)
 
 This repository includes our libraries and scripts for the retrospective synthesis and analysis of the complience forest carbon offsets market.
 
