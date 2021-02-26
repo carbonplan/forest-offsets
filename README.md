@@ -18,8 +18,6 @@ _Note: This project is under active development. We expect to make many breaking
 [build status]: https://github.com/carbonplan/retro/actions/workflows/main.yaml/badge.svg
 [mit license]: https://badgen.net/badge/license/MIT/blue
 
-[![CI]()](https://github.com/carbonplan/retro/actions/workflows/main.yaml)
-
 This repository includes our libraries and scripts for the retrospective synthesis and analysis of the complience forest carbon offsets market.
 
 ## install
