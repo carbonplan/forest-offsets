@@ -131,3 +131,8 @@ sources:
         type: int
     args:
       urlpath: https://carbonplan.blob.core.windows.net/carbonplan-retro/rfia/{{ assessment_area_id }}.csv
+  fia_species_names:
+    description: mapping from FIA species code to common name
+    driver: json
+    args:
+      urlpath: https://carbonplan.blob.core.windows.net/carbonplan-retro/ancillary/fia_spcd_to_name.json
