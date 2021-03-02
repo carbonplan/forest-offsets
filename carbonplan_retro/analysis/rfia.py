@@ -13,22 +13,15 @@ from carbonplan_retro.utils import aa_code_to_ss_code
 
 @lru_cache(maxsize=None)
 def load_rfia_data(assessment_area_id, site_class='all'):
-    site_class_ranges = {
-        'high': {'max': 4, 'min': 1},
-        'low': {'max': 7, 'min': 5},
-        'all': {'max': 7, 'min': 1},
-    }
 
     valid_site_classes = ['all', 'low', 'high']
     if site_class not in valid_site_classes:
         raise ValueError(f"site class must be in {[x for x in valid_site_classes]}")
-    site_class_range = site_class_ranges[site_class]
 
     keys = [
         'YEAR',
         'FORTYPCD',
-        'SITECLCD',
-        'POOL',
+        'site',
         'CARB_ACRE',
         'CARB_TOTAL',
         'AREA_TOTAL',
@@ -40,10 +33,8 @@ def load_rfia_data(assessment_area_id, site_class='all'):
 
     data = cat.rfia(assessment_area_id=int(assessment_area_id)).read()[keys]
     data = data[data['CARB_TOTAL'] > 0]
-    data = data[
-        (data['SITECLCD'] <= site_class_range['max'])
-        & (data['SITECLCD'] >= site_class_range['min'])
-    ]
+    data = data[(data['site'] == site_class)]
+    data = data[data['YEAR'] >= 2010]  # excluded in attempt to speed up uncertainty propogation
 
     return data
 
@@ -63,6 +54,8 @@ def get_rfia_slag_co2e_acre(data, uncertainty=False):
         carbon_uncertainty = np.random.normal(0, 1, [len(data)]) * (data['CARB_TOTAL_VAR'] ** 0.5)
         data['CARB_TOTAL'] = data['CARB_TOTAL'] + carbon_uncertainty
     sums = data.sum()
+
+    # if sums['nPlots_TREE'] < 5: # minimum number of plots wi aggregation needed to yield estimate
 
     return sums['CARB_TOTAL'] / sums['AREA_TOTAL'] * 44 / 12  # 44/12 converts carbon to co2
 
@@ -102,8 +95,16 @@ def get_rfia_arb_common_practice(project, use_site_class=None):
 
         # TODO: revisit "time"
         median_cp = cp_per_inventory.loc[
-            (cp_per_inventory.index <= 2013) & (cp_per_inventory.index >= 2010)
+            (cp_per_inventory.index == 2012)
+            #    #(cp_per_inventory.index <= 2013) & (cp_per_inventory.index >= 2010)
         ].median()
+
+        if np.isnan(median_cp):
+            median_cp = cp_per_inventory.loc[
+                # (cp_per_inventory.index == 2010)
+                (cp_per_inventory.index <= 2019)
+                & (cp_per_inventory.index >= 2010)
+            ].median()
 
         if np.isnan(median_cp):
             # this only occurs when cross-state evals cannot be matched historically.
@@ -118,7 +119,7 @@ def get_rfia_arb_common_practice(project, use_site_class=None):
 def get_fortyp_weighted_slag_co2e_acre(
     supersection_id, fortyp_weights, site_class, uncertainty=False
 ):
-    '''calculate SLAG (CO2e2 per acre) within a superseciton, weighting by forest types'''
+    '''calculate SLAG (CO2e per acre) within a superseciton, weighting by forest types'''
     # find all assessment areas per supersection, in the event that classifier doesnt like the aa assignment developer has choosen
     assessment_area_ids = [
         aa_id for aa_id, ss_id in aa_code_to_ss_code().items() if ss_id == supersection_id
