@@ -38,7 +38,7 @@ def get_recalculated_arbocs(project, alternate_cp):
 
 
 @dask.delayed(pure=True, traverse=True)
-def get_project_overcrediting(project, fortyp_weights, n_obs=100):
+def get_project_overcrediting(project, fortyp_weights, n_obs=1_000):
     store = defaultdict(list)
     i = 0
 
@@ -62,7 +62,7 @@ def get_project_overcrediting(project, fortyp_weights, n_obs=100):
             if scaled_alt_slag > project['carbon']['initial_carbon_stock']['value']:
                 alt_arbocs = 0
 
-            delta_arbocs = project['arbocs']['issuance'] - alt_arbocs
+            delta_arbocs = project['arbocs']['calculated'] - alt_arbocs
             store['alt_slag'].append(scaled_alt_slag)
             store['alt_arbocs'].append(alt_arbocs)
             store['delta_arbocs'].append(delta_arbocs)
