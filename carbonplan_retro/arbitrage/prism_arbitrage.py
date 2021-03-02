@@ -31,6 +31,18 @@ def load_prism(region, var):
     )
 
 
+def load_prism_arbitrage(supersection_id):
+    bucket = 'az://carbonplan-retro/arbitrage/prism-supersections/'
+    fn = os.path.join(bucket, f"{supersection_id}.json")
+
+    with fsspec.open(
+        fn, account_name='carbonplan', mode='r', account_key=os.environ['BLOB_ACCOUNT_KEY']
+    ) as f:
+        mesh = geopandas.read_file(f)
+
+    return mesh
+
+
 def get_prism_arbitrage_map(supersection_id):
     supersections = load_supersections()  # .to_crs(crs)
     supersection = supersections[supersections["ss_id"] == supersection_id]
