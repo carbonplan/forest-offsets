@@ -12,3 +12,9 @@ if __name__ == '__main__':
         recursive=True,
         overwrite=True,
     )
+    fs.put(
+        '/home/jovyan/rfia/processed_data/no_buffer_biomass_all/',
+        'carbonplan-retro/rfia_all',
+        recursive=True,
+        overwrite=True,
+    )
