@@ -1,9 +1,7 @@
 # given a classificaiton dict, spit out some common practice values
-import json
 from collections import Counter
 from functools import lru_cache
 
-import fsspec
 import numpy as np
 import pandas as pd
 
@@ -25,15 +23,22 @@ def load_rfia_data(assessment_area_id, site_class='all'):
         'CARB_ACRE',
         'CARB_TOTAL',
         'AREA_TOTAL',
+        'CARB_ACRE_VAR',
         'CARB_TOTAL_VAR',
         'AREA_TOTAL_VAR',
         'nPlots_TREE',
         'nPlots_AREA',
     ]
 
-    data = cat.rfia(assessment_area_id=int(assessment_area_id)).read()[keys]
+    if site_class == 'all':
+        data = cat.rfia_all(assessment_area_id=int(assessment_area_id)).read()
+        data['site'] = 'all'
+        data = data[keys]
+    else:
+        data = cat.rfia(assessment_area_id=int(assessment_area_id)).read()[keys]
+        data = data[data['site'] == site_class]
+
     data = data[data['CARB_TOTAL'] > 0]
-    data = data[(data['site'] == site_class)]
     data = data[data['YEAR'] >= 2010]  # excluded in attempt to speed up uncertainty propogation
 
     return data
@@ -51,13 +56,18 @@ def calculate_fortyp_weighted_slag(data, weights):
 def get_rfia_slag_co2e_acre(data, uncertainty=False):
 
     if uncertainty:
-        carbon_uncertainty = np.random.normal(0, 1, [len(data)]) * (data['CARB_TOTAL_VAR'] ** 0.5)
-        data['CARB_TOTAL'] = data['CARB_TOTAL'] + carbon_uncertainty
+        carbon_uncertainty = np.random.normal(0, 1, [len(data)]) * (data['CARB_ACRE_VAR'] ** 0.5)
+        data['CARB_ACRE'] = data['CARB_ACRE'] + carbon_uncertainty
+        return data['CARB_ACRE'] * 44 / 12 * 0.907185
+
     sums = data.sum()
 
+    # Could maybe revisit handling of low sample sizes at some point?
     # if sums['nPlots_TREE'] < 5: # minimum number of plots wi aggregation needed to yield estimate
 
-    return sums['CARB_TOTAL'] / sums['AREA_TOTAL'] * 44 / 12  # 44/12 converts carbon to co2
+    return (
+        sums['CARB_TOTAL'] / sums['AREA_TOTAL'] * 44 / 12 * 0.907185
+    )  # 44/12 converts carbon to co2; 0.907 takes us from US short to tonnes
 
 
 def summarize_project_by_ss(project, supersection_id):
@@ -93,21 +103,13 @@ def get_rfia_arb_common_practice(project, use_site_class=None):
 
         cp_per_inventory = rfia_data.groupby('YEAR').apply(get_rfia_slag_co2e_acre)
 
-        # TODO: revisit "time"
-        median_cp = cp_per_inventory.loc[
-            (cp_per_inventory.index == 2012)
-            #    #(cp_per_inventory.index <= 2013) & (cp_per_inventory.index >= 2010)
-        ].median()
+        median_cp = cp_per_inventory.loc[(cp_per_inventory.index == 2012)].median()
 
         if np.isnan(median_cp):
-            median_cp = cp_per_inventory.loc[
-                # (cp_per_inventory.index == 2010)
-                (cp_per_inventory.index <= 2019)
-                & (cp_per_inventory.index >= 2010)
-            ].median()
+            median_cp = cp_per_inventory.loc[(cp_per_inventory.index == 2010)].median()
 
         if np.isnan(median_cp):
-            # this only occurs when cross-state evals cannot be matched historically.
+            # this only occurs when cross-state evals cannot be matched historically. Northern ID/OR/WA is on ex.
             median_cp = cp_per_inventory.loc[(cp_per_inventory.index >= 2010)].median()
 
         weighted_cp = median_cp * assessment_area['acreage'] / project['acreage']
@@ -255,22 +257,3 @@ def get_project_weighted_slag_no_species(
             store.append(weighted_cp)
 
     return sum(store)
-
-
-def calculate_arb_rfia_common_practice(projects, use_site_class=None):
-    store = {}
-    for project in projects:
-        rfia_baseline = get_rfia_arb_common_practice(project, use_site_class=use_site_class)
-        store[project['opr_id']] = rfia_baseline
-    return store
-
-
-with fsspec.open(
-    'https://carbonplan.blob.core.windows.net/carbonplan-retro/remapping_weights.json', mode='r'
-) as f:
-    remapping_weights = json.load(f)
-
-with fsspec.open(
-    'https://carbonplan.blob.core.windows.net/carbonplan-retro/classifications.json', mode='r'
-) as f:
-    classifications = json.load(f)
