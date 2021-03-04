@@ -4,10 +4,19 @@ from functools import lru_cache
 import geopandas as gp
 import pandas as pd
 from shapely.ops import cascaded_union
+from tenacity import retry, stop_after_attempt, wait_fixed
 
 from carbonplan_retro.data import cat
 
 from ..utils import supersection_str_to_ss_code
+
+
+@retry(wait=wait_fixed(2), stop=stop_after_attempt(5))
+def load_project_geometry(opr_id):
+    try:
+        return cat.arb_geometries(opr_id=opr_id).read()
+    except:
+        raise
 
 
 def load_ak_supersections():

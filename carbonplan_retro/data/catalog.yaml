@@ -131,3 +131,19 @@ sources:
         type: int
     args:
       urlpath: https://carbonplan.blob.core.windows.net/carbonplan-retro/rfia/{{ assessment_area_id }}.csv
+
+  rfia_all:
+    description: per assessment area outputs from rFIA that do not aggregate by site class
+    driver: csv
+    parameters:
+      assessment_area_id:
+        description: Assessment Area ID
+        type: int
+    args:
+      urlpath: https://carbonplan.blob.core.windows.net/carbonplan-retro/rfia_all/{{ assessment_area_id }}.csv
+
+  fia_species_names:
+    description: mapping from FIA species code to common name
+    driver: json
+    args:
+      urlpath: https://carbonplan.blob.core.windows.net/carbonplan-retro/ancillary/fia_spcd_to_name.json

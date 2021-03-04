@@ -4,11 +4,12 @@ from functools import lru_cache
 
 import fsspec
 import geopandas
-import numpy as np
 from carbonplan_data import cat as core_cat
 
-from carbonplan_retro.arbitrage.assessment_area_arbitrage import load_assessment_area_arbitrage
+from carbonplan_retro.analysis import rfia
+from carbonplan_retro.arbitrage.prism_arbitrage import load_prism_arbitrage
 from carbonplan_retro.data import cat
+from carbonplan_retro.load.geometry import load_project_geometry
 
 
 @lru_cache(maxsize=None)  # should cache via intake but whatever
@@ -20,22 +21,24 @@ def get_crs():
 
 def get_project_arbitrage(project):
     crs = get_crs()
-    # buffer to ensure we dont miss a sampled point in the sampling grid; some projects are quite small relative
-    project_geom = cat.arb_geometries(opr_id=project['opr_id']).read().to_crs(crs).buffer(16_000)
+
+    project_geom = load_project_geometry(project['opr_id'])
+
+    # buffer so project doesnt slip through cracks in sampling grid
+    project_geom = project_geom.to_crs(crs).buffer(16_000)
 
     arbitrage = []
-    for assessment_area in project['assessment_areas']:
-        if assessment_area['code'] != 999:
-            fraction = assessment_area['acreage'] / project['acreage']
-            arbitrage_map = load_assessment_area_arbitrage(assessment_area['code']).to_crs(crs)
-            project_aa_arbitrage = geopandas.clip(arbitrage_map, project_geom)[
-                ['ds', 'mls', 'rs']
-            ].mean()
-            if np.any(np.isnan(project_aa_arbitrage)):
-                raise ValueError(
-                    f'{project["opr_id"]} has a bum arbitrage score for assessment area {assessment_area["code"]}'
-                )
-            arbitrage.append(project_aa_arbitrage * fraction)
+    for supersection_id in project['supersection_ids']:
+
+        ss_summary = rfia.summarize_project_by_ss(project, supersection_id)
+        ss_acreage = sum([site_class['acreage'] for site_class in ss_summary])
+        ss_fraction = ss_acreage / project['acreage']
+
+        arbitrage_map = load_prism_arbitrage(supersection_id).to_crs(crs)
+        project_arbitrage = geopandas.clip(arbitrage_map, project_geom)[
+            ['delta_slag', 'mean_local_slag', 'relative_slag']
+        ].mean()
+        arbitrage.append(project_arbitrage * ss_fraction)
 
     return sum(arbitrage).to_dict()
 
@@ -47,9 +50,9 @@ if __name__ == '__main__':
     projects = [project for project in retro_json if len(project['assessment_areas']) > 0]
 
     # exclude the three alaska assessment areas because no arbitrage maps up there
-    projects = [project for project in projects if 285 not in project['supersection_ids']]
-    projects = [project for project in projects if 286 not in project['supersection_ids']]
-    projects = [project for project in projects if 287 not in project['supersection_ids']]
+    # projects = [project for project in projects if 285 not in project['supersection_ids']]
+    # projects = [project for project in projects if 286 not in project['supersection_ids']]
+    # projects = [project for project in projects if 287 not in project['supersection_ids']]
 
     for project in projects:
         print(project['opr_id'])
