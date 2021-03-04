@@ -127,10 +127,6 @@ def get_fortyp_weighted_slag_co2e_acre(
         aa_id for aa_id, ss_id in aa_code_to_ss_code().items() if ss_id == supersection_id
     ]
 
-    # for AK, we look across all assessment areas, which is in line w logic applied to other supersections
-    if supersection_id > 200:
-        assessment_area_ids = [285, 286, 287]
-
     rfia_data = pd.concat(
         [
             load_rfia_data(assessment_area_id, site_class=site_class)

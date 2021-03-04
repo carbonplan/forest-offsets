@@ -38,7 +38,7 @@ def get_recalculated_arbocs(project, alternate_cp):
 
 
 @dask.delayed(pure=True, traverse=True)
-def get_project_overcrediting(project, fortyp_weights, n_obs=1000):
+def get_project_overcrediting(project, fortyp_weights, n_obs=100):
     store = defaultdict(list)
     i = 0
 
@@ -85,7 +85,7 @@ if __name__ == '__main__':
     ]
 
     with fsspec.open(
-        'az://carbonplan-retro/classifications.json',
+        'az://carbonplan-retro/remapping_weights.json',
         account_key=os.environ["BLOB_ACCOUNT_KEY"],
         account_name="carbonplan",
         mode='r',
@@ -107,8 +107,7 @@ if __name__ == '__main__':
 
     # @badgley fix me
     with fsspec.open(
-        # carbonplan-retro/remapping/
-        'az://carbonplan-retro/results/reclassification-crediting-error.json',
+        'az://carbonplan-retro/remapping/overcredited_arbocs.json',
         account_key=os.environ["BLOB_ACCOUNT_KEY"],
         account_name="carbonplan",
         mode='w',
