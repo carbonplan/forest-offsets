@@ -1,6 +1,6 @@
 #############################################
 FIA_DIR <- '/home/jovyan/rfia/data/'
-out_dir <- '/home/jovyan/rfia/processed_data/no_buffer_biomass'
+out_dir <- '/home/jovyan/rfia/processed_data/'
 
 #install.packages('rgeos')
 library(rFIA)
@@ -9,12 +9,10 @@ library(rjson)
 library(dplyr)
 
 
-supersections <- readOGR('/home/jovyan/rfia/CAR_Supersections/', layer='CAR_Supersections')
 
 assessment_areas <- fromJSON(file='/home/jovyan/lost+found/rfia_assessment_areas_subset.json')
 process_assessment_area <- function(assessment_area) {
 
-  supersection <- subset(supersections, SSection %in% assessment_area$supersection_name)
   print(assessment_area$assessment_area_id)
   clipped_fia <- clipFIA(readFIA(states = assessment_area$postal_codes,
                                  dir = FIA_DIR, nCores = 12,
@@ -30,23 +28,22 @@ process_assessment_area <- function(assessment_area) {
 
 
   bio <- biomass(clipped_fia,
-                 grpBy=c(site, FORTYPCD),
+                 grpBy=c(site, ECOSUBCD),
                  areaDomain = OWNGRPCD == 40 & FORTYPCD %in% assessment_area$fortypcds,
                  treeType='live',
                  method = 'TI',
                  variance=TRUE,
-                 polys = supersection,
                  component = 'AG',
                  totals=TRUE,
                  nCores=12)
 
   bio_subset <- subset(bio, CARB_TOTAL > 0, na.rm=TRUE)
-  fn <- paste(assessment_area$assessment_area_id, '.csv', sep='')
+  fn <- paste(assessment_area$assessment_area_id, '_by_ecosection.csv', sep='')
   write.csv(bio_subset, file=file.path(out_dir, fn))
   gc()
 }
 
 
-for (assessment_area in assessment_areas) {
+for (assessment_area in assessment_areas[89]) {
   process_assessment_area(assessment_area)
 }

@@ -39,15 +39,7 @@ process_assessment_area <- function(assessment_area) {
                  component = 'AG',
                  totals=TRUE,
                  nCores=12)
-  #carb <- biomass(clipped_fia,
-  #               grpBy=c(FORTYPCD, SITECLCD),
-  #               areaDomain = OWNGRPCD == 40 & FORTYPCD %in% assessment_area$fortypcds,
-  #               treeDomain = STATUSCD == 1,
-  #               variance=TRUE,
-  #               polys = supersection,
-  #               method = 'TI',
-  #               totals=TRUE,
-  #               nCores = 12)
+
   bio_subset <- subset(bio, CARB_TOTAL > 0, na.rm=TRUE)
 
   fn <- paste(assessment_area$assessment_area_id, '.csv', sep='')
