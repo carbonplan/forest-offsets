@@ -36,10 +36,11 @@ jobs:
 
   docker:
     runs-on: ubuntu-latest
-    matrix:
-      image:
-        - python-notebook
-        - R-notebook
+    strategy:
+      matrix:
+        image:
+          - python-notebook
+          - R-notebook
     steps:
       - name: Checkout
         uses: actions/checkout@v2
