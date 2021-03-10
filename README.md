@@ -24,14 +24,12 @@ This repository includes our libraries and scripts for the retrospective synthes
 From PyPI:
 
 ```shell
-
 pip install carbonplan_retro
 ```
 
 or from source:
 
 ```shell
-
 pip install git+https://github.com/carbonplan/retro.git
 ```
 
@@ -39,9 +37,20 @@ pip install git+https://github.com/carbonplan/retro.git
 
 TODO
 
+## data sources
+
+TODO
+
 ## data products
 
 TODO
+
+## environments
+
+This project uses the Python and R programing languages. Environment specifications are included in the `envs/` directory and pre-built Docker images are available on Dockerhub:
+
+- [retro-python-notebook](https://hub.docker.com/repository/docker/carbonplan/retro-python-notebook)
+- [retro-r-notebook](https://hub.docker.com/repository/docker/carbonplan/retro-r-notebook)
 
 ## license
 
