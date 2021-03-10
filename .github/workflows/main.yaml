@@ -20,11 +20,9 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
           mamba-version: "*"
-          channels: conda-forge,defaults
+          activate-environment: carbonplan
           channel-priority: true
           environment-file: envs/python-notebook/environment.yml
-      - shell: bash -l {0}
-        run: mamba install pytest
       - shell: bash -l {0}
         run: |
           conda info
