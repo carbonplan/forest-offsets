@@ -1,16 +1,13 @@
-fire
 fsspec
 fuzzywuzzy
 geopandas
-gspread
 intake
 intake-geopandas
 intake-excel
 numpy
-oauth2client
 pandas
-pygraphviz
 regionmask
 shapely
 statsmodels
+scikit-learn
 xarray
