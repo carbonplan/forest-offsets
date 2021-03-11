@@ -26,7 +26,7 @@ def get_recalculated_arbocs(project, alternate_cp):
     assumes that IFM_1 is a linear function of CP, which is what we see in practice
     """
     alt_baseline = project['baseline'].copy()
-    slag_to_total_carbon = get_slag_to_total_scalar(project, use_baseline=False)
+    slag_to_total_carbon = get_slag_to_total_scalar(project)
     alt_baseline['ifm_1'] = project['acreage'] * alternate_cp * slag_to_total_carbon
 
     alt_arbocs = get_arbocs(alt_baseline, project['rp_1'])
@@ -34,7 +34,7 @@ def get_recalculated_arbocs(project, alternate_cp):
 
 
 @dask.delayed(pure=True, traverse=True)
-def get_project_overcrediting(project, fortyp_weights, n_obs=1000):
+def get_project_crediting_error(project, fortyp_weights, n_obs=1000):
     store = defaultdict(list)
     i = 0
 
@@ -97,13 +97,11 @@ if __name__ == '__main__':
         else:
             continue
 
-        overcrediting[pid] = get_project_overcrediting(project, fortyp_weights)
+        overcrediting[pid] = get_project_crediting_error(project, fortyp_weights)
 
     overcrediting = dask.compute(overcrediting)
 
-    # @badgley fix me
     with fsspec.open(
-        # carbonplan-retro/remapping/
         'az://carbonplan-retro/results/reclassification-crediting-error.json',
         account_key=os.environ["BLOB_ACCOUNT_KEY"],
         account_name="carbonplan",
