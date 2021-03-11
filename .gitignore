@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -133,3 +132,6 @@ dmypy.json
 .DS_Store
 .idea/
 *.swp
+
+# project specific
+scratch/
