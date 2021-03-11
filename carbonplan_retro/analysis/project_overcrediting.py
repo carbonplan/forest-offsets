@@ -7,7 +7,7 @@ import fsspec
 from dask.distributed import Client
 
 from carbonplan_retro.analysis import rfia
-from carbonplan_retro.analysis.common_practice import get_arbocs
+from carbonplan_retro.analysis.allocation import get_arbocs
 from carbonplan_retro.data import cat
 
 
