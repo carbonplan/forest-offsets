@@ -11,18 +11,14 @@ from carbonplan_retro.analysis.common_practice import get_arbocs
 from carbonplan_retro.data import cat
 
 
-def get_slag_to_total_scalar(project, use_baseline=False):
+def get_slag_to_total_scalar(project):
     """baseline is constrained by SLAG but project is creditted for above and below, this function
     infers the relationship between SLAG and IFM_1 using project data
     """
-    if use_baseline:
-        return project['baseline']['ifm_1'] / (
-            project['average_slag_baseline'] * project['acreage']
-        )
-    else:
-        return project['rp_1']['ifm_1'] / (
-            project['carbon']['initial_carbon_stock']['value'] * project['acreage']
-        )
+
+    return project['rp_1']['ifm_1'] / (
+        project['carbon']['initial_carbon_stock']['value'] * project['acreage']
+    )
 
 
 def get_recalculated_arbocs(project, alternate_cp):
