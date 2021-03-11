@@ -4,7 +4,7 @@ from functools import lru_cache
 
 import fsspec
 import geopandas
-from carbonplan.data import cat as core_cat
+from carbonplan_data import cat as core_cat
 from shapely.geometry import Point
 
 from carbonplan_retro.load.geometry import load_supersections
