@@ -181,5 +181,4 @@ def load_issuance_table(forest_only: bool = True) -> pd.DataFrame:
 
 def get_arb_id_map() -> dict:
     df = load_issuance_table(forest_only=False)[['opr_id', 'arb_id']].set_index('arb_id')
-    # TODO: confirm with @grayson that proj_id (old) == 'opr_id' (new)
     return df.opr_id.to_dict()

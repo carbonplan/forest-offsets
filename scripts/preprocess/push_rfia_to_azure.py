@@ -3,6 +3,7 @@ import os
 import fsspec
 
 if __name__ == '__main__':
+    '''syncs rFIA run outputs to `cat`'''
     fs = fsspec.get_filesystem_class('az')(
         account_name='carbonplan', account_key=os.environ['BLOB_ACCOUNT_KEY']
     )

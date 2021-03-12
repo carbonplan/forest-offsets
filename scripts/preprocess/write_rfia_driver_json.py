@@ -41,6 +41,7 @@ PROJECT_SUPERSECTIONS = [
 ]
 
 if __name__ == '__main__':
+    """Builds json file that is readable by R and rFIA scripts for performing proper subsetting/aggregations"""
     parser = argparse.ArgumentParser()
     parser.add_argument("--all", action="store_true")
     parser.add_argument(

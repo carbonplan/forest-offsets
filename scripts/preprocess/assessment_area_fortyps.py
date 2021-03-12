@@ -1,14 +1,15 @@
-import pathlib
+import json
+import os
 
-import pandas as pd
+import fsspec
 
+from carbonplan_retro.data import cat
 from carbonplan_retro.utils import assessment_area_str_to_aa_code
 
 
-def get_olaf_fortypcs():
+def get_fortyp_mapping():
     """ARB repo"""
-    in_fn = pathlib.Path(__file__).parents[2] / 'data/assessment_area_forest_typs.csv'
-    df = pd.read_csv(in_fn)
+    df = cat.arb_tabling_csv.read()
     df['fortypcds'] = (
         df['rest'].str.extract(r'\(([\d,\s]+)\)')[0].apply(lambda x: [int(y) for y in x.split(',')])
     )
@@ -19,4 +20,11 @@ def get_olaf_fortypcs():
 
 
 if __name__ == '__main__':
-    print(get_olaf_fortypcs())
+    fortypcd_d = get_fortyp_mapping()
+    with fsspec.open(
+        'az://carbonplan-retro/ancillary/arb_fortypcds.json',
+        account_key=os.environ["BLOB_ACCOUNT_KEY"],
+        account_name="carbonplan",
+        mode='w',
+    ) as f:
+        json.dump(fortypcd_d, f)

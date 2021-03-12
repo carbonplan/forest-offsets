@@ -8,7 +8,7 @@ DIRNAME = Path(__file__).parents[2] / 'data' / 'fia'  # where FIA data stored
 
 
 def patch_tree_with_regional_biomass(postal_code, input_dir=DIRNAME):
-
+    '''modify FIA `TREE` table to contain regional biomass values -- needed for PNW work unit'''
     tree_path = Path(input_dir) / f"{postal_code}_TREE.csv"
     regional_path = Path(input_dir) / f"{postal_code}_TREE_REGIONAL_BIOMASS.csv"
     if not ((tree_path.exists()) & (regional_path.exists())):

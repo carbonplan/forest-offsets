@@ -1,4 +1,5 @@
 def load_arb_fortypcds():
+    # TODO: should be able to remove and replace w `cat.arb_fortypcds.read()`
     """Return dictionary of {<aa_code>: [fortypcd,...]}.
 
     Generated from sripts/assessment_area_fortyps.py

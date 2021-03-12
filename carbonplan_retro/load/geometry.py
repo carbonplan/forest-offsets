@@ -56,7 +56,7 @@ def load_supersections(include_ak=True, fix_typos=True):
             "Laurentian Mixed Forest Western Superior & Lake Plains": "Laurentian Mixed Forest Western Superior & Lake",
         }
         for assessment_lut_spelling, shapefile_spelling in typos.items():
-            # bit of a cheat -- append another k:v pair to the dict that maps shapefile_spelling to assessment spelling
+            # bit clunky -- append another k:v pair to the dict that maps shapefile_spelling to assessment spelling
             str_to_code[shapefile_spelling] = str_to_code[assessment_lut_spelling]
 
     gdf["ss_id"] = gdf["SSection"].map(str_to_code)

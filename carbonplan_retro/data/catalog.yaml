@@ -147,3 +147,16 @@ sources:
     driver: json
     args:
       urlpath: https://carbonplan.blob.core.windows.net/carbonplan-retro/ancillary/fia_spcd_to_name.json
+
+  arb_tabling_csv:
+    description: csv file contained in ARB-posted code that enumerates forest type codes per assessment area
+    driver: csv
+    args:
+      urlpath: https://carbonplan.blob.core.windows.net/carbonplan-retro/ancillary/arb_tabling.csv
+
+  arb_fortypcds:
+    description: mapping from assessment area to list of
+    driver: textfiles
+    args:
+      urlpath:  https://carbonplan.blob.core.windows.net/carbonplan-retro/ancillary/arb_fortypcds.json
+      decoder: 'json.loads'

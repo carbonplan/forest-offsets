@@ -12,6 +12,7 @@ OUT_DIR = pathlib.Path(__file__).parents[2] / 'data/geometry/projects/rerun'
 
 
 def get_project_geojson(object_id):
+    '''retreives geojson for each project from ARB issuance map MapServer backend'''
     payload = {
         'objectIds': object_id,
         'geometryType': 'esriGeometryPolygon',
