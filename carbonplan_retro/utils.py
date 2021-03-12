@@ -15,6 +15,12 @@ def to_geodataframe(
     return geo_df
 
 
+def load_arb_fortypcds():
+    '''load map between assessment area code and its associated fortypcds'''
+    d = cat.arb_fortypcds.read()[0]
+    return {int(k): v for k, v in d.items()}
+
+
 def load_ss_codes() -> dict:
     ss_cd_map = cat.super_section_lookup.read()
     return ss_cd_map.set_index("ss")["code"].to_dict()
