@@ -7,8 +7,6 @@
 
 **retrospective analysis of complience IFM projects**
 
-_Note: This project is under active development. We expect to make many breaking changes to the utilities and APIs included in this repository. Feel free to look around, but use at your own risk._
-
 [![GitHub][github-badge]][github]
 [![Build Status]][actions]
 ![MIT License][]
@@ -23,6 +21,14 @@ This repository includes our libraries and scripts for the retrospective synthes
 
 ## install
 
+From PyPI:
+
+```shell
+pip install carbonplan_retro
+```
+
+or from source:
+
 ```shell
 pip install git+https://github.com/carbonplan/retro.git
 ```
@@ -31,17 +37,28 @@ pip install git+https://github.com/carbonplan/retro.git
 
 TODO
 
+## data sources
+
+TODO
+
 ## data products
 
 TODO
 
+## environments
+
+This project uses the Python and R programing languages. Environment specifications are included in the `envs/` directory and pre-built Docker images are available on Dockerhub:
+
+- [retro-python-notebook](https://hub.docker.com/repository/docker/carbonplan/retro-python-notebook)
+- [retro-r-notebook](https://hub.docker.com/repository/docker/carbonplan/retro-r-notebook)
+
 ## license
 
-All the code in this repository is [MIT](https://choosealicense.com/licenses/mit/) licensed. Some of the data provided by this API is sourced from content made available under a [CC-BY-4.0](https://choosealicense.com/licenses/cc-by-4.0/) license. We include attribution for this content, and we please request that you also maintain that attribution if using this data.
+All the code in this repository is [MIT](https://choosealicense.com/licenses/mit/) licensed. When possible, the data used by this project is licensed using the [CC-BY-4.0](https://choosealicense.com/licenses/cc-by-4.0/) license. We include attribution and additional license information for third party datasets, and we request that you also maintain that attribution if using this data.
 
 ## about us
 
-CarbonPlan is a non-profit organization that uses data and science for carbon removal. We aim to improve the transparency and scientific integrity of carbon removal and climate solutions through open data and tools. Find out more at [carbonplan.org](https://carbonplan.org/) or get in touch by [opening an issue](https://github.com/carbonplan/retro/issues/new) or [sending us an email](mailto:hello@carbonplan.org).
+CarbonPlan is a non-profit organization that uses data and science for climate action. We aim to improve the transparency and scientific integrity of carbon removal and climate solutions through open data and tools. Find out more at [carbonplan.org](https://carbonplan.org/) or get in touch by [opening an issue](https://github.com/carbonplan/retro/issues/new) or [sending us an email](mailto:hello@carbonplan.org).
 
 ## contributors
 
