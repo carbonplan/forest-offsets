@@ -1,5 +1,4 @@
 import math
-import os
 from functools import lru_cache
 
 import fsspec
@@ -12,6 +11,7 @@ from shapely.geometry import Point
 from sklearn.neighbors import KDTree
 from sklearn.preprocessing import QuantileTransformer
 
+from carbonplan_retro.data import cat, get_retro_bucket
 from carbonplan_retro.load.fia import load_fia_common_practice
 from carbonplan_retro.load.geometry import (
     get_bordering_supersections,
@@ -22,24 +22,14 @@ from carbonplan_retro.load.geometry import (
 
 @lru_cache(maxsize=None)
 def load_prism(region, var):
-    return (
-        xr.open_rasterio(
-            f"https://storage.googleapis.com/carbonplan-data/processed/prism/normals/{region}/4000m/{var}.tif"
-        )
-        .squeeze()
-        .rename(var)
-    )
+    return cat.prism(retion=region, var=var).read().squeeze().rename(var)
 
 
 def load_prism_arbitrage(supersection_id):
-    bucket = 'az://carbonplan-retro/arbitrage/prism-supersections/'
-    fn = os.path.join(bucket, f"{supersection_id}.json")
-
-    with fsspec.open(
-        fn, account_name='carbonplan', mode='r', account_key=os.environ['BLOB_ACCOUNT_KEY']
-    ) as f:
+    fs_prefix, fs_kwargs = get_retro_bucket()
+    fn = f'{fs_prefix}/arbitrage/prism-supersections/{supersection_id}.json'
+    with fsspec.open(fn, mode='r', **fs_kwargs) as f:
         mesh = geopandas.read_file(f)
-
     return mesh
 
 
@@ -164,13 +154,11 @@ if __name__ == '__main__':
         286,
         287,
     ]
-    bucket = 'az://carbonplan-retro/arbitrage/prism-supersections/'
+    fs_prefix, fs_kwargs = get_retro_bucket()
 
     for supersection_id in supersections_with_projects:
         arbitrage_map = get_prism_arbitrage_map(supersection_id)
-        fn = os.path.join(bucket, f"{supersection_id}.json")
 
-        with fsspec.open(
-            fn, account_name='carbonplan', mode='w', account_key=os.environ['BLOB_ACCOUNT_KEY']
-        ) as f:
+        fn = f'{fs_prefix}/arbitrage/prism-supersections/{supersection_id}.json'
+        with fsspec.open(fn, mode='w', **fs_kwargs) as f:
             f.write(arbitrage_map.to_crs('epsg:4326').to_json())

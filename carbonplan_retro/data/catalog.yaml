@@ -122,6 +122,12 @@ sources:
       storage_options:
         account_name: carbonplan
 
+  fia_regional_biomass:
+    description: TODO
+    driver: csv
+    args:
+      urlpath: https://carbonplan.blob.core.windows.net/carbonplan-data/raw/fia/TREE_REGIONAL_BIOMASS.csv
+
   rfia:
     description: per assessment area outputs from rFIA, when limiting plots to supersections/ownership/species subset
     driver: csv
@@ -160,3 +166,20 @@ sources:
     args:
       urlpath:  https://carbonplan.blob.core.windows.net/carbonplan-retro/ancillary/arb_fortypcds.json
       decoder: 'json.loads'
+
+  prism:
+    description: PRISM climate normals
+    parameters:
+      var:
+        description: variable name
+        type: str
+        default: tmean
+        allowed: [tmean, ppt]
+      region:
+        description: conus or ak
+        type: str
+        default: conus
+        allowed: [conus, ak]
+    driver: rasterio
+    args:
+      urlpath: https://carbonplan.blob.core.windows.net/carbonplan-data/processed/prism/normals/{{ region }}/4000m/{{ var }}.tif
