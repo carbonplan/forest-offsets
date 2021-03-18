@@ -1,7 +1,5 @@
-import pathlib
 from functools import lru_cache
 
-import geopandas as gp
 import pandas as pd
 from shapely.ops import cascaded_union
 from tenacity import retry, stop_after_attempt, wait_fixed
@@ -13,10 +11,7 @@ from ..utils import supersection_str_to_ss_code
 
 @retry(wait=wait_fixed(2), stop=stop_after_attempt(5))
 def load_project_geometry(opr_id):
-    try:
-        return cat.arb_geometries(opr_id=opr_id).read()
-    except:
-        raise
+    return cat.arb_geometries(opr_id=opr_id).read()
 
 
 def load_ak_supersections():
@@ -66,29 +61,6 @@ def load_supersections(include_ak=True, fix_typos=True):
         gdf = pd.concat([gdf, ak], ignore_index=True)
 
     return gdf
-
-
-def ifm_shapes(opr_ids='all', load_series=True):
-    # TODO: move somewhere @ config level.
-    IFM_SHAPE_DIR = pathlib.Path(__file__).parents[2] / 'data/geometry/projects'
-    if opr_ids == 'all':
-        fns = IFM_SHAPE_DIR.glob('*.json')
-    else:
-        if isinstance(opr_ids, str):
-            fns = [IFM_SHAPE_DIR / f'{opr_ids}.json']
-        elif isinstance(opr_ids, list):
-            fns = [IFM_SHAPE_DIR / f'{opr_id}.json' for opr_id in opr_ids]
-        else:
-            raise NotImplementedError("pass a single opr_id as a str or a list of opr_ids")
-
-    project_shapes = {fn.stem: gp.read_file(fn) for fn in fns}
-    df = pd.concat(project_shapes)
-
-    df = df.droplevel(1)  # not sure where multi-index is coming from but ditch it here.
-    if load_series:
-        return df.geometry.reset_index().rename(columns={'index': 'opr_id'})
-    else:
-        return df
 
 
 @lru_cache(maxsize=None)

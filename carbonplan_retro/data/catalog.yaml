@@ -135,6 +135,7 @@ sources:
       assessment_area_id:
         description: Assessment Area ID
         type: int
+        default: 1
     args:
       urlpath: https://carbonplan.blob.core.windows.net/carbonplan-retro/rfia/{{ assessment_area_id }}.csv
 
@@ -145,14 +146,16 @@ sources:
       assessment_area_id:
         description: Assessment Area ID
         type: int
+        default: 1
     args:
       urlpath: https://carbonplan.blob.core.windows.net/carbonplan-retro/rfia_all/{{ assessment_area_id }}.csv
 
   fia_species_names:
     description: mapping from FIA species code to common name
-    driver: json
+    driver: textfiles
     args:
       urlpath: https://carbonplan.blob.core.windows.net/carbonplan-retro/ancillary/fia_spcd_to_name.json
+      decoder: 'json.loads'
 
   arb_tabling_csv:
     description: csv file contained in ARB-posted code that enumerates forest type codes per assessment area
