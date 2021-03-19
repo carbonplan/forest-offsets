@@ -3,18 +3,18 @@
   height='48'
 />
 
-# carbonplan / retro
+# carbonplan / forest-offsets
 
-**retrospective analysis of complience IFM projects**
+**retrospective analysis of complience IFM forest offset projects**
 
 [![GitHub][github-badge]][github]
 [![Build Status]][actions]
 ![MIT License][]
 
-[github]: https://github.com/carbonplan/retro
+[github]: https://github.com/carbonplan/forest-offsets
 [github-badge]: https://badgen.net/badge/-/github?icon=github&label
-[build status]: https://github.com/carbonplan/retro/actions/workflows/main.yaml/badge.svg
-[actions]: https://github.com/carbonplan/retro/actions/workflows/main.yaml
+[build status]: https://github.com/carbonplan/forest-offsets/actions/workflows/main.yaml/badge.svg
+[actions]: https://github.com/carbonplan/forest-offsets/actions/workflows/main.yaml
 [mit license]: https://badgen.net/badge/license/MIT/blue
 
 This repository includes our libraries and scripts for the retrospective synthesis and analysis of the complience forest carbon offsets market.
@@ -58,7 +58,7 @@ All the code in this repository is [MIT](https://choosealicense.com/licenses/mit
 
 ## about us
 
-CarbonPlan is a non-profit organization that uses data and science for climate action. We aim to improve the transparency and scientific integrity of carbon removal and climate solutions through open data and tools. Find out more at [carbonplan.org](https://carbonplan.org/) or get in touch by [opening an issue](https://github.com/carbonplan/retro/issues/new) or [sending us an email](mailto:hello@carbonplan.org).
+CarbonPlan is a non-profit organization that uses data and science for climate action. We aim to improve the transparency and scientific integrity of carbon removal and climate solutions through open data and tools. Find out more at [carbonplan.org](https://carbonplan.org/) or get in touch by [opening an issue](https://github.com/carbonplan/forest-offsets/issues/new) or [sending us an email](mailto:hello@carbonplan.org).
 
 ## contributors
 
