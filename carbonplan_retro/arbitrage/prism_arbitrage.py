@@ -22,7 +22,7 @@ from carbonplan_retro.load.geometry import (
 
 @lru_cache(maxsize=None)
 def load_prism(region, var):
-    return cat.prism(retion=region, var=var).read().squeeze().rename(var)
+    return cat.prism(region=region, var=var).read().squeeze().rename(var)
 
 
 def load_prism_arbitrage(supersection_id):
