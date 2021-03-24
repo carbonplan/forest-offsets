@@ -66,10 +66,9 @@ def load_pnw_slag_data(postal_code):
         columns=['CN', 'PLOT_STATUS_CD', 'MEASYEAR', 'LAT', 'LON', 'ECOSUBCD', 'ELEV'],
     ).read()
 
-    regional_biomass = pd.read_csv(
-        'https://carbonplan.blob.core.windows.net/carbonplan-data/raw/fia/TREE_REGIONAL_BIOMASS.csv',
-        usecols=['TRE_CN', 'STATECD', 'REGIONAL_DRYBIOT'],
-    )
+    regional_biomass = cat.fia_regional_biomass(
+        csv_kwargs=dict(usecols=['TRE_CN', 'STATECD', 'REGIONAL_DRYBIOT'])
+    ).read()
 
     regional_tree = tree.join(
         regional_biomass[['TRE_CN', 'REGIONAL_DRYBIOT']].set_index('TRE_CN'), on=['CN']

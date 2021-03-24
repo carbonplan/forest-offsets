@@ -1,18 +1,18 @@
 sources:
   supersections:
-    description: TODO
+    description: Geographic areas developed by the Climate Action Reserve that serve as the basis for defining assessment areas and regional common practice.
     driver: geojson
     args:
       urlpath: https://carbonplan.blob.core.windows.net/carbonplan-data/raw/ecoregions/supersections.geojson
 
   baileys_ecoregions:
-    description: TODO
+    description: Boundaries between major forest biomes developed by Bob Bailey
     driver: geojson
     args:
       urlpath: https://carbonplan.blob.core.windows.net/carbonplan-data/raw/ecoregions/baileys.geojson
 
   issuance_table:
-    description: TODO
+    description: The ARB issuance table provides a bi-monthly snapshot of all ARB offset credits issued by CARB.
     driver: excel
     args:
       urlpath: https://carbonplan.blob.core.windows.net/carbonplan-retro/ancillary/arboc_issuance_2020-09-09.xlsx
@@ -37,7 +37,7 @@ sources:
         names: ["code", "aa"]
 
   ak_assessment_areas:
-    description: TODO
+    description: Boundiaries between the three Southern Alaska assessment areas as defined in the 2015 ARB Forest Offset Protocol.
     driver: geojson
     args:
       urlpath: https://carbonplan.blob.core.windows.net/carbonplan-retro/ancillary/ak.assessment.area.shapefiles.5.4.15.json
@@ -50,7 +50,7 @@ sources:
       consolidated: True
 
   arb_geometries:
-    description: TODO
+    description: Offset project boundaries.
     driver: geojson
     parameters:
       opr_id:
@@ -61,7 +61,7 @@ sources:
       urlpath: https://carbonplan.blob.core.windows.net/carbonplan-retro/projects/{{ opr_id }}/shape.json
 
   states:
-    description: TODO
+    description: Boundaries of US states.
     driver: geojson
     args:
       urlpath: https://carbonplan.blob.core.windows.net/carbonplan-retro/ancillary/ne_110m_admin_1_states_provinces.json
@@ -79,20 +79,20 @@ sources:
       urlpath: https://carbonplan.blob.core.windows.net/carbonplan-retro/fire/{{ regions }}.json
 
   retro_db_light:
-    description: TODO
+    description: Packaging of project data derived from raw project database, issuance table, and various other pre-processing steps.
     driver: csv
     args:
       urlpath: https://carbonplan.blob.core.windows.net/carbonplan-retro/projects/retro-db-light-v1.0.csv
 
   retro_db_light_json:
-    description: TODO
+    description: Packaging of project data derived from raw project database, issuance table, and various other pre-processing steps.
     driver: textfiles
     args:
       urlpath: https://carbonplan.blob.core.windows.net/carbonplan-retro/projects/retro-db-light-v1.0.json
       decoder: 'json.loads'
 
   fia_long:
-    description: TODO
+    description: Processed FIA data on a 'per condition' basis, similar to the data used in Trugman, A. T., et al. 'Trait velocities reveal that mortality has driven widespread coordinated shifts in forest hydraulic trait composition.' Proceedings of the National Academy of Sciences 117.15 (2020).
     driver: parquet
     parameters:
       postal_code:
@@ -105,7 +105,7 @@ sources:
         account_name: carbonplan
 
   fia:
-    description: TODO
+    description: Raw FIA data, per table and per state, translated into parquet files.
     driver: parquet
     parameters:
       postal_code:
@@ -122,6 +122,12 @@ sources:
       storage_options:
         account_name: carbonplan
 
+  fia_regional_biomass:
+    description: TODO
+    driver: csv
+    args:
+      urlpath: https://carbonplan.blob.core.windows.net/carbonplan-data/raw/fia/TREE_REGIONAL_BIOMASS.csv
+
   rfia:
     description: per assessment area outputs from rFIA, when limiting plots to supersections/ownership/species subset
     driver: csv
@@ -129,6 +135,7 @@ sources:
       assessment_area_id:
         description: Assessment Area ID
         type: int
+        default: 1
     args:
       urlpath: https://carbonplan.blob.core.windows.net/carbonplan-retro/rfia/{{ assessment_area_id }}.csv
 
@@ -139,11 +146,43 @@ sources:
       assessment_area_id:
         description: Assessment Area ID
         type: int
+        default: 1
     args:
       urlpath: https://carbonplan.blob.core.windows.net/carbonplan-retro/rfia_all/{{ assessment_area_id }}.csv
 
   fia_species_names:
     description: mapping from FIA species code to common name
-    driver: json
+    driver: textfiles
     args:
       urlpath: https://carbonplan.blob.core.windows.net/carbonplan-retro/ancillary/fia_spcd_to_name.json
+      decoder: 'json.loads'
+
+  arb_tabling_csv:
+    description: csv file contained in ARB-posted code that enumerates forest type codes per assessment area
+    driver: csv
+    args:
+      urlpath: https://carbonplan.blob.core.windows.net/carbonplan-retro/ancillary/arb_tabling.csv
+
+  arb_fortypcds:
+    description: mapping from assessment area to list of
+    driver: textfiles
+    args:
+      urlpath:  https://carbonplan.blob.core.windows.net/carbonplan-retro/ancillary/arb_fortypcds.json
+      decoder: 'json.loads'
+
+  prism:
+    description: PRISM climate normals
+    parameters:
+      var:
+        description: variable name
+        type: str
+        default: tmean
+        allowed: [tmean, ppt]
+      region:
+        description: conus or ak
+        type: str
+        default: conus
+        allowed: [conus, ak]
+    driver: rasterio
+    args:
+      urlpath: https://carbonplan.blob.core.windows.net/carbonplan-data/processed/prism/normals/{{ region }}/4000m/{{ var }}.tif

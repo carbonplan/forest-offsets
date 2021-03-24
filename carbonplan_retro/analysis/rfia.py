@@ -103,10 +103,9 @@ def get_rfia_arb_common_practice(project, use_site_class=None):
 
         cp_per_inventory = rfia_data.groupby('YEAR').apply(get_rfia_slag_co2e_acre)
 
-        median_cp = cp_per_inventory.loc[(cp_per_inventory.index == 2012)].median()
-
-        if np.isnan(median_cp):
-            median_cp = cp_per_inventory.loc[(cp_per_inventory.index == 2010)].median()
+        median_cp = cp_per_inventory.loc[
+            (cp_per_inventory.index <= 2013) & (cp_per_inventory.index >= 2010)
+        ].median()
 
         if np.isnan(median_cp):
             # this only occurs when cross-state evals cannot be matched historically. Northern ID/OR/WA is on ex.
@@ -147,14 +146,19 @@ def get_fortyp_weighted_slag_co2e_acre(
         .rename(columns={0: 'fortyp_cp', 1: 'percent_null'})
     )
 
-    if df['percent_null'].max() > 0.25:
+    median_slag = df.loc[(df.index <= 2013) & (df.index >= 2010), 'fortyp_cp'].median()
+
+    if df.loc[(df.index <= 2013) & (df.index >= 2010), 'percent_null'].max() > 0.2:
         return np.nan
 
-    median_slag = df.loc[(df.index <= 2013) & (df.index >= 2010), 'fortyp_cp'].median()
+    # if np.isnan(median_slag):
+    #    median_slag = df.loc[(df.index == 2010), 'fortyp_cp'].median()
 
     if np.isnan(median_slag):
         # this only occurs when cross-state evals cannot be matched historically.
         median_slag = df.loc[(df.index >= 2010), 'fortyp_cp'].median()
+        if df.loc[(df.index >= 2010), 'percent_null'].max() > 0.2:
+            return np.nan
 
     return median_slag
 

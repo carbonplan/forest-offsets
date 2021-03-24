@@ -1,5 +1,4 @@
 import json
-import os
 from collections import defaultdict
 
 import dask
@@ -7,22 +6,18 @@ import fsspec
 from dask.distributed import Client
 
 from carbonplan_retro.analysis import rfia
-from carbonplan_retro.analysis.common_practice import get_arbocs
-from carbonplan_retro.data import cat
+from carbonplan_retro.analysis.allocation import get_arbocs
+from carbonplan_retro.data import cat, get_retro_bucket
 
 
-def get_slag_to_total_scalar(project, use_baseline=False):
+def get_slag_to_total_scalar(project):
     """baseline is constrained by SLAG but project is creditted for above and below, this function
     infers the relationship between SLAG and IFM_1 using project data
     """
-    if use_baseline:
-        return project['baseline']['ifm_1'] / (
-            project['average_slag_baseline'] * project['acreage']
-        )
-    else:
-        return project['rp_1']['ifm_1'] / (
-            project['carbon']['initial_carbon_stock']['value'] * project['acreage']
-        )
+
+    return project['rp_1']['ifm_1'] / (
+        project['carbon']['initial_carbon_stock']['value'] * project['acreage']
+    )
 
 
 def get_recalculated_arbocs(project, alternate_cp):
@@ -30,7 +25,7 @@ def get_recalculated_arbocs(project, alternate_cp):
     assumes that IFM_1 is a linear function of CP, which is what we see in practice
     """
     alt_baseline = project['baseline'].copy()
-    slag_to_total_carbon = get_slag_to_total_scalar(project, use_baseline=False)
+    slag_to_total_carbon = get_slag_to_total_scalar(project)
     alt_baseline['ifm_1'] = project['acreage'] * alternate_cp * slag_to_total_carbon
 
     alt_arbocs = get_arbocs(alt_baseline, project['rp_1'])
@@ -38,7 +33,7 @@ def get_recalculated_arbocs(project, alternate_cp):
 
 
 @dask.delayed(pure=True, traverse=True)
-def get_project_overcrediting(project, fortyp_weights, n_obs=1000):
+def get_project_crediting_error(project, fortyp_weights, n_obs=1000):
     store = defaultdict(list)
     i = 0
 
@@ -84,12 +79,9 @@ if __name__ == '__main__':
         > project['carbon']['common_practice']['value']
     ]
 
-    with fsspec.open(
-        'az://carbonplan-retro/classifications.json',
-        account_key=os.environ["BLOB_ACCOUNT_KEY"],
-        account_name="carbonplan",
-        mode='r',
-    ) as f:
+    fs_prefix, fs_kwargs = get_retro_bucket()
+    fn = f'{fs_prefix}/classifications.json'
+    with fsspec.open(fn, mode='r', **fs_kwargs) as f:
         reclassification_weights = json.load(f)
 
     overcrediting = {}
@@ -101,16 +93,11 @@ if __name__ == '__main__':
         else:
             continue
 
-        overcrediting[pid] = get_project_overcrediting(project, fortyp_weights)
+        overcrediting[pid] = get_project_crediting_error(project, fortyp_weights)
 
     overcrediting = dask.compute(overcrediting)
 
-    # @badgley fix me
-    with fsspec.open(
-        # carbonplan-retro/remapping/
-        'az://carbonplan-retro/results/reclassification-crediting-error.json',
-        account_key=os.environ["BLOB_ACCOUNT_KEY"],
-        account_name="carbonplan",
-        mode='w',
-    ) as f:
+    fs_prefix, fs_kwargs = get_retro_bucket()
+    fn = f'{fs_prefix}/results/reclassification-crediting-error.json'
+    with fsspec.open(fn, mode='w', **fs_kwargs) as f:
         json.dump(overcrediting[0], f)

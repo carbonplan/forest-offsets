@@ -101,10 +101,7 @@ def load_classification_data(postal_codes, target_var='FORTYPCD', aoi=None):
     data = data[data[target_var].isin(valid_target_classes)]
     data = data.dropna(subset=[target_var, 'fraction_species'])
     vec = DictVectorizer()
-    X = vec.fit_transform(
-        data["fraction_species"].values
-    )  # .toarray() explodes the sparse array returned from DictVectorizer() out into a dense array
+    X = vec.fit_transform(data["fraction_species"].values)
     y = data[target_var].values
-    # idx = ~np.isnan(X).any(axis=1)
 
     return {'features': X, 'targets': y, 'dictvectorizer': vec}

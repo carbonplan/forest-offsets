@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-import os
 from functools import lru_cache
 
 import fsspec
 import geopandas
-from carbonplan.data import cat as core_cat
+from carbonplan_data import cat as core_cat
 from shapely.geometry import Point
 
+from carbonplan_retro.data import get_retro_bucket
 from carbonplan_retro.load.geometry import load_supersections
 
 
@@ -29,10 +29,9 @@ def load_conus_mesh(coarsen=2):
 
 
 def load_supersection_mesh(supersection_id):
-    fn = f'az://carbonplan-retro/arbitrage/base_meshes/{supersection_id}.json'
-    with fsspec.open(
-        fn, account_name='carbonplan', mode='r', account_key=os.environ['BLOB_ACCOUNT_KEY']
-    ) as f:
+    fs_prefix, fs_kwargs = get_retro_bucket()
+    fn = f'{fs_prefix}/arbitrage/base_meshes/{supersection_id}.json'
+    with fsspec.open(fn, mode='r', **fs_kwargs) as f:
         mesh = geopandas.read_file(f)
     return mesh
 
@@ -55,10 +54,9 @@ def create_supersection_mesh(supersection_id, save=False):
     print(supersection_id, len(supersection_mesh))
 
     if save:
-        fn = f'az://carbonplan-retro/arbitrage/base_meshes/{supersection_id}.json'
-        with fsspec.open(
-            fn, account_name='carbonplan', mode='w', account_key=os.environ['BLOB_ACCOUNT_KEY']
-        ) as f:
+        fs_prefix, fs_kwargs = get_retro_bucket()
+        fn = f'{fs_prefix}/arbitrage/base_meshes/{supersection_id}.json'
+        with fsspec.open(fn, mode='w', **fs_kwargs) as f:
             f.write(supersection_mesh.to_crs('wgs84').to_json())
     return supersection_mesh
 

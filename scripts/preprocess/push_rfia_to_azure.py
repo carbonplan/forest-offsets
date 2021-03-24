@@ -1,11 +1,8 @@
-import os
-
-import fsspec
+from carbonplan_retro.data import get_filesystem
 
 if __name__ == '__main__':
-    fs = fsspec.get_filesystem_class('az')(
-        account_name='carbonplan', account_key=os.environ['BLOB_ACCOUNT_KEY']
-    )
+    '''syncs rFIA run outputs to `cat`'''
+    fs = get_filesystem()
     fs.put(
         '/home/jovyan/rfia/processed_data/no_buffer_biomass/',
         'carbonplan-retro/rfia',

@@ -6,9 +6,8 @@ import pathlib
 import fsspec
 import geopandas
 
-from carbonplan_retro.load.arb_fortypcds import load_arb_fortypcds
 from carbonplan_retro.load.geometry import get_overlapping_states, load_supersections
-from carbonplan_retro.utils import aa_code_to_ss_code
+from carbonplan_retro.utils import aa_code_to_ss_code, load_arb_fortypcds
 
 PROJECT_SUPERSECTIONS = [
     1,
@@ -41,6 +40,7 @@ PROJECT_SUPERSECTIONS = [
 ]
 
 if __name__ == '__main__':
+    """Builds json file that is readable by R and rFIA scripts for performing proper subsetting/aggregations"""
     parser = argparse.ArgumentParser()
     parser.add_argument("--all", action="store_true")
     parser.add_argument(
