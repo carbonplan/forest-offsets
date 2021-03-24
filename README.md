@@ -24,13 +24,13 @@ This repository includes our libraries and scripts for the retrospective synthes
 From PyPI:
 
 ```shell
-pip install carbonplan_retro
+pip install carbonplan_forest_offsets
 ```
 
 or from source:
 
 ```shell
-pip install git+https://github.com/carbonplan/retro.git
+pip install git+https://github.com/carbonplan/forest-offsets.git
 ```
 
 ## usage
