@@ -12,16 +12,16 @@ with open("README.md") as f:
 
 PYTHON_REQUIRES = ">=3.7"
 
-description = "forest carbon potential and risks"
+description = "retrospective analysis of complience IFM projects"
 
 setup(
-    name="carbonplan_retro",
+    name="carbonplan_forest_offsets",
     description=description,
     long_description=LONG_DESCRIPTION,
     long_description_content_type="text/markdown",
     maintainer="Joe Hamman",
     maintainer_email="joe@carbonplan.org",
-    url="https://github.com/carbonplan/retro",
+    url="https://github.com/carbonplan/forest-offsets",
     packages=find_packages(),
     include_package_data=True,
     python_requires=PYTHON_REQUIRES,

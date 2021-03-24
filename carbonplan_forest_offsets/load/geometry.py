@@ -4,8 +4,7 @@ import pandas as pd
 from shapely.ops import cascaded_union
 from tenacity import retry, stop_after_attempt, wait_fixed
 
-from carbonplan_retro.data import cat
-
+from ..data import cat
 from ..utils import supersection_str_to_ss_code
 
 

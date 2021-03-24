@@ -5,7 +5,7 @@ import pytest
 import xarray as xr
 from hypothesis import given
 
-from carbonplan_retro.fire.project_risk import average_risk, integrated_risk
+from carbonplan_forest_offsets.fire.project_risk import average_risk, integrated_risk
 
 rs = np.random.seed(0)
 

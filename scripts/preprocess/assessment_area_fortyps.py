@@ -2,8 +2,8 @@ import json
 
 import fsspec
 
-from carbonplan_retro.data import cat, get_retro_bucket
-from carbonplan_retro.utils import assessment_area_str_to_aa_code
+from carbonplan_forest_offsets.data import cat, get_retro_bucket
+from carbonplan_forest_offsets.utils import assessment_area_str_to_aa_code
 
 
 def get_fortyp_mapping():

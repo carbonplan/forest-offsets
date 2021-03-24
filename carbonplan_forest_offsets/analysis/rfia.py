@@ -5,8 +5,8 @@ from functools import lru_cache
 import numpy as np
 import pandas as pd
 
-from carbonplan_retro.data import cat
-from carbonplan_retro.utils import aa_code_to_ss_code
+from ..data import cat
+from ..utils import aa_code_to_ss_code
 
 
 @lru_cache(maxsize=None)

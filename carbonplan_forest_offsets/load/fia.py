@@ -3,9 +3,8 @@ from functools import lru_cache
 
 import pandas as pd
 
-from carbonplan_retro.utils import to_geodataframe
-
 from ..data import cat
+from ..utils import to_geodataframe
 
 
 def load_fia_common_practice(postal_codes, private_only=True):

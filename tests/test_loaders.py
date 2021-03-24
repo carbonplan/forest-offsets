@@ -1,4 +1,4 @@
-from carbonplan_retro.load.issuance import get_arb_id_map, load_issuance_table
+from carbonplan_forest_offsets.load.issuance import get_arb_id_map, load_issuance_table
 
 
 def test_load_issuance_table():

@@ -5,7 +5,7 @@ import time
 
 import requests
 
-from carbonplan_retro.load.issuance import load_issuance_table
+from carbonplan_forest_offsets.load.issuance import load_issuance_table
 
 ENDPOINT = 'https://gis.arb.ca.gov/fedarcgis/rest/services/ARBOC_issuance_map/MapServer/0/query'
 OUT_DIR = pathlib.Path(__file__).parents[2] / 'data/geometry/projects/rerun'

@@ -6,8 +6,8 @@ import pathlib
 import fsspec
 import geopandas
 
-from carbonplan_retro.load.geometry import get_overlapping_states, load_supersections
-from carbonplan_retro.utils import aa_code_to_ss_code, load_arb_fortypcds
+from carbonplan_forest_offsets.load.geometry import get_overlapping_states, load_supersections
+from carbonplan_forest_offsets.utils import aa_code_to_ss_code, load_arb_fortypcds
 
 PROJECT_SUPERSECTIONS = [
     1,

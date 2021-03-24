@@ -6,8 +6,8 @@ import geopandas
 from carbonplan_data import cat as core_cat
 from shapely.geometry import Point
 
-from carbonplan_retro.data import get_retro_bucket
-from carbonplan_retro.load.geometry import load_supersections
+from ..data import get_retro_bucket
+from ..load.geometry import load_supersections
 
 
 @lru_cache(maxsize=None)

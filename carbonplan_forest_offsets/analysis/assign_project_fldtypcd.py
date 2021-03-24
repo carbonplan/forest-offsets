@@ -5,8 +5,8 @@ import dask.dataframe as dd
 import geopandas
 from sklearn.feature_extraction import DictVectorizer
 
-from carbonplan_retro.data import cat
-from carbonplan_retro.utils import to_geodataframe
+from ..data import cat
+from ..utils import to_geodataframe
 
 
 def fractional_basal_area_by_species(data):

@@ -5,9 +5,9 @@ import dask
 import fsspec
 from dask.distributed import Client
 
-from carbonplan_retro.analysis import rfia
-from carbonplan_retro.analysis.allocation import get_arbocs
-from carbonplan_retro.data import cat, get_retro_bucket
+from ..analysis import rfia
+from ..analysis.allocation import get_arbocs
+from ..data import cat, get_retro_bucket
 
 
 def get_slag_to_total_scalar(project):

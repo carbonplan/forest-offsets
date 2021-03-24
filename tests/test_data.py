@@ -1,6 +1,6 @@
 import pytest
 
-from carbonplan_retro.data import cat
+from carbonplan_forest_offsets.data import cat
 
 
 @pytest.mark.parametrize("key", list(cat))

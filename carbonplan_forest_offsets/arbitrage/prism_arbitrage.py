@@ -11,13 +11,9 @@ from shapely.geometry import Point
 from sklearn.neighbors import KDTree
 from sklearn.preprocessing import QuantileTransformer
 
-from carbonplan_retro.data import cat, get_retro_bucket
-from carbonplan_retro.load.fia import load_fia_common_practice
-from carbonplan_retro.load.geometry import (
-    get_bordering_supersections,
-    get_overlapping_states,
-    load_supersections,
-)
+from ..data import cat, get_retro_bucket
+from ..load.fia import load_fia_common_practice
+from ..load.geometry import get_bordering_supersections, get_overlapping_states, load_supersections
 
 
 @lru_cache(maxsize=None)
