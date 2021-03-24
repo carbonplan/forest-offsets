@@ -1,5 +1,4 @@
 import json
-import os
 from collections import defaultdict
 
 import dask
@@ -8,7 +7,7 @@ from dask.distributed import Client
 
 from carbonplan_retro.analysis import rfia
 from carbonplan_retro.analysis.allocation import get_arbocs
-from carbonplan_retro.data import cat
+from carbonplan_retro.data import cat, get_retro_bucket
 
 
 def get_slag_to_total_scalar(project):
@@ -80,12 +79,9 @@ if __name__ == '__main__':
         > project['carbon']['common_practice']['value']
     ]
 
-    with fsspec.open(
-        'az://carbonplan-retro/classifications.json',
-        account_key=os.environ["BLOB_ACCOUNT_KEY"],
-        account_name="carbonplan",
-        mode='r',
-    ) as f:
+    fs_prefix, fs_kwargs = get_retro_bucket()
+    fn = f'{fs_prefix}/classifications.json'
+    with fsspec.open(fn, mode='r', **fs_kwargs) as f:
         reclassification_weights = json.load(f)
 
     overcrediting = {}
@@ -101,10 +97,7 @@ if __name__ == '__main__':
 
     overcrediting = dask.compute(overcrediting)
 
-    with fsspec.open(
-        'az://carbonplan-retro/results/reclassification-crediting-error.json',
-        account_key=os.environ["BLOB_ACCOUNT_KEY"],
-        account_name="carbonplan",
-        mode='w',
-    ) as f:
+    fs_prefix, fs_kwargs = get_retro_bucket()
+    fn = f'{fs_prefix}/results/reclassification-crediting-error.json'
+    with fsspec.open(fn, mode='w', **fs_kwargs) as f:
         json.dump(overcrediting[0], f)

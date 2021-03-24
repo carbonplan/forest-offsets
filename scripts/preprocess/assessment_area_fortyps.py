@@ -1,9 +1,8 @@
 import json
-import os
 
 import fsspec
 
-from carbonplan_retro.data import cat
+from carbonplan_retro.data import cat, get_retro_bucket
 from carbonplan_retro.utils import assessment_area_str_to_aa_code
 
 
@@ -31,11 +30,10 @@ def get_fortyp_mapping():
 
 
 if __name__ == '__main__':
+
     fortypcd_d = get_fortyp_mapping()
-    with fsspec.open(
-        'az://carbonplan-retro/ancillary/arb_fortypcds.json',
-        account_key=os.environ["BLOB_ACCOUNT_KEY"],
-        account_name="carbonplan",
-        mode='w',
-    ) as f:
+
+    fs_prefix, fs_kwargs = get_retro_bucket()
+    fn = f'{fs_prefix}/ancillary/arb_fortypcds.json'
+    with fsspec.open(fn, mode='w', **fs_kwargs) as f:
         json.dump(fortypcd_d, f, indent=2)

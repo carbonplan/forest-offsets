@@ -122,6 +122,12 @@ sources:
       storage_options:
         account_name: carbonplan
 
+  fia_regional_biomass:
+    description: TODO
+    driver: csv
+    args:
+      urlpath: https://carbonplan.blob.core.windows.net/carbonplan-data/raw/fia/TREE_REGIONAL_BIOMASS.csv
+
   rfia:
     description: per assessment area outputs from rFIA, when limiting plots to supersections/ownership/species subset
     driver: csv
@@ -129,6 +135,7 @@ sources:
       assessment_area_id:
         description: Assessment Area ID
         type: int
+        default: 1
     args:
       urlpath: https://carbonplan.blob.core.windows.net/carbonplan-retro/rfia/{{ assessment_area_id }}.csv
 
@@ -139,14 +146,16 @@ sources:
       assessment_area_id:
         description: Assessment Area ID
         type: int
+        default: 1
     args:
       urlpath: https://carbonplan.blob.core.windows.net/carbonplan-retro/rfia_all/{{ assessment_area_id }}.csv
 
   fia_species_names:
     description: mapping from FIA species code to common name
-    driver: json
+    driver: textfiles
     args:
       urlpath: https://carbonplan.blob.core.windows.net/carbonplan-retro/ancillary/fia_spcd_to_name.json
+      decoder: 'json.loads'
 
   arb_tabling_csv:
     description: csv file contained in ARB-posted code that enumerates forest type codes per assessment area
@@ -160,3 +169,20 @@ sources:
     args:
       urlpath:  https://carbonplan.blob.core.windows.net/carbonplan-retro/ancillary/arb_fortypcds.json
       decoder: 'json.loads'
+
+  prism:
+    description: PRISM climate normals
+    parameters:
+      var:
+        description: variable name
+        type: str
+        default: tmean
+        allowed: [tmean, ppt]
+      region:
+        description: conus or ak
+        type: str
+        default: conus
+        allowed: [conus, ak]
+    driver: rasterio
+    args:
+      urlpath: https://carbonplan.blob.core.windows.net/carbonplan-data/processed/prism/normals/{{ region }}/4000m/{{ var }}.tif
