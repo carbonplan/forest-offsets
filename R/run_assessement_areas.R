@@ -9,9 +9,9 @@ library(rjson)
 library(dplyr)
 
 
-supersections <- readOGR('/home/jovyan/rfia/CAR_Supersections/', layer='CAR_Supersections')
+supersections <- readOGR('CAR_Supersections/', layer='CAR_Supersections')
 
-assessment_areas <- fromJSON(file='/home/jovyan/lost+found/rfia_assessment_areas_subset.json')
+assessment_areas <- fromJSON(file='rfia_assessment_areas_subset.json')
 process_assessment_area <- function(assessment_area) {
 
   supersection <- subset(supersections, SSection %in% assessment_area$supersection_name)

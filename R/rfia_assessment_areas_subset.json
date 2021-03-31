@@ -1,0 +1,2421 @@
+[
+  {
+    "assessment_area_id": 3,
+    "fortypcds": [
+      104,
+      105,
+      506,
+      511,
+      512,
+      519
+    ],
+    "supersection_name": "Allegheny & North Cumberland Mountains",
+    "supersection_id": 2,
+    "postal_codes": [
+      "KY",
+      "NC",
+      "TN",
+      "VA",
+      "WV",
+      "MD",
+      "NJ",
+      "PA"
+    ]
+  },
+  {
+    "assessment_area_id": 4,
+    "fortypcds": [
+      507,
+      508,
+      513,
+      517,
+      520,
+      601,
+      602,
+      608,
+      700,
+      701,
+      702,
+      703,
+      704,
+      705,
+      706,
+      708,
+      991
+    ],
+    "supersection_name": "Allegheny & North Cumberland Mountains",
+    "supersection_id": 2,
+    "postal_codes": [
+      "KY",
+      "NC",
+      "TN",
+      "VA",
+      "WV",
+      "MD",
+      "NJ",
+      "PA"
+    ]
+  },
+  {
+    "assessment_area_id": 5,
+    "fortypcds": [
+      171,
+      184,
+      400,
+      401,
+      402,
+      404,
+      405,
+      406,
+      409,
+      999
+    ],
+    "supersection_name": "Allegheny & North Cumberland Mountains",
+    "supersection_id": 2,
+    "postal_codes": [
+      "KY",
+      "NC",
+      "TN",
+      "VA",
+      "WV",
+      "MD",
+      "NJ",
+      "PA"
+    ]
+  },
+  {
+    "assessment_area_id": 6,
+    "fortypcds": [
+      100,
+      102,
+      103,
+      121,
+      122,
+      123,
+      125,
+      126,
+      201,
+      381,
+      383,
+      384,
+      385,
+      900,
+      901,
+      903
+    ],
+    "supersection_name": "Allegheny & North Cumberland Mountains",
+    "supersection_id": 2,
+    "postal_codes": [
+      "KY",
+      "NC",
+      "TN",
+      "VA",
+      "WV",
+      "MD",
+      "NJ",
+      "PA"
+    ]
+  },
+  {
+    "assessment_area_id": 7,
+    "fortypcds": [
+      516,
+      707,
+      800,
+      801,
+      802,
+      805,
+      809
+    ],
+    "supersection_name": "Allegheny & North Cumberland Mountains",
+    "supersection_id": 2,
+    "postal_codes": [
+      "KY",
+      "NC",
+      "TN",
+      "VA",
+      "WV",
+      "MD",
+      "NJ",
+      "PA"
+    ]
+  },
+  {
+    "assessment_area_id": 8,
+    "fortypcds": [
+      500,
+      501,
+      502,
+      503,
+      504,
+      505,
+      510,
+      514,
+      515
+    ],
+    "supersection_name": "Allegheny & North Cumberland Mountains",
+    "supersection_id": 2,
+    "postal_codes": [
+      "KY",
+      "NC",
+      "TN",
+      "VA",
+      "WV",
+      "MD",
+      "NJ",
+      "PA"
+    ]
+  },
+  {
+    "assessment_area_id": 9,
+    "fortypcds": [
+      161,
+      162,
+      163,
+      165,
+      167
+    ],
+    "supersection_name": "Allegheny & North Cumberland Mountains",
+    "supersection_id": 2,
+    "postal_codes": [
+      "KY",
+      "NC",
+      "TN",
+      "VA",
+      "WV",
+      "MD",
+      "NJ",
+      "PA"
+    ]
+  },
+  {
+    "assessment_area_id": 1,
+    "fortypcds": [
+      100,
+      101,
+      102,
+      103,
+      104,
+      105,
+      121,
+      122,
+      123,
+      124,
+      125,
+      126,
+      127,
+      381,
+      384,
+      401,
+      402,
+      409,
+      606,
+      900,
+      901,
+      902,
+      903,
+      999
+    ],
+    "supersection_name": "Adirondacks & Green Mountains",
+    "supersection_id": 1,
+    "postal_codes": [
+      "CT",
+      "MA",
+      "NH",
+      "VT",
+      "NY"
+    ]
+  },
+  {
+    "assessment_area_id": 2,
+    "fortypcds": [
+      501,
+      502,
+      503,
+      504,
+      505,
+      510,
+      513,
+      515,
+      516,
+      517,
+      519,
+      520,
+      608,
+      701,
+      703,
+      704,
+      705,
+      706,
+      707,
+      708,
+      709,
+      800,
+      801,
+      802,
+      805,
+      809,
+      904
+    ],
+    "supersection_name": "Adirondacks & Green Mountains",
+    "supersection_id": 1,
+    "postal_codes": [
+      "CT",
+      "MA",
+      "NH",
+      "VT",
+      "NY"
+    ]
+  },
+  {
+    "assessment_area_id": 16,
+    "fortypcds": [
+      100,
+      161,
+      162,
+      163,
+      167,
+      171,
+      400,
+      402,
+      404,
+      406,
+      409,
+      514,
+      999
+    ],
+    "supersection_name": "Atlantic Coastal Plain & Flatwoods",
+    "supersection_id": 4,
+    "postal_codes": [
+      "FL",
+      "GA",
+      "SC",
+      "NC"
+    ]
+  },
+  {
+    "assessment_area_id": 17,
+    "fortypcds": [
+      141,
+      142,
+      164,
+      168,
+      403,
+      407,
+      980,
+      983
+    ],
+    "supersection_name": "Atlantic Coastal Plain & Flatwoods",
+    "supersection_id": 4,
+    "postal_codes": [
+      "FL",
+      "GA",
+      "SC",
+      "NC"
+    ]
+  },
+  {
+    "assessment_area_id": 18,
+    "fortypcds": [
+      500,
+      501,
+      502,
+      503,
+      504,
+      505,
+      515
+    ],
+    "supersection_name": "Atlantic Coastal Plain & Flatwoods",
+    "supersection_id": 4,
+    "postal_codes": [
+      "FL",
+      "GA",
+      "SC",
+      "NC"
+    ]
+  },
+  {
+    "assessment_area_id": 19,
+    "fortypcds": [
+      519,
+      602,
+      700,
+      702,
+      703,
+      704,
+      709
+    ],
+    "supersection_name": "Atlantic Coastal Plain & Flatwoods",
+    "supersection_id": 4,
+    "postal_codes": [
+      "FL",
+      "GA",
+      "SC",
+      "NC"
+    ]
+  },
+  {
+    "assessment_area_id": 20,
+    "fortypcds": [
+      166,
+      600,
+      601,
+      605,
+      606,
+      607,
+      608,
+      609,
+      708,
+      982
+    ],
+    "supersection_name": "Atlantic Coastal Plain & Flatwoods",
+    "supersection_id": 4,
+    "postal_codes": [
+      "FL",
+      "GA",
+      "SC",
+      "NC"
+    ]
+  },
+  {
+    "assessment_area_id": 21,
+    "fortypcds": [
+      506,
+      507,
+      508,
+      511,
+      512,
+      520,
+      705,
+      706,
+      995
+    ],
+    "supersection_name": "Atlantic Coastal Plain & Flatwoods",
+    "supersection_id": 4,
+    "postal_codes": [
+      "FL",
+      "GA",
+      "SC",
+      "NC"
+    ]
+  },
+  {
+    "assessment_area_id": 53,
+    "fortypcds": [
+      600,
+      601,
+      608,
+      700,
+      701,
+      702,
+      703,
+      704,
+      708,
+      709
+    ],
+    "supersection_name": "Central Interior Broadleaf Forest Ozark Highlands",
+    "supersection_id": 15,
+    "postal_codes": [
+      "AR",
+      "KS",
+      "MO",
+      "OK",
+      "IL"
+    ]
+  },
+  {
+    "assessment_area_id": 54,
+    "fortypcds": [
+      507,
+      508,
+      511,
+      512,
+      513,
+      516,
+      517,
+      519,
+      520,
+      705,
+      706,
+      707,
+      800,
+      801,
+      802,
+      805,
+      962,
+      995
+    ],
+    "supersection_name": "Central Interior Broadleaf Forest Ozark Highlands",
+    "supersection_id": 15,
+    "postal_codes": [
+      "AR",
+      "KS",
+      "MO",
+      "OK",
+      "IL"
+    ]
+  },
+  {
+    "assessment_area_id": 55,
+    "fortypcds": [
+      500,
+      502,
+      503,
+      504,
+      505,
+      506
+    ],
+    "supersection_name": "Central Interior Broadleaf Forest Ozark Highlands",
+    "supersection_id": 15,
+    "postal_codes": [
+      "AR",
+      "KS",
+      "MO",
+      "OK",
+      "IL"
+    ]
+  },
+  {
+    "assessment_area_id": 56,
+    "fortypcds": [
+      103,
+      161,
+      162,
+      171,
+      184,
+      401,
+      402,
+      404,
+      406,
+      501,
+      509,
+      510,
+      514,
+      515,
+      999
+    ],
+    "supersection_name": "Central Interior Broadleaf Forest Ozark Highlands",
+    "supersection_id": 15,
+    "postal_codes": [
+      "AR",
+      "KS",
+      "MO",
+      "OK",
+      "IL"
+    ]
+  },
+  {
+    "assessment_area_id": 70,
+    "fortypcds": [
+      201,
+      221,
+      261,
+      265,
+      368,
+      703,
+      901,
+      971,
+      972,
+      976
+    ],
+    "supersection_name": "Central New Mexico",
+    "supersection_id": 18,
+    "postal_codes": [
+      "NM",
+      "TX"
+    ]
+  },
+  {
+    "assessment_area_id": 71,
+    "fortypcds": [
+      184,
+      185,
+      973,
+      999
+    ],
+    "supersection_name": "Central New Mexico",
+    "supersection_id": 18,
+    "postal_codes": [
+      "NM",
+      "TX"
+    ]
+  },
+  {
+    "assessment_area_id": 82,
+    "fortypcds": [
+      180,
+      201,
+      221,
+      241,
+      267,
+      281,
+      304,
+      321,
+      369,
+      703,
+      709,
+      901,
+      920,
+      923,
+      975,
+      999
+    ],
+    "supersection_name": "Columbia Basin",
+    "supersection_id": 22,
+    "postal_codes": [
+      "ID",
+      "WA",
+      "OR"
+    ]
+  },
+  {
+    "assessment_area_id": 86,
+    "fortypcds": [
+      104,
+      105,
+      506,
+      511,
+      512,
+      519
+    ],
+    "supersection_name": "Eastern Broadleaf Forest Cumberland Plateau",
+    "supersection_id": 24,
+    "postal_codes": [
+      "GA",
+      "KY",
+      "OH",
+      "TN",
+      "VA"
+    ]
+  },
+  {
+    "assessment_area_id": 87,
+    "fortypcds": [
+      600,
+      601,
+      602,
+      605,
+      608,
+      701,
+      702,
+      703,
+      704,
+      708
+    ],
+    "supersection_name": "Eastern Broadleaf Forest Cumberland Plateau",
+    "supersection_id": 24,
+    "postal_codes": [
+      "GA",
+      "KY",
+      "OH",
+      "TN",
+      "VA"
+    ]
+  },
+  {
+    "assessment_area_id": 88,
+    "fortypcds": [
+      507,
+      508,
+      513,
+      516,
+      517,
+      520,
+      995
+    ],
+    "supersection_name": "Eastern Broadleaf Forest Cumberland Plateau",
+    "supersection_id": 24,
+    "postal_codes": [
+      "GA",
+      "KY",
+      "OH",
+      "TN",
+      "VA"
+    ]
+  },
+  {
+    "assessment_area_id": 89,
+    "fortypcds": [
+      705,
+      706,
+      707,
+      800,
+      801,
+      802,
+      805,
+      809,
+      901
+    ],
+    "supersection_name": "Eastern Broadleaf Forest Cumberland Plateau",
+    "supersection_id": 24,
+    "postal_codes": [
+      "GA",
+      "KY",
+      "OH",
+      "TN",
+      "VA"
+    ]
+  },
+  {
+    "assessment_area_id": 90,
+    "fortypcds": [
+      500,
+      501,
+      502,
+      503,
+      504,
+      505,
+      510,
+      515
+    ],
+    "supersection_name": "Eastern Broadleaf Forest Cumberland Plateau",
+    "supersection_id": 24,
+    "postal_codes": [
+      "GA",
+      "KY",
+      "OH",
+      "TN",
+      "VA"
+    ]
+  },
+  {
+    "assessment_area_id": 91,
+    "fortypcds": [
+      100,
+      167,
+      400,
+      401,
+      402,
+      404,
+      405,
+      406,
+      409,
+      999
+    ],
+    "supersection_name": "Eastern Broadleaf Forest Cumberland Plateau",
+    "supersection_id": 24,
+    "postal_codes": [
+      "GA",
+      "KY",
+      "OH",
+      "TN",
+      "VA"
+    ]
+  },
+  {
+    "assessment_area_id": 92,
+    "fortypcds": [
+      102,
+      103,
+      161,
+      162,
+      163,
+      165,
+      171,
+      381
+    ],
+    "supersection_name": "Eastern Broadleaf Forest Cumberland Plateau",
+    "supersection_id": 24,
+    "postal_codes": [
+      "GA",
+      "KY",
+      "OH",
+      "TN",
+      "VA"
+    ]
+  },
+  {
+    "assessment_area_id": 93,
+    "fortypcds": [
+      260,
+      261,
+      262,
+      263,
+      264,
+      265,
+      266,
+      268,
+      270,
+      281,
+      321,
+      367,
+      901
+    ],
+    "supersection_name": "Eastern Cascades",
+    "supersection_id": 25,
+    "postal_codes": [
+      "WA",
+      "OR"
+    ]
+  },
+  {
+    "assessment_area_id": 94,
+    "fortypcds": [
+      180,
+      201,
+      202,
+      221,
+      224,
+      267,
+      301,
+      304,
+      368,
+      369,
+      703,
+      709,
+      911,
+      920,
+      923,
+      943,
+      974,
+      975,
+      999
+    ],
+    "supersection_name": "Eastern Cascades",
+    "supersection_id": 25,
+    "postal_codes": [
+      "WA",
+      "OR"
+    ]
+  },
+  {
+    "assessment_area_id": 112,
+    "fortypcds": [
+      166,
+      601,
+      602,
+      605,
+      607,
+      608,
+      609,
+      708,
+      982
+    ],
+    "supersection_name": "Gulf Coastal Plain",
+    "supersection_id": 32,
+    "postal_codes": [
+      "LA",
+      "TX",
+      "AL",
+      "FL",
+      "GA",
+      "MS"
+    ]
+  },
+  {
+    "assessment_area_id": 113,
+    "fortypcds": [
+      161,
+      162,
+      163,
+      171,
+      400,
+      402,
+      404,
+      406,
+      409,
+      514,
+      999
+    ],
+    "supersection_name": "Gulf Coastal Plain",
+    "supersection_id": 32,
+    "postal_codes": [
+      "LA",
+      "TX",
+      "AL",
+      "FL",
+      "GA",
+      "MS"
+    ]
+  },
+  {
+    "assessment_area_id": 114,
+    "fortypcds": [
+      141,
+      142,
+      164,
+      403,
+      407,
+      980,
+      983,
+      992,
+      993
+    ],
+    "supersection_name": "Gulf Coastal Plain",
+    "supersection_id": 32,
+    "postal_codes": [
+      "LA",
+      "TX",
+      "AL",
+      "FL",
+      "GA",
+      "MS"
+    ]
+  },
+  {
+    "assessment_area_id": 115,
+    "fortypcds": [
+      500,
+      501,
+      502,
+      503,
+      504,
+      505,
+      506,
+      507,
+      508,
+      511,
+      520,
+      995
+    ],
+    "supersection_name": "Gulf Coastal Plain",
+    "supersection_id": 32,
+    "postal_codes": [
+      "LA",
+      "TX",
+      "AL",
+      "FL",
+      "GA",
+      "MS"
+    ]
+  },
+  {
+    "assessment_area_id": 116,
+    "fortypcds": [
+      168,
+      519,
+      600,
+      606,
+      700,
+      701,
+      702,
+      703,
+      704,
+      705,
+      706,
+      709
+    ],
+    "supersection_name": "Gulf Coastal Plain",
+    "supersection_id": 32,
+    "postal_codes": [
+      "LA",
+      "TX",
+      "AL",
+      "FL",
+      "GA",
+      "MS"
+    ]
+  },
+  {
+    "assessment_area_id": 129,
+    "fortypcds": [
+      125,
+      126,
+      127
+    ],
+    "supersection_name": "Laurentian Mixed Forest Green Bay Lobe",
+    "supersection_id": 35,
+    "postal_codes": [
+      "WI",
+      "MI"
+    ]
+  },
+  {
+    "assessment_area_id": 130,
+    "fortypcds": [
+      517,
+      700,
+      701,
+      702,
+      703,
+      704,
+      706,
+      707,
+      708,
+      709,
+      900,
+      904,
+      905
+    ],
+    "supersection_name": "Laurentian Mixed Forest Green Bay Lobe",
+    "supersection_id": 35,
+    "postal_codes": [
+      "WI",
+      "MI"
+    ]
+  },
+  {
+    "assessment_area_id": 131,
+    "fortypcds": [
+      105,
+      516,
+      520,
+      800,
+      801,
+      802,
+      805,
+      809
+    ],
+    "supersection_name": "Laurentian Mixed Forest Green Bay Lobe",
+    "supersection_id": 35,
+    "postal_codes": [
+      "WI",
+      "MI"
+    ]
+  },
+  {
+    "assessment_area_id": 132,
+    "fortypcds": [
+      101,
+      102,
+      103,
+      104,
+      381,
+      400,
+      401,
+      402,
+      409,
+      500,
+      503,
+      504,
+      505,
+      509,
+      515,
+      519,
+      962,
+      999
+    ],
+    "supersection_name": "Laurentian Mixed Forest Green Bay Lobe",
+    "supersection_id": 35,
+    "postal_codes": [
+      "WI",
+      "MI"
+    ]
+  },
+  {
+    "assessment_area_id": 133,
+    "fortypcds": [
+      121,
+      122,
+      269,
+      384,
+      385,
+      901,
+      902
+    ],
+    "supersection_name": "Laurentian Mixed Forest Green Bay Lobe",
+    "supersection_id": 35,
+    "postal_codes": [
+      "WI",
+      "MI"
+    ]
+  },
+  {
+    "assessment_area_id": 141,
+    "fortypcds": [
+      125,
+      126,
+      127
+    ],
+    "supersection_name": "Laurentian Mixed Forest NLP/EUP",
+    "supersection_id": 37,
+    "postal_codes": [
+      "MI"
+    ]
+  },
+  {
+    "assessment_area_id": 142,
+    "fortypcds": [
+      517,
+      700,
+      701,
+      702,
+      703,
+      704,
+      706,
+      707,
+      708,
+      709,
+      904
+    ],
+    "supersection_name": "Laurentian Mixed Forest NLP/EUP",
+    "supersection_id": 37,
+    "postal_codes": [
+      "MI"
+    ]
+  },
+  {
+    "assessment_area_id": 143,
+    "fortypcds": [
+      105,
+      383,
+      516,
+      520,
+      800,
+      801,
+      802,
+      805,
+      809,
+      995
+    ],
+    "supersection_name": "Laurentian Mixed Forest NLP/EUP",
+    "supersection_id": 37,
+    "postal_codes": [
+      "MI"
+    ]
+  },
+  {
+    "assessment_area_id": 144,
+    "fortypcds": [
+      400,
+      401,
+      402,
+      500,
+      501,
+      503,
+      504,
+      505,
+      507,
+      509,
+      513,
+      515,
+      519,
+      962
+    ],
+    "supersection_name": "Laurentian Mixed Forest NLP/EUP",
+    "supersection_id": 37,
+    "postal_codes": [
+      "MI"
+    ]
+  },
+  {
+    "assessment_area_id": 145,
+    "fortypcds": [
+      101,
+      102,
+      103,
+      104,
+      171,
+      381,
+      409,
+      999
+    ],
+    "supersection_name": "Laurentian Mixed Forest NLP/EUP",
+    "supersection_id": 37,
+    "postal_codes": [
+      "MI"
+    ]
+  },
+  {
+    "assessment_area_id": 146,
+    "fortypcds": [
+      900,
+      901,
+      902,
+      905
+    ],
+    "supersection_name": "Laurentian Mixed Forest NLP/EUP",
+    "supersection_id": 37,
+    "postal_codes": [
+      "MI"
+    ]
+  },
+  {
+    "assessment_area_id": 147,
+    "fortypcds": [
+      121,
+      122,
+      201,
+      269,
+      380,
+      384
+    ],
+    "supersection_name": "Laurentian Mixed Forest NLP/EUP",
+    "supersection_id": 37,
+    "postal_codes": [
+      "MI"
+    ]
+  },
+  {
+    "assessment_area_id": 148,
+    "fortypcds": [
+      125,
+      126,
+      127
+    ],
+    "supersection_name": "Laurentian Mixed Forest Northern Highlands",
+    "supersection_id": 38,
+    "postal_codes": [
+      "WI",
+      "MI"
+    ]
+  },
+  {
+    "assessment_area_id": 149,
+    "fortypcds": [
+      105,
+      121,
+      122,
+      380,
+      384,
+      516,
+      517,
+      520,
+      700,
+      701,
+      702,
+      704,
+      706,
+      707,
+      708,
+      800,
+      801,
+      802,
+      805,
+      809,
+      900,
+      901,
+      902,
+      904,
+      905
+    ],
+    "supersection_name": "Laurentian Mixed Forest Northern Highlands",
+    "supersection_id": 38,
+    "postal_codes": [
+      "WI",
+      "MI"
+    ]
+  },
+  {
+    "assessment_area_id": 150,
+    "fortypcds": [
+      101,
+      102,
+      103,
+      104,
+      381,
+      401,
+      409,
+      500,
+      503,
+      504,
+      505,
+      509,
+      513,
+      515,
+      519,
+      962,
+      999
+    ],
+    "supersection_name": "Laurentian Mixed Forest Northern Highlands",
+    "supersection_id": 38,
+    "postal_codes": [
+      "WI",
+      "MI"
+    ]
+  },
+  {
+    "assessment_area_id": 151,
+    "fortypcds": [
+      125,
+      126,
+      127
+    ],
+    "supersection_name": "Laurentian Mixed Forest Southern Superior",
+    "supersection_id": 39,
+    "postal_codes": [
+      "MN",
+      "WI",
+      "MI"
+    ]
+  },
+  {
+    "assessment_area_id": 152,
+    "fortypcds": [
+      105,
+      516,
+      517,
+      520,
+      700,
+      701,
+      702,
+      704,
+      706,
+      707,
+      708,
+      800,
+      801,
+      802,
+      805,
+      809,
+      904
+    ],
+    "supersection_name": "Laurentian Mixed Forest Southern Superior",
+    "supersection_id": 39,
+    "postal_codes": [
+      "MN",
+      "WI",
+      "MI"
+    ]
+  },
+  {
+    "assessment_area_id": 153,
+    "fortypcds": [
+      101,
+      102,
+      103,
+      104,
+      381,
+      401,
+      409,
+      500,
+      503,
+      505,
+      509,
+      519,
+      962,
+      999
+    ],
+    "supersection_name": "Laurentian Mixed Forest Southern Superior",
+    "supersection_id": 39,
+    "postal_codes": [
+      "MN",
+      "WI",
+      "MI"
+    ]
+  },
+  {
+    "assessment_area_id": 154,
+    "fortypcds": [
+      121,
+      122,
+      385,
+      900,
+      901,
+      902,
+      905
+    ],
+    "supersection_name": "Laurentian Mixed Forest Southern Superior",
+    "supersection_id": 39,
+    "postal_codes": [
+      "MN",
+      "WI",
+      "MI"
+    ]
+  },
+  {
+    "assessment_area_id": 162,
+    "fortypcds": [
+      506,
+      507,
+      508,
+      511,
+      601,
+      608,
+      700,
+      701,
+      702,
+      704,
+      705,
+      706,
+      707,
+      708,
+      995
+    ],
+    "supersection_name": "Lower New England - Northern Appalachia",
+    "supersection_id": 41,
+    "postal_codes": [
+      "CT",
+      "MA",
+      "NH",
+      "RI",
+      "VT",
+      "VA",
+      "DE",
+      "MD",
+      "NJ",
+      "NY",
+      "PA",
+      "ME"
+    ]
+  },
+  {
+    "assessment_area_id": 163,
+    "fortypcds": [
+      100,
+      102,
+      103,
+      104,
+      105,
+      122,
+      123,
+      125,
+      126,
+      129,
+      171,
+      201,
+      381,
+      383,
+      384,
+      401,
+      606,
+      903,
+      999
+    ],
+    "supersection_name": "Lower New England - Northern Appalachia",
+    "supersection_id": 41,
+    "postal_codes": [
+      "CT",
+      "MA",
+      "NH",
+      "RI",
+      "VT",
+      "VA",
+      "DE",
+      "MD",
+      "NJ",
+      "NY",
+      "PA",
+      "ME"
+    ]
+  },
+  {
+    "assessment_area_id": 164,
+    "fortypcds": [
+      516,
+      517,
+      520,
+      703,
+      709,
+      800,
+      801,
+      802,
+      805,
+      809,
+      900,
+      901,
+      902
+    ],
+    "supersection_name": "Lower New England - Northern Appalachia",
+    "supersection_id": 41,
+    "postal_codes": [
+      "CT",
+      "MA",
+      "NH",
+      "RI",
+      "VT",
+      "VA",
+      "DE",
+      "MD",
+      "NJ",
+      "NY",
+      "PA",
+      "ME"
+    ]
+  },
+  {
+    "assessment_area_id": 165,
+    "fortypcds": [
+      500,
+      501,
+      502,
+      503,
+      504,
+      505,
+      510,
+      512,
+      513,
+      514,
+      515,
+      519
+    ],
+    "supersection_name": "Lower New England - Northern Appalachia",
+    "supersection_id": 41,
+    "postal_codes": [
+      "CT",
+      "MA",
+      "NH",
+      "RI",
+      "VT",
+      "VA",
+      "DE",
+      "MD",
+      "NJ",
+      "NY",
+      "PA",
+      "ME"
+    ]
+  },
+  {
+    "assessment_area_id": 166,
+    "fortypcds": [
+      161,
+      162,
+      163,
+      167,
+      400,
+      402,
+      405,
+      406,
+      409
+    ],
+    "supersection_name": "Lower New England - Northern Appalachia",
+    "supersection_id": 41,
+    "postal_codes": [
+      "CT",
+      "MA",
+      "NH",
+      "RI",
+      "VT",
+      "VA",
+      "DE",
+      "MD",
+      "NJ",
+      "NY",
+      "PA",
+      "ME"
+    ]
+  },
+  {
+    "assessment_area_id": 167,
+    "fortypcds": [
+      125,
+      126,
+      127
+    ],
+    "supersection_name": "Maine - New Brunswick Foothills and Lowlands",
+    "supersection_id": 42,
+    "postal_codes": [
+      "ME"
+    ]
+  },
+  {
+    "assessment_area_id": 168,
+    "fortypcds": [
+      608,
+      701,
+      704,
+      705,
+      707,
+      708,
+      904
+    ],
+    "supersection_name": "Maine - New Brunswick Foothills and Lowlands",
+    "supersection_id": 42,
+    "postal_codes": [
+      "ME"
+    ]
+  },
+  {
+    "assessment_area_id": 169,
+    "fortypcds": [
+      516,
+      520,
+      800,
+      801,
+      802,
+      805,
+      809
+    ],
+    "supersection_name": "Maine - New Brunswick Foothills and Lowlands",
+    "supersection_id": 42,
+    "postal_codes": [
+      "ME"
+    ]
+  },
+  {
+    "assessment_area_id": 170,
+    "fortypcds": [
+      101,
+      102,
+      103,
+      104,
+      167,
+      401,
+      503,
+      505
+    ],
+    "supersection_name": "Maine - New Brunswick Foothills and Lowlands",
+    "supersection_id": 42,
+    "postal_codes": [
+      "ME"
+    ]
+  },
+  {
+    "assessment_area_id": 171,
+    "fortypcds": [
+      900,
+      901,
+      902,
+      903
+    ],
+    "supersection_name": "Maine - New Brunswick Foothills and Lowlands",
+    "supersection_id": 42,
+    "postal_codes": [
+      "ME"
+    ]
+  },
+  {
+    "assessment_area_id": 172,
+    "fortypcds": [
+      105,
+      121,
+      122,
+      123,
+      124,
+      384,
+      385,
+      999
+    ],
+    "supersection_name": "Maine - New Brunswick Foothills and Lowlands",
+    "supersection_id": 42,
+    "postal_codes": [
+      "ME"
+    ]
+  },
+  {
+    "assessment_area_id": 173,
+    "fortypcds": [
+      180,
+      183,
+      184,
+      260,
+      261,
+      281,
+      367,
+      369,
+      901,
+      953,
+      974
+    ],
+    "supersection_name": "Modoc Plateau",
+    "supersection_id": 43,
+    "postal_codes": [
+      "CA",
+      "OR"
+    ]
+  },
+  {
+    "assessment_area_id": 174,
+    "fortypcds": [
+      221,
+      222,
+      223,
+      368,
+      371,
+      920,
+      922,
+      999
+    ],
+    "supersection_name": "Modoc Plateau",
+    "supersection_id": 43,
+    "postal_codes": [
+      "CA",
+      "OR"
+    ]
+  },
+  {
+    "assessment_area_id": 175,
+    "fortypcds": [
+      281
+    ],
+    "supersection_name": "Montana Rocky Mountains",
+    "supersection_id": 44,
+    "postal_codes": [
+      "MT",
+      "ID"
+    ]
+  },
+  {
+    "assessment_area_id": 176,
+    "fortypcds": [
+      201,
+      221,
+      267,
+      368,
+      703,
+      974,
+      999
+    ],
+    "supersection_name": "Montana Rocky Mountains",
+    "supersection_id": 44,
+    "postal_codes": [
+      "MT",
+      "ID"
+    ]
+  },
+  {
+    "assessment_area_id": 177,
+    "fortypcds": [
+      182,
+      184,
+      185,
+      265,
+      266,
+      268,
+      321,
+      366,
+      367,
+      901
+    ],
+    "supersection_name": "Montana Rocky Mountains",
+    "supersection_id": 44,
+    "postal_codes": [
+      "MT",
+      "ID"
+    ]
+  },
+  {
+    "assessment_area_id": 221,
+    "fortypcds": [
+      201,
+      260,
+      261,
+      301,
+      305,
+      341,
+      361,
+      363,
+      368,
+      371,
+      911,
+      941,
+      942,
+      943,
+      961,
+      999
+    ],
+    "supersection_name": "Northern California Coast",
+    "supersection_id": 55,
+    "postal_codes": [
+      "CA",
+      "OR"
+    ]
+  },
+  {
+    "assessment_area_id": 222,
+    "fortypcds": [
+      180,
+      709,
+      912,
+      920,
+      922,
+      924,
+      925,
+      931,
+      932,
+      955
+    ],
+    "supersection_name": "Northern California Coast",
+    "supersection_id": 55,
+    "postal_codes": [
+      "CA",
+      "OR"
+    ]
+  },
+  {
+    "assessment_area_id": 228,
+    "fortypcds": [
+      241,
+      260,
+      261,
+      262,
+      263,
+      264,
+      265,
+      266,
+      268,
+      270,
+      271,
+      281,
+      320,
+      321,
+      367,
+      900,
+      901,
+      902
+    ],
+    "supersection_name": "Northwest Cascades",
+    "supersection_id": 58,
+    "postal_codes": [
+      "WA",
+      "OR"
+    ]
+  },
+  {
+    "assessment_area_id": 229,
+    "fortypcds": [
+      180,
+      201,
+      202,
+      221,
+      222,
+      224,
+      267,
+      301,
+      304,
+      305,
+      368,
+      369,
+      703,
+      704,
+      709,
+      722,
+      911,
+      912,
+      920,
+      923,
+      941,
+      943,
+      961,
+      975,
+      999
+    ],
+    "supersection_name": "Northwest Cascades",
+    "supersection_id": 58,
+    "postal_codes": [
+      "WA",
+      "OR"
+    ]
+  },
+  {
+    "assessment_area_id": 231,
+    "fortypcds": [
+      201,
+      241,
+      267,
+      301,
+      304,
+      320,
+      321,
+      703,
+      709,
+      911,
+      962,
+      999
+    ],
+    "supersection_name": "Okanogan Highland",
+    "supersection_id": 60,
+    "postal_codes": [
+      "ID",
+      "WA"
+    ]
+  },
+  {
+    "assessment_area_id": 232,
+    "fortypcds": [
+      221
+    ],
+    "supersection_name": "Okanogan Highland",
+    "supersection_id": 60,
+    "postal_codes": [
+      "ID",
+      "WA"
+    ]
+  },
+  {
+    "assessment_area_id": 233,
+    "fortypcds": [
+      260,
+      265,
+      266,
+      268,
+      270,
+      281,
+      900,
+      901,
+      902,
+      975
+    ],
+    "supersection_name": "Okanogan Highland",
+    "supersection_id": 60,
+    "postal_codes": [
+      "ID",
+      "WA"
+    ]
+  },
+  {
+    "assessment_area_id": 264,
+    "fortypcds": [
+      141,
+      161,
+      162,
+      163,
+      167,
+      171,
+      400,
+      401,
+      402,
+      403,
+      404,
+      405,
+      406,
+      407,
+      409,
+      514,
+      999
+    ],
+    "supersection_name": "SE Middle Mixed Forest Cumberland Plateau & Valley",
+    "supersection_id": 69,
+    "postal_codes": [
+      "AL",
+      "GA",
+      "TN"
+    ]
+  },
+  {
+    "assessment_area_id": 265,
+    "fortypcds": [
+      519,
+      600,
+      601,
+      602,
+      607,
+      608,
+      700,
+      702,
+      703,
+      704,
+      705,
+      706,
+      708,
+      801,
+      805
+    ],
+    "supersection_name": "SE Middle Mixed Forest Cumberland Plateau & Valley",
+    "supersection_id": 69,
+    "postal_codes": [
+      "AL",
+      "GA",
+      "TN"
+    ]
+  },
+  {
+    "assessment_area_id": 266,
+    "fortypcds": [
+      500,
+      501,
+      502,
+      503,
+      504,
+      505,
+      510,
+      515
+    ],
+    "supersection_name": "SE Middle Mixed Forest Cumberland Plateau & Valley",
+    "supersection_id": 69,
+    "postal_codes": [
+      "AL",
+      "GA",
+      "TN"
+    ]
+  },
+  {
+    "assessment_area_id": 267,
+    "fortypcds": [
+      104,
+      105,
+      506,
+      507,
+      508,
+      511,
+      512,
+      513,
+      520,
+      995
+    ],
+    "supersection_name": "SE Middle Mixed Forest Cumberland Plateau & Valley",
+    "supersection_id": 69,
+    "postal_codes": [
+      "AL",
+      "GA",
+      "TN"
+    ]
+  },
+  {
+    "assessment_area_id": 288,
+    "fortypcds": [
+      605,
+      608,
+      701,
+      702,
+      703,
+      704,
+      705,
+      706,
+      708,
+      709
+    ],
+    "supersection_name": "Southern Allegheny Plateau",
+    "supersection_id": 76,
+    "postal_codes": [
+      "KY",
+      "OH",
+      "WV",
+      "PA"
+    ]
+  },
+  {
+    "assessment_area_id": 289,
+    "fortypcds": [
+      101,
+      104,
+      161,
+      162,
+      163,
+      167,
+      171,
+      401,
+      402,
+      404,
+      405,
+      406,
+      409
+    ],
+    "supersection_name": "Southern Allegheny Plateau",
+    "supersection_id": 76,
+    "postal_codes": [
+      "KY",
+      "OH",
+      "WV",
+      "PA"
+    ]
+  },
+  {
+    "assessment_area_id": 290,
+    "fortypcds": [
+      102,
+      103,
+      105,
+      122,
+      269,
+      381,
+      384,
+      385,
+      999
+    ],
+    "supersection_name": "Southern Allegheny Plateau",
+    "supersection_id": 76,
+    "postal_codes": [
+      "KY",
+      "OH",
+      "WV",
+      "PA"
+    ]
+  },
+  {
+    "assessment_area_id": 291,
+    "fortypcds": [
+      501,
+      502,
+      503,
+      504,
+      505,
+      510,
+      512,
+      515,
+      519
+    ],
+    "supersection_name": "Southern Allegheny Plateau",
+    "supersection_id": 76,
+    "postal_codes": [
+      "KY",
+      "OH",
+      "WV",
+      "PA"
+    ]
+  },
+  {
+    "assessment_area_id": 292,
+    "fortypcds": [
+      506,
+      507,
+      508,
+      511,
+      513,
+      516,
+      517,
+      520,
+      707,
+      800,
+      801,
+      802,
+      805,
+      809,
+      901,
+      995
+    ],
+    "supersection_name": "Southern Allegheny Plateau",
+    "supersection_id": 76,
+    "postal_codes": [
+      "KY",
+      "OH",
+      "WV",
+      "PA"
+    ]
+  },
+  {
+    "assessment_area_id": 296,
+    "fortypcds": [
+      180,
+      183,
+      184,
+      241,
+      261,
+      262,
+      268,
+      281,
+      365,
+      367,
+      369
+    ],
+    "supersection_name": "Southern Cascades",
+    "supersection_id": 79,
+    "postal_codes": [
+      "CA",
+      "OR"
+    ]
+  },
+  {
+    "assessment_area_id": 297,
+    "fortypcds": [
+      201,
+      202,
+      221,
+      222,
+      223,
+      224,
+      260,
+      267,
+      270,
+      304,
+      305,
+      341,
+      361,
+      368,
+      371,
+      901,
+      911,
+      941,
+      942,
+      943,
+      951,
+      961,
+      999
+    ],
+    "supersection_name": "Southern Cascades",
+    "supersection_id": 79,
+    "postal_codes": [
+      "CA",
+      "OR"
+    ]
+  },
+  {
+    "assessment_area_id": 298,
+    "fortypcds": [
+      703,
+      709,
+      722,
+      912,
+      920,
+      921,
+      922,
+      923,
+      924,
+      925,
+      931,
+      932,
+      953,
+      955,
+      974
+    ],
+    "supersection_name": "Southern Cascades",
+    "supersection_id": 79,
+    "postal_codes": [
+      "CA",
+      "OR"
+    ]
+  },
+  {
+    "assessment_area_id": 317,
+    "fortypcds": [
+      900,
+      901,
+      902,
+      903
+    ],
+    "supersection_name": "St Lawrence & Mohawk Valley",
+    "supersection_id": 86,
+    "postal_codes": [
+      "VT",
+      "NY"
+    ]
+  },
+  {
+    "assessment_area_id": 318,
+    "fortypcds": [
+      102,
+      103,
+      104,
+      105,
+      121,
+      122,
+      123,
+      124,
+      126,
+      127,
+      171,
+      381,
+      384,
+      385,
+      401,
+      402,
+      409,
+      503,
+      505,
+      509,
+      513,
+      519,
+      999
+    ],
+    "supersection_name": "St Lawrence & Mohawk Valley",
+    "supersection_id": 86,
+    "postal_codes": [
+      "VT",
+      "NY"
+    ]
+  },
+  {
+    "assessment_area_id": 319,
+    "fortypcds": [
+      516,
+      517,
+      520,
+      608,
+      701,
+      702,
+      703,
+      704,
+      705,
+      706,
+      707,
+      708,
+      709,
+      800,
+      801,
+      802,
+      805,
+      809,
+      904
+    ],
+    "supersection_name": "St Lawrence & Mohawk Valley",
+    "supersection_id": 86,
+    "postal_codes": [
+      "VT",
+      "NY"
+    ]
+  },
+  {
+    "assessment_area_id": 326,
+    "fortypcds": [
+      201,
+      362,
+      368,
+      962,
+      971
+    ],
+    "supersection_name": "Tonto Transition",
+    "supersection_id": 88,
+    "postal_codes": [
+      "AZ"
+    ]
+  },
+  {
+    "assessment_area_id": 327,
+    "fortypcds": [
+      706,
+      972
+    ],
+    "supersection_name": "Tonto Transition",
+    "supersection_id": 88,
+    "postal_codes": [
+      "AZ"
+    ]
+  },
+  {
+    "assessment_area_id": 328,
+    "fortypcds": [
+      182,
+      184,
+      185,
+      703,
+      973,
+      976
+    ],
+    "supersection_name": "Tonto Transition",
+    "supersection_id": 88,
+    "postal_codes": [
+      "AZ"
+    ]
+  },
+  {
+    "assessment_area_id": 329,
+    "fortypcds": [
+      221,
+      999
+    ],
+    "supersection_name": "Tonto Transition",
+    "supersection_id": 88,
+    "postal_codes": [
+      "AZ"
+    ]
+  },
+  {
+    "assessment_area_id": 346,
+    "fortypcds": [
+      503,
+      505,
+      515,
+      608,
+      701,
+      702,
+      703,
+      704,
+      708,
+      904
+    ],
+    "supersection_name": "White Mountains",
+    "supersection_id": 94,
+    "postal_codes": [
+      "NH",
+      "VT",
+      "ME"
+    ]
+  },
+  {
+    "assessment_area_id": 347,
+    "fortypcds": [
+      105,
+      121,
+      122,
+      123,
+      124,
+      125,
+      126,
+      127,
+      900,
+      901,
+      902,
+      903,
+      999
+    ],
+    "supersection_name": "White Mountains",
+    "supersection_id": 94,
+    "postal_codes": [
+      "NH",
+      "VT",
+      "ME"
+    ]
+  },
+  {
+    "assessment_area_id": 348,
+    "fortypcds": [
+      516,
+      520,
+      800,
+      801,
+      802,
+      805,
+      809
+    ],
+    "supersection_name": "White Mountains",
+    "supersection_id": 94,
+    "postal_codes": [
+      "NH",
+      "VT",
+      "ME"
+    ]
+  },
+  {
+    "assessment_area_id": 349,
+    "fortypcds": [
+      102,
+      103,
+      104,
+      401,
+      409
+    ],
+    "supersection_name": "White Mountains",
+    "supersection_id": 94,
+    "postal_codes": [
+      "NH",
+      "VT",
+      "ME"
+    ]
+  },
+  {
+    "assessment_area_id": 350,
+    "fortypcds": [
+      201,
+      261,
+      265,
+      266,
+      269,
+      362,
+      368,
+      901,
+      962,
+      971,
+      975
+    ],
+    "supersection_name": "White Mountains - San Francisco Peaks - Mongollon",
+    "supersection_id": 95,
+    "postal_codes": [
+      "AZ",
+      "NM"
+    ]
+  },
+  {
+    "assessment_area_id": 351,
+    "fortypcds": [
+      706,
+      972
+    ],
+    "supersection_name": "White Mountains - San Francisco Peaks - Mongollon",
+    "supersection_id": 95,
+    "postal_codes": [
+      "AZ",
+      "NM"
+    ]
+  },
+  {
+    "assessment_area_id": 352,
+    "fortypcds": [
+      182,
+      184,
+      185,
+      703,
+      973,
+      976
+    ],
+    "supersection_name": "White Mountains - San Francisco Peaks - Mongollon",
+    "supersection_id": 95,
+    "postal_codes": [
+      "AZ",
+      "NM"
+    ]
+  },
+  {
+    "assessment_area_id": 353,
+    "fortypcds": [
+      221,
+      999
+    ],
+    "supersection_name": "White Mountains - San Francisco Peaks - Mongollon",
+    "supersection_id": 95,
+    "postal_codes": [
+      "AZ",
+      "NM"
+    ]
+  }
+]
