@@ -27,10 +27,12 @@
 
 import json
 import os
+import shutil
 
 import geopandas
 import pandas as pd
 import shapely
+from tqdm import tqdm
 
 from carbonplan_forest_offsets.analysis import allocation
 from carbonplan_forest_offsets.data import get_retro_bucket
@@ -38,13 +40,14 @@ from carbonplan_forest_offsets.load.issuance import load_issuance_table
 from carbonplan_forest_offsets.load.project_db import load_project_db
 
 DROPBOX = '/Users/jhamman/CarbonPlan Dropbox/Projects/Microsoft/Forests-Retrospective'
-TARGET = f'{DROPBOX}/carbonplan-retro'
+TARGET = '/Users/jhamman/workdir/forest-offsets-database'
 VERSION = 'v1.0'
 
 
 def write_shapes(opr_ids):
 
-    for i, proj in enumerate(opr_ids):
+    print('writing shapes')
+    for i, proj in tqdm(enumerate(opr_ids)):
         src = f"{DROPBOX}/shapes/{proj}.json"
         dst = f"{TARGET}/projects/{proj}"
         dst_file = os.path.join(dst, "shape.json")
@@ -62,6 +65,29 @@ def write_shapes(opr_ids):
 
         with open(dst_file, "w") as f:
             json.dump(data, f, indent=2, allow_nan=False)
+
+
+def write_opdrs(opr_ids):
+    print('writing opdrs')
+    for i, proj in tqdm(enumerate(opr_ids)):
+        src = f"{DROPBOX}/carbonplan-retro/packaged_opdrs/{proj}.zip"
+        dst = f"{TARGET}/projects/{proj}"
+        dst_file = os.path.join(dst, "opdrs.zip")
+        os.makedirs(dst, exist_ok=True)
+        shutil.copyfile(src, dst_file)
+
+
+def write_ancillary_files():
+    dst = f'{TARGET}/ancillary/'
+    for fname in [
+        "arboc_issuance_2020-09-09.xlsx",
+        "assessment_area_lookup.csv",
+        "super_section_lookup.csv",
+    ]:
+        src = f"{DROPBOX}/carbonplan-retro/ancillary/{fname}"
+        dst_file = os.path.join(dst, fname)
+        os.makedirs(dst, exist_ok=True)
+        shutil.copyfile(src, dst_file)
 
 
 def get_centroids(gdf):
@@ -192,12 +218,6 @@ def make_project_db_json(project_db):
             ].to_dict(),
             "rp_1": make_rp_1(row),
             "assessment_areas": make_supersections(row),
-            "permanence": {
-                "arb_total_risk": row[("project", "reversal_risk", "")],
-                "arb_fire_risk": row[("project", "fire_risk", "")],
-                "mtbs_fire_risk_supersection": row[("project", "mtbs_fire_risk", "supersections")],
-                "mtbs_fire_risk_baileys": row[("project", "mtbs_fire_risk", "baileys")],
-            },
             "notes": row["project", "notes", ""],  # include or not?
             "comment": "",  # get from google sheet
         }
@@ -214,15 +234,15 @@ def make_project_db_json(project_db):
     return projects
 
 
-def write_projects(project_collection, output):
+def write_project_db_json(project_collection, output):
     with open(output, "w") as outfile:
         json.dump(project_collection, outfile, indent=2)
 
 
-def write_projects_csv(db):
+def write_project_db_csv(db, output):
     df = pd.DataFrame(db)
 
-    dict_cols = ["arbocs", "carbon", "permanence"]
+    dict_cols = ["arbocs", "carbon"]
 
     for col_key in dict_cols:
         for field_key in df.iloc[0][col_key].keys():
@@ -233,7 +253,7 @@ def write_projects_csv(db):
             df[new_key] = vals
     df = df.drop(columns=dict_cols)
 
-    df.to_csv(f"{TARGET}/projects/retro-db-light-{VERSION}.csv")
+    df.to_csv(output)
 
 
 def main(exclude_graduated_projects=True):
@@ -262,7 +282,6 @@ def main(exclude_graduated_projects=True):
 
     ## OPDR-calculated
     # OPDRs report five individual components that we use to recalculate ARBOC issuance:
-
     # - IFM-1: standing live
     # - IFM-3: standing dead
     # - IFM-7: in-use wood products
@@ -283,22 +302,28 @@ def main(exclude_graduated_projects=True):
     project_db[("rp_1", "allocation", "calculated")] = opdr_calculated
     project_db[("rp_1", "allocation", "issuance")] = issuance_first_rp
 
+    # TODO -- move?
+    write_opdrs(project_db.index)
+    write_ancillary_files()
     ## Project geometries
+    # first copy to target
+    write_shapes(project_db.index)
+
     # Here we extract the centroid of each project from the project geometries.
-
-    coords = [list([]) for i in range(len(project_db))]
-
-    for i, proj in enumerate(project_db.index):
+    coords = []
+    print('getting project centroids')
+    for i, proj in tqdm(enumerate(project_db.index)):
         gdf = geopandas.GeoDataFrame.from_file(f"{TARGET}/projects/{proj}/shape.json")
-        coords[i] = get_centroids(gdf)
+        coords.append(get_centroids(gdf))
     # add project centroids from shapefiles to a new column
     project_db[("project", "shape_centroid", "")] = coords
 
     project_db_json = make_project_db_json(project_db)
 
-    return project_db_json
+    # write project db
+    write_project_db_json(project_db_json, f"{TARGET}/forest-offsets-database-{VERSION}.json")
+    write_project_db_csv(project_db_json, f"{TARGET}/forest-offsets-database-{VERSION}.csv")
 
 
 if __name__ == '__main__':
-
-    project_db_json = main()
+    main()

@@ -1,0 +1,289 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "id": {
+        "type": "string"
+      },
+      "opr_id": {
+        "type": "string"
+      },
+      "arb_id": {
+        "type": "string"
+      },
+      "name": {
+        "type": "string"
+      },
+      "apd": {
+        "type": "string"
+      },
+      "opo": {
+        "type": "string"
+      },
+      "owners": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "developers": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "attestor": {
+        "type": "string"
+      },
+      "is_opo": {
+        "type": "boolean"
+      },
+      "coordinates": {
+        "type": "array",
+        "items": {
+          "type": "number"
+        }
+      },
+      "shape_centroid": {
+        "type": "array",
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        }
+      },
+      "supersection_ids": {
+        "type": "array",
+        "items": {
+          "type": "integer"
+        }
+      },
+      "acreage": {
+        "type": "number"
+      },
+      "buffer_contribution": {
+        "type": "number"
+      },
+      "arbocs": {
+        "type": "object",
+        "properties": {
+          "issuance": {
+            "type": "number"
+          },
+          "calculated": {
+            "type": "number"
+          },
+          "reported": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "calculated",
+          "issuance",
+          "reported"
+        ]
+      },
+      "carbon": {
+        "type": "object",
+        "properties": {
+          "initial_carbon_stock": {
+            "type": "object",
+            "properties": {
+              "value": {
+                "type": "number"
+              },
+              "units": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "units",
+              "value"
+            ]
+          },
+          "common_practice": {
+            "type": "object",
+            "properties": {
+              "value": {
+                "type": "number"
+              },
+              "units": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "units",
+              "value"
+            ]
+          },
+          "average_slag_baseline": {
+            "type": "object",
+            "properties": {
+              "value": {
+                "type": "number"
+              },
+              "units": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "units",
+              "value"
+            ]
+          }
+        },
+        "required": [
+          "average_slag_baseline",
+          "common_practice",
+          "initial_carbon_stock"
+        ]
+      },
+      "baseline": {
+        "type": "object",
+        "properties": {
+          "ifm_1": {
+            "type": "number"
+          },
+          "ifm_3": {
+            "type": "number"
+          },
+          "ifm_7": {
+            "type": "number"
+          },
+          "ifm_8": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "ifm_1",
+          "ifm_3",
+          "ifm_7",
+          "ifm_8"
+        ]
+      },
+      "rp_1": {
+        "type": "object",
+        "properties": {
+          "start_date": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "end_date": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "ifm_1": {
+            "type": "number"
+          },
+          "ifm_3": {
+            "type": "number"
+          },
+          "ifm_7": {
+            "type": "number"
+          },
+          "ifm_8": {
+            "type": "number"
+          },
+          "secondary_effects": {
+            "type": "number"
+          },
+          "confidence_deduction": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "confidence_deduction",
+          "end_date",
+          "ifm_1",
+          "ifm_3",
+          "ifm_7",
+          "ifm_8",
+          "secondary_effects",
+          "start_date"
+        ]
+      },
+      "assessment_areas": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "code": {
+              "type": "integer"
+            },
+            "site_class": {
+              "type": "string"
+            },
+            "acreage": {
+              "type": "number"
+            },
+            "species": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "code": {
+                    "type": "integer"
+                  },
+                  "basal_area": {
+                    "type": [
+                      "null",
+                      "number"
+                    ]
+                  },
+                  "fraction": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "code",
+                  "fraction"
+                ]
+              }
+            }
+          },
+          "required": [
+            "code",
+            "species"
+          ]
+        }
+      },
+      "notes": {
+        "type": "string"
+      },
+      "comment": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "acreage",
+      "apd",
+      "arb_id",
+      "arbocs",
+      "assessment_areas",
+      "attestor",
+      "baseline",
+      "buffer_contribution",
+      "carbon",
+      "comment",
+      "coordinates",
+      "developers",
+      "id",
+      "is_opo",
+      "name",
+      "notes",
+      "opo",
+      "opr_id",
+      "owners",
+      "rp_1",
+      "shape_centroid",
+      "supersection_ids"
+    ]
+  }
+}
