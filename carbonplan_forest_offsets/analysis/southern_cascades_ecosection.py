@@ -28,7 +28,7 @@ def main():
 
     fs_prefix, fs_kwargs = get_retro_bucket()
     fn = f'{fs_prefix}/results/southern_cascades_mixed_conifer_by_ecosection.json'
-    with fsspec.open(fn, mode='r', **fs_kwargs) as f:
+    with fsspec.open(fn, mode='w', **fs_kwargs) as f:
         json.dump(records, f)
 
 
