@@ -10,9 +10,9 @@ library(dplyr)
 
 cores <- 12
 
-supersections <- readOGR('/home/jovyan/rfia/ak_shapefiles/')
+supersections <- readOGR('ak_shapefiles/')
 
-assessment_areas <- fromJSON(file='/home/jovyan/rfia/ak_assessment_areas.json')
+assessment_areas <- fromJSON(file='ak_assessment_areas.json')
 
 process_assessment_area <- function(assessment_area) {
 

@@ -1,6 +1,5 @@
 import argparse
 import json
-import os
 import pathlib
 
 import fsspec
@@ -89,6 +88,6 @@ if __name__ == '__main__':
 
             store.append(record)
 
-    fn = os.path.join('/home/jovyan/lost+found/', out_fn)
+    fn = pathlib.Path(__file__).parents[2] / 'R' / out_fn
     with fsspec.open(fn, mode='w') as f:
         json.dump(store, f, indent=2)
