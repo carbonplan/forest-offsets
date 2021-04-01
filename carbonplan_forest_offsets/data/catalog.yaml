@@ -167,3 +167,9 @@ sources:
     driver: rasterio
     args:
       urlpath: https://carbonplan.blob.core.windows.net/carbonplan-data/processed/prism/normals/{{ region }}/4000m/{{ var }}.tif
+
+  ecomap_sections:
+    description: boundaries of ecosections, as defined by the USFS ECOMAP 2007 project. Downloaded from https://data.fs.usda.gov/geodata/edw/edw_resources/shp/S_USA.EcomapSections.zip.
+    driver: geojson
+    args:
+      urlpath: https://carbonplan.blob.core.windows.net/carbonplan-retro/ancillary/ecomap_sections.json
