@@ -1,3 +1,4 @@
+import shutil
 import zipfile
 from itertools import product
 from pathlib import Path
@@ -101,6 +102,12 @@ def write_intermediates():
     )  # append trailing slash to put all csv in dir
 
     # TODO: ecoseciton analyses
+    rfia_ecosection_dst = dst / 'rfia'
+
+    shutil.copy(
+        '/home/jovyan/rfia/processed_data/297_by_ecosection.csv',
+        rfia_ecosection_dst / '297_by_ecosection.csv',
+    )
 
     classify_dst = dst / 'classification'
     classify_dst.mkdir(parents=True, exist_ok=True)
@@ -122,7 +129,7 @@ def write_results():
 
     fs.get('carbonplan-retro/results/reclassification-crediting-error.json', str(dst) + '/')
     fs.get('carbonplan-retro/arbitrage/prism-supersections/79.json', str(dst) + '/')
-    # TODO: ecosections from rFIA
+    fs.get('carbonplan-retro/southern_cascades_mixed_conifer_by_ecosection.json', str(dst) + '/')
     fs.get('carbonplan-retro/results/crediting-verification.json', str(dst) + '/')
     fs.get('carbonplan-retro/results/common-practice-verification.json', str(dst) + '/')
     fs.get('carbonplan-retro/reclassification/classifier_fscores.json', str(dst) + '/')
