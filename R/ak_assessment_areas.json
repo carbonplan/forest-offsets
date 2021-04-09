@@ -1,0 +1,26 @@
+[
+  {
+    "assessment_area_id": 285,
+    "supersection_name": "Alaska Range Transition",
+    "supersection_id": 285,
+    "postal_codes": [
+      "AK"
+    ]
+  },
+  {
+    "assessment_area_id": 286,
+    "supersection_name": "Alexander Archipelago - Kodiak",
+    "supersection_id": 286,
+    "postal_codes": [
+      "AK"
+    ]
+  },
+  {
+    "assessment_area_id": 287,
+    "supersection_name": "Gulf-NorthCoast-Chugach",
+    "supersection_id": 287,
+    "postal_codes": [
+      "AK"
+    ]
+  }
+]

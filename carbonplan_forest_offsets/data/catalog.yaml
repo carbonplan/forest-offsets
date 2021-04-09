@@ -21,7 +21,7 @@ sources:
         engine: openpyxl
 
   super_section_lookup:
-    description: TODO
+    description: key-value mapping between unique supersection id and CARB supersection name
     driver: csv
     args:
       urlpath: https://carbonplan.blob.core.windows.net/carbonplan-retro/ancillary/super_section_lookup.csv
@@ -29,7 +29,7 @@ sources:
         names: ["code", "ss"]
 
   assessment_area_lookup:
-    description: TODO
+    description: key-value mapping between unique assessment area id and CARB assessment area name
     driver: csv
     args:
       urlpath: https://carbonplan.blob.core.windows.net/carbonplan-retro/ancillary/assessment_area_lookup.csv
@@ -41,13 +41,6 @@ sources:
     driver: geojson
     args:
       urlpath: https://carbonplan.blob.core.windows.net/carbonplan-retro/ancillary/ak.assessment.area.shapefiles.5.4.15.json
-
-  mtbs:
-    description: TODO
-    driver: zarr
-    args:
-      urlpath: https://carbonplan.blob.core.windows.net/carbonplan-data/processed/mtbs/conus/4000m/monthly.zarr
-      consolidated: True
 
   arb_geometries:
     description: Offset project boundaries.
@@ -65,18 +58,6 @@ sources:
     driver: geojson
     args:
       urlpath: https://carbonplan.blob.core.windows.net/carbonplan-retro/ancillary/ne_110m_admin_1_states_provinces.json
-
-  fire_risk:
-    description: TODO
-    driver: geojson
-    parameters:
-      regions:
-        description: Spatial regions to use
-        type: str
-        default: baileys
-        allowed: [baileys, supersections]
-    args:
-      urlpath: https://carbonplan.blob.core.windows.net/carbonplan-retro/fire/{{ regions }}.json
 
   retro_db_light:
     description: Packaging of project data derived from raw project database, issuance table, and various other pre-processing steps.
@@ -123,7 +104,7 @@ sources:
         account_name: carbonplan
 
   fia_regional_biomass:
-    description: TODO
+    description: FIA table that uses regional (as opposed to national) allometric equations to infer tree biomass. Used in this project for states within the PNW work unit (AK, CA, OR, WA).
     driver: csv
     args:
       urlpath: https://carbonplan.blob.core.windows.net/carbonplan-data/raw/fia/TREE_REGIONAL_BIOMASS.csv
@@ -171,7 +152,7 @@ sources:
       decoder: 'json.loads'
 
   prism:
-    description: PRISM climate normals
+    description: 30-year PRISM climate normals regir
     parameters:
       var:
         description: variable name
