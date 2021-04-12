@@ -145,7 +145,7 @@ sources:
       urlpath: https://carbonplan.blob.core.windows.net/carbonplan-retro/ancillary/arb_tabling.csv
 
   arb_fortypcds:
-    description: mapping from assessment area to list of
+    description: mapping from assessment area to list of FIA forest type codes. Mapping derived from `tabling_rest_supersection.xlsx`, originally downloaded from  https://ww2.arb.ca.gov/our-work/programs/compliance-offset-program/compliance-offset-protocols/us-forest-projects/2015/common-practice-data
     driver: textfiles
     args:
       urlpath:  https://carbonplan.blob.core.windows.net/carbonplan-retro/ancillary/arb_fortypcds.json
