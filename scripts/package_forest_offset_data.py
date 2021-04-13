@@ -1,3 +1,4 @@
+import os
 import shutil
 import zipfile
 from itertools import product
@@ -104,8 +105,8 @@ def write_intermediates():
     # TODO: ecoseciton analyses
     rfia_ecosection_dst = dst / 'rfia'
 
-    shutil.copy(
-        '/home/jovyan/rfia/processed_data/297_by_ecosection.csv',
+    fs.get(
+        'carbonplan-retro/results/297_by_ecosection.csv',
         rfia_ecosection_dst / '297_by_ecosection.csv',
     )
 
@@ -136,10 +137,28 @@ def write_results():
     fs.get('carbonplan-retro/results/reclassification-labels.json', str(dst) + '/')
 
 
+def zip_and_ship_archive():
+
+    shutil.make_archive(
+        TARGET,
+        'zip',
+        os.path.expanduser('~'),
+        'forest-offset-archive',
+    )
+    fs = get_filesystem()
+
+    fs.put(
+        os.path.expanduser('~/forest-offset-archive.zip'),
+        'carbonplan-scratch/forest-offset-archive.zip',
+    )
+
+
 def main():
     write_inputs()
     write_intermediates()
     write_results()
+
+    zip_and_ship_archive()
 
 
 if __name__ == '__main__':
