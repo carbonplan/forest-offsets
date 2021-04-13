@@ -158,9 +158,10 @@ def zip_archive():
 def push_archive_to_scratch():
     fs = get_filesystem()
 
-    fs.put(
+    fs.put_file(
         os.path.expanduser('~/forest-offset-archive.zip'),
         'carbonplan-scratch/forest-offset-archive.zip',
+        overwrite=True,
     )
 
 
