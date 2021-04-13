@@ -76,10 +76,10 @@ def write_ancillary():
 
     fs.get(
         'carbonplan-retro/ancillary/arb_fortypcds.json',
-        dst / 'assessment_area_forest_type_codes.json',
+        str(dst / 'assessment_area_forest_type_codes.json'),
     )
 
-    fs.get('carbonplan-data/raw/ecoregions/supersections.geojson', dst / 'supersections.json')
+    fs.get('carbonplan-data/raw/ecoregions/supersections.geojson', str(dst / 'supersections.json'))
 
     ecomap_sections = geopandas.read_file(
         "https://data.fs.usda.gov/geodata/edw/edw_resources/shp/S_USA.EcomapSections.zip"
@@ -87,7 +87,9 @@ def write_ancillary():
     with open(dst / 'ecomap_sections.json', 'w') as f:
         f.write(ecomap_sections.to_json())
 
-    fs.get('carbonplan-retro/ancillary/ne_110m_admin_1_states_provinces.json', dst / 'states.json')
+    fs.get(
+        'carbonplan-retro/ancillary/ne_110m_admin_1_states_provinces.json', str(dst / 'states.json')
+    )
 
 
 def write_intermediates():
@@ -118,9 +120,11 @@ def write_intermediates():
 
     fs.get(
         'carbonplan-retro/results/radius_neighbor_params.json',
-        classify_dst / 'radius_neighbor_params.json',
+        str(classify_dst / 'radius_neighbor_params.json'),
     )
-    fs.get('carbonplan-retro/results/classification.json', classify_dst / 'classifications.json')
+    fs.get(
+        'carbonplan-retro/results/classification.json', str(classify_dst / 'classifications.json')
+    )
 
 
 def write_results():
