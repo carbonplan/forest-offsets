@@ -112,7 +112,7 @@ def write_intermediates():
 
     fs.get(
         'carbonplan-retro/results/297_by_ecosection.csv',
-        rfia_ecosection_dst / '297_by_ecosection.csv',
+        str(rfia_ecosection_dst / '297_by_ecosection.csv'),
     )
 
     classify_dst = dst / 'classification'
