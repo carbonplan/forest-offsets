@@ -45,6 +45,8 @@ def write_fia_long():
     postal_codes = ['or', 'ca']
 
     dst = Path(f"{TARGET}/inputs/fia/fia-long")
+    dst.mkdir(parents=True, exist_ok=True)
+
     for postal_code in postal_codes:
         df = cat.fia_long(postal_code=postal_code).read()
         dst_fn = dst / f'{postal_code}.csv'
