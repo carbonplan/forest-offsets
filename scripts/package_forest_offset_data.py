@@ -29,7 +29,7 @@ def write_raw_fia():
     src_dir = Path.home() / 'rfia' / 'data'
     fnames = src_dir.glob('*.csv')
 
-    dst = TARGET / 'fia'
+    dst = TARGET / 'inputs' / 'fia'
     dst.mkdir(parents=True, exist_ok=True)
 
     dst_fn = dst / 'raw_fia.zip'
