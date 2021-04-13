@@ -119,12 +119,10 @@ def write_intermediates():
     classify_dst.mkdir(parents=True, exist_ok=True)
 
     fs.get(
-        'carbonplan-retro/results/radius_neighbor_params.json',
+        'carbonplan-scratch/radius_neighbor_params.json',
         str(classify_dst / 'radius_neighbor_params.json'),
     )
-    fs.get(
-        'carbonplan-retro/results/classification.json', str(classify_dst / 'classifications.json')
-    )
+    fs.get('carbonplan-retro/classifications.json', str(classify_dst / 'classifications.json'))
 
 
 def write_results():
