@@ -145,7 +145,7 @@ def write_results():
     fs.get('carbonplan-retro/results/reclassification-labels.json', str(dst) + '/')
 
 
-def zip_and_ship_archive():
+def zip_archive():
 
     shutil.make_archive(
         TARGET,
@@ -153,6 +153,9 @@ def zip_and_ship_archive():
         os.path.expanduser('~'),
         'forest-offset-archive',
     )
+
+
+def push_archive_to_scratch():
     fs = get_filesystem()
 
     fs.put(
@@ -166,7 +169,8 @@ def main():
     write_intermediates()
     write_results()
 
-    zip_and_ship_archive()
+    zip_archive()
+    push_archive_to_scratch()
 
 
 if __name__ == '__main__':
