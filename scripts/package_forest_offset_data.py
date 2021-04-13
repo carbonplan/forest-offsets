@@ -26,6 +26,7 @@ def write_raw_fia():
     N.B. we pulled the FIA data from csv independent of the pull for rFIA meaning small differences might exist at the
     tree level (e.g., revisions in diameter). Rather than package twice, we just include the freshest pull here.
     """
+    print("writing raw fia tables -- this takes several minutes")
     src_dir = Path.home() / 'rfia' / 'data'
     fnames = src_dir.glob('*.csv')
 
@@ -47,7 +48,7 @@ def write_fia_long():
     for postal_code in postal_codes:
         df = cat.fia_long(postal_code=postal_code).read()
         dst_fn = dst / f'{postal_code}.csv'
-        df.to_csv(dst_fn, ignore_index=True)
+        df.to_csv(dst_fn, index=False)
 
 
 def write_prism():
