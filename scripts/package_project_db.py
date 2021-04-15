@@ -29,6 +29,7 @@ import json
 import os
 import shutil
 
+import click
 import geopandas
 import pandas as pd
 import shapely
@@ -39,17 +40,16 @@ from carbonplan_forest_offsets.data import get_retro_bucket
 from carbonplan_forest_offsets.load.issuance import load_issuance_table
 from carbonplan_forest_offsets.load.project_db import load_project_db
 
-DROPBOX = '/Users/jhamman/CarbonPlan Dropbox/Projects/Microsoft/Forests-Retrospective'
-TARGET = '/Users/jhamman/workdir/forest-offsets-database'
-VERSION = 'v1.0'
+DB_VERSION = 'v1.0'
+script_dir = os.path.dirname(os.path.realpath(__file__))
 
 
-def write_shapes(opr_ids):
+def write_shapes(opr_ids, project_dir, target_dir):
 
     print('writing shapes')
     for i, proj in tqdm(enumerate(opr_ids)):
-        src = f"{DROPBOX}/shapes/{proj}.json"
-        dst = f"{TARGET}/projects/{proj}"
+        src = f"{project_dir}/shapes/{proj}.json"
+        dst = f"{target_dir}/projects/{proj}"
         dst_file = os.path.join(dst, "shape.json")
         os.makedirs(dst, exist_ok=True)
 
@@ -67,27 +67,34 @@ def write_shapes(opr_ids):
             json.dump(data, f, indent=2, allow_nan=False)
 
 
-def write_opdrs(opr_ids):
+def write_opdrs(opr_ids, project_dir, target_dir):
     print('writing opdrs')
     for i, proj in tqdm(enumerate(opr_ids)):
-        src = f"{DROPBOX}/carbonplan-retro/packaged_opdrs/{proj}.zip"
-        dst = f"{TARGET}/projects/{proj}"
+        src = f"{project_dir}/carbonplan-retro/packaged_opdrs/{proj}.zip"
+        dst = f"{target_dir}/projects/{proj}"
         dst_file = os.path.join(dst, "opdrs.zip")
         os.makedirs(dst, exist_ok=True)
         shutil.copyfile(src, dst_file)
 
 
-def write_ancillary_files():
-    dst = f'{TARGET}/ancillary/'
+def write_ancillary_files(project_dir, target_dir):
+    dst = f'{target_dir}/ancillary/'
     for fname in [
         "arboc_issuance_2020-09-09.xlsx",
         "assessment_area_lookup.csv",
         "super_section_lookup.csv",
     ]:
-        src = f"{DROPBOX}/carbonplan-retro/ancillary/{fname}"
+        src = f"{project_dir}/carbonplan-retro/ancillary/{fname}"
         dst_file = os.path.join(dst, fname)
         os.makedirs(dst, exist_ok=True)
         shutil.copyfile(src, dst_file)
+
+
+def copy_doc_files(target_dir):
+    for fname in ["README.md", "forest-offsets-database-schema-v1.0.json", "glossary.md"]:
+        src = f"{script_dir}/{fname}"
+        dst = f"{target_dir}/{fname}"
+        shutil.copyfile(src, dst)
 
 
 def get_centroids(gdf):
@@ -221,12 +228,11 @@ def make_project_db_json(project_db):
             "comment": "",  # get from google sheet
         }
 
-        for k in ["coordinates", "shape_centroid"]:
-            if not p[k]:
-                p[k] = []
-            else:
-                if p[k][0] == -9999:
-                    p[k] = []
+        if not p["shape_centroid"]:
+            p["shape_centroid"] = []
+        else:
+            if p["shape_centroid"][0] == -9999:
+                p["shape_centroid"] = []
 
         projects.append(p)
 
@@ -255,7 +261,11 @@ def write_project_db_csv(db, output):
     df.to_csv(output)
 
 
-def main(exclude_graduated_projects=True):
+@click.command()
+@click.option('--project-dir')
+@click.option('--target-dir')
+@click.option('--exclude-graduated-projects/--no-exclude-graduated-projects', default=True)
+def main(project_dir, target_dir, exclude_graduated_projects=True):
     fs_prefix, fs_kwargs = get_retro_bucket()
 
     # Load retro-db and issuance table
@@ -272,7 +282,7 @@ def main(exclude_graduated_projects=True):
     ## Get Issuance
     # TODO: store this issuance file somewhere else!
     issuance_table = load_issuance_table(
-        f"{DROPBOX}/documents-of-interest/arb/issuance/arboc_issuance_2020-09-09.xlsx"
+        f"{project_dir}/documents-of-interest/arb/issuance/arboc_issuance_2020-09-09.xlsx"
     )
 
     # One project has multiple issuance events in its first reporting period, aggregate them
@@ -302,17 +312,17 @@ def main(exclude_graduated_projects=True):
     project_db[("rp_1", "allocation", "issuance")] = issuance_first_rp
 
     # TODO -- move?
-    write_opdrs(project_db.index)
-    write_ancillary_files()
+    write_opdrs(project_db.index, project_dir, target_dir)
+    write_ancillary_files(project_dir, target_dir)
     ## Project geometries
-    # first copy to target
-    write_shapes(project_db.index)
+    # first copy to target_dir
+    write_shapes(project_db.index, project_dir, target_dir)
 
     # Here we extract the centroid of each project from the project geometries.
     coords = []
     print('getting project centroids')
     for i, proj in tqdm(enumerate(project_db.index)):
-        gdf = geopandas.GeoDataFrame.from_file(f"{TARGET}/projects/{proj}/shape.json")
+        gdf = geopandas.GeoDataFrame.from_file(f"{target_dir}/projects/{proj}/shape.json")
         coords.append(get_centroids(gdf))
     # add project centroids from shapefiles to a new column
     project_db[("project", "shape_centroid", "")] = coords
@@ -320,8 +330,13 @@ def main(exclude_graduated_projects=True):
     project_db_json = make_project_db_json(project_db)
 
     # write project db
-    write_project_db_json(project_db_json, f"{TARGET}/forest-offsets-database-{VERSION}.json")
-    write_project_db_csv(project_db_json, f"{TARGET}/forest-offsets-database-{VERSION}.csv")
+    write_project_db_json(
+        project_db_json, f"{target_dir}/forest-offsets-database-{DB_VERSION}.json"
+    )
+    write_project_db_csv(project_db_json, f"{target_dir}/forest-offsets-database-{DB_VERSION}.csv")
+
+    # copy doc files
+    copy_doc_files(target_dir)
 
 
 if __name__ == '__main__':
