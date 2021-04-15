@@ -189,7 +189,6 @@ def make_project_db_json(project_db):
             "developers": row[("project", "developers", "")],
             "attestor": row[("rp_1", "attestation", "name")],
             "is_opo": row[("rp_1", "attestation", "is_opo")],
-            "coordinates": row[("project", "coordinates", "")],
             "shape_centroid": row[("project", "shape_centroid", "")],
             "supersection_ids": row[("project", "supersection_ids", "")],
             "acreage": row[("project", "acreage", "")],

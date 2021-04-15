@@ -27,7 +27,6 @@ We recorded the following attributes for each project:
   "developers": "Inferred list of organizations involved in the development (e.g., financing, modeling) of the offset project",
   "attestor": "Name of the individual who signed the OPDR",
   "is_opo": "Boolean flag if the attestor represents the attestor",
-  "coordinates": "Project latitude and longitude, as reported in project OPDRs",
   "shape_centroid": "Project latitude(s) and longitude(s) as inferred from ARB provided shapefiles. Shape centroid takes multiple values when the project geometry is a highly fragmented MultiPolygon",
   "supersection_ids": "List of the supersections the project occupies (with a maximum length of two)",
   "acreage": "Project reported acreage",
