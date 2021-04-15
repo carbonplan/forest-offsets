@@ -40,12 +40,6 @@
       "is_opo": {
         "type": "boolean"
       },
-      "coordinates": {
-        "type": "array",
-        "items": {
-          "type": "number"
-        }
-      },
       "shape_centroid": {
         "type": "array",
         "items": {
@@ -272,7 +266,6 @@
       "buffer_contribution",
       "carbon",
       "comment",
-      "coordinates",
       "developers",
       "id",
       "is_opo",
