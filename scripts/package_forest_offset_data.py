@@ -142,6 +142,7 @@ def write_results():
     fs.get('carbonplan-retro/results/crediting-verification.json', str(dst) + '/')
     fs.get('carbonplan-retro/results/common-practice-verification.json', str(dst) + '/')
     fs.get('carbonplan-retro/reclassification/classifier_fscores.json', str(dst) + '/')
+    fs.get('carbonplan-retro/results/issuance_stats.json', str(dst) + '/')
     fs.get('carbonplan-retro/results/reclassification-labels.json', str(dst) + '/')
 
 
