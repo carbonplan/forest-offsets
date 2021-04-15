@@ -144,8 +144,14 @@ sources:
     args:
       urlpath: https://carbonplan.blob.core.windows.net/carbonplan-retro/ancillary/arb_tabling.csv
 
+  arb_common_practice:
+    description: csv conversion of CARB assessment area data file
+    driver: csv
+    args:
+      urlpath: https://carbonplan.blob.core.windows.net/carbonplan-retro/ancillary/2015_assessment_area_data_file.csv
+
   arb_fortypcds:
-    description: mapping from assessment area to list of
+    description: mapping from assessment area to list of FIA forest type codes. Mapping derived from `tabling_rest_supersection.xlsx`, originally downloaded from  https://ww2.arb.ca.gov/our-work/programs/compliance-offset-program/compliance-offset-protocols/us-forest-projects/2015/common-practice-data
     driver: textfiles
     args:
       urlpath:  https://carbonplan.blob.core.windows.net/carbonplan-retro/ancillary/arb_fortypcds.json
@@ -167,3 +173,9 @@ sources:
     driver: rasterio
     args:
       urlpath: https://carbonplan.blob.core.windows.net/carbonplan-data/processed/prism/normals/{{ region }}/4000m/{{ var }}.tif
+
+  ecomap_sections:
+    description: boundaries of ecosections, as defined by the USFS ECOMAP 2007 project. Downloaded from https://data.fs.usda.gov/geodata/edw/edw_resources/shp/S_USA.EcomapSections.zip.
+    driver: geojson
+    args:
+      urlpath: https://carbonplan.blob.core.windows.net/carbonplan-retro/ancillary/ecomap_sections.json
