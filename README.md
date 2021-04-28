@@ -9,7 +9,7 @@
 
 [![CI](https://github.com/carbonplan/forest-offsets/actions/workflows/main.yaml/badge.svg)](https://github.com/carbonplan/forest-offsets/actions/workflows/main.yaml)
 [![MIT License](https://badgen.net/badge/license/MIT/blue)](./LICENSE)
-
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4628605.svg)](https://doi.org/10.5281/zenodo.4628605)
 
 This repository includes our libraries and scripts for the retrospective synthesis and analysis of the complience forest carbon offsets market.
 
