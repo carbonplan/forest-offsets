@@ -71,10 +71,10 @@ if __name__ == '__main__':
     print(client)
     print(client.dashboard_link)
 
-    retro_json = cat.retro_db_light_json.read()
+    project_db = cat.project_db_json.read()
     projects = [
         project
-        for project in retro_json
+        for project in project_db
         if project['carbon']['initial_carbon_stock']['value']
         > project['carbon']['common_practice']['value']
     ]

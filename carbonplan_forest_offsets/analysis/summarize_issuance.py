@@ -16,16 +16,16 @@ def subset_stats(df, criteria):
 def main():
     df = load_issuance_table(forest_only=False)
 
-    retro_json = cat.retro_db_light_json.read()
+    project_db = cat.project_db_json.read()
 
     upfront_opr_ids = [
         project["opr_id"]
-        for project in retro_json
+        for project in project_db
         if project["carbon"]["initial_carbon_stock"]["value"]
         > project["carbon"]["common_practice"]["value"]
     ]
 
-    non_graduated_opr_ids = [project["opr_id"] for project in retro_json]
+    non_graduated_opr_ids = [project["opr_id"] for project in project_db]
 
     subsets = {
         "all": np.tile(True, len(df)),

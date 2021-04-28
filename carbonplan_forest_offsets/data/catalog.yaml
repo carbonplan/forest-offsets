@@ -3,19 +3,13 @@ sources:
     description: Geographic areas developed by the Climate Action Reserve that serve as the basis for defining assessment areas and regional common practice.
     driver: geojson
     args:
-      urlpath: https://carbonplan.blob.core.windows.net/carbonplan-data/raw/ecoregions/supersections.geojson
-
-  baileys_ecoregions:
-    description: Boundaries between major forest biomes developed by Bob Bailey
-    driver: geojson
-    args:
-      urlpath: https://carbonplan.blob.core.windows.net/carbonplan-data/raw/ecoregions/baileys.geojson
+      urlpath: https://carbonplan.blob.core.windows.net/carbonplan-forests/offsets/archive/inputs/ancillary/supersections.json
 
   issuance_table:
     description: The ARB issuance table provides a bi-monthly snapshot of all ARB offset credits issued by CARB.
     driver: excel
     args:
-      urlpath: https://carbonplan.blob.core.windows.net/carbonplan-retro/ancillary/arboc_issuance_2020-09-09.xlsx
+      urlpath: https://carbonplan.blob.core.windows.net/carbonplan-forests/offsets/database/ancillary/arboc_issuance_2020-09-09.xlsx
       excel_kwargs:
         sheet_name: 'ARB Offset Credit Issuance'
         engine: openpyxl
@@ -24,7 +18,7 @@ sources:
     description: key-value mapping between unique supersection id and CARB supersection name
     driver: csv
     args:
-      urlpath: https://carbonplan.blob.core.windows.net/carbonplan-retro/ancillary/super_section_lookup.csv
+      urlpath: https://carbonplan.blob.core.windows.net/carbonplan-forests/offsets/database/ancillary/super_section_lookup.csv
       csv_kwargs:
         names: ["code", "ss"]
 
@@ -32,7 +26,7 @@ sources:
     description: key-value mapping between unique assessment area id and CARB assessment area name
     driver: csv
     args:
-      urlpath: https://carbonplan.blob.core.windows.net/carbonplan-retro/ancillary/assessment_area_lookup.csv
+      urlpath: https://carbonplan.blob.core.windows.net/carbonplan-forests/offsets/database/ancillary/assessment_area_lookup.csv
       csv_kwargs:
         names: ["code", "aa"]
 
@@ -40,7 +34,7 @@ sources:
     description: Boundiaries between the three Southern Alaska assessment areas as defined in the 2015 ARB Forest Offset Protocol.
     driver: geojson
     args:
-      urlpath: https://carbonplan.blob.core.windows.net/carbonplan-retro/ancillary/ak.assessment.area.shapefiles.5.4.15.json
+      urlpath: https://carbonplan.blob.core.windows.net/carbonplan-forests/offsets/archive/inputs/ancillary/ak.assessment.area.shapefiles.5.4.15.json
 
   arb_geometries:
     description: Offset project boundaries.
@@ -51,25 +45,25 @@ sources:
         type: str
         default: ACR173
     args:
-      urlpath: https://carbonplan.blob.core.windows.net/carbonplan-retro/projects/{{ opr_id }}/shape.json
+      urlpath: https://carbonplan.blob.core.windows.net/carbonplan-forests/offsets/database/projects/{{ opr_id }}/shape.json
 
   states:
     description: Boundaries of US states.
     driver: geojson
     args:
-      urlpath: https://carbonplan.blob.core.windows.net/carbonplan-retro/ancillary/ne_110m_admin_1_states_provinces.json
+      urlpath: https://carbonplan.blob.core.windows.net/carbonplan-forests/offsets/archive/inputs/ancillary/states.json
 
-  retro_db_light:
+  project_db:
     description: Packaging of project data derived from raw project database, issuance table, and various other pre-processing steps.
     driver: csv
     args:
-      urlpath: https://carbonplan.blob.core.windows.net/carbonplan-retro/projects/retro-db-light-v1.0.csv
+      urlpath: https://carbonplan.blob.core.windows.net/carbonplan-forests/offsets/database/forest-offsets-database-v1.0.csv
 
-  retro_db_light_json:
+  project_db_json:
     description: Packaging of project data derived from raw project database, issuance table, and various other pre-processing steps.
     driver: textfiles
     args:
-      urlpath: https://carbonplan.blob.core.windows.net/carbonplan-retro/projects/retro-db-light-v1.0.json
+      urlpath: https://carbonplan.blob.core.windows.net/carbonplan-forests/offsets/database/forest-offsets-database-v1.0.json
       decoder: 'json.loads'
 
   fia_long:
@@ -118,7 +112,7 @@ sources:
         type: int
         default: 1
     args:
-      urlpath: https://carbonplan.blob.core.windows.net/carbonplan-retro/rfia/{{ assessment_area_id }}.csv
+      urlpath: https://carbonplan.blob.core.windows.net/carbonplan-forests/offsets/archive/intermediate/rfia/assessment_areas/rfia/{{ assessment_area_id }}.csv
 
   rfia_all:
     description: per assessment area outputs from rFIA that do not aggregate by site class
@@ -129,32 +123,39 @@ sources:
         type: int
         default: 1
     args:
-      urlpath: https://carbonplan.blob.core.windows.net/carbonplan-retro/rfia_all/{{ assessment_area_id }}.csv
+      urlpath: https://carbonplan.blob.core.windows.net/carbonplan-forests/offsets/archive/intermediate/rfia/assessment_areas/rfia_all/{{ assessment_area_id }}.csv
 
   fia_species_names:
-    description: mapping from FIA species code to common name
+    description: mapping from FIA species code to common name, see appendix F of the FIA user handbook
     driver: textfiles
     args:
-      urlpath: https://carbonplan.blob.core.windows.net/carbonplan-retro/ancillary/fia_spcd_to_name.json
+      urlpath: https://carbonplan.blob.core.windows.net/carbonplan-forests/offsets/archive/inputs/ancillary/fia_spcd_to_name.json
       decoder: 'json.loads'
 
   arb_tabling_csv:
     description: csv file contained in ARB-posted code that enumerates forest type codes per assessment area
     driver: csv
     args:
-      urlpath: https://carbonplan.blob.core.windows.net/carbonplan-retro/ancillary/arb_tabling.csv
+      urlpath: https://carbonplan.blob.core.windows.net/carbonplan-forests/offsets/archive/inputs/ancillary/arb_tabling.csv
 
   arb_common_practice:
     description: csv conversion of CARB assessment area data file
     driver: csv
     args:
-      urlpath: https://carbonplan.blob.core.windows.net/carbonplan-retro/ancillary/2015_assessment_area_data_file.csv
+      urlpath: https://carbonplan.blob.core.windows.net/carbonplan-forests/offsets/archive/inputs/ancillary/2015_assessment_area_data_file.csv
 
   arb_fortypcds:
     description: mapping from assessment area to list of FIA forest type codes. Mapping derived from `tabling_rest_supersection.xlsx`, originally downloaded from  https://ww2.arb.ca.gov/our-work/programs/compliance-offset-program/compliance-offset-protocols/us-forest-projects/2015/common-practice-data
     driver: textfiles
     args:
-      urlpath:  https://carbonplan.blob.core.windows.net/carbonplan-retro/ancillary/arb_fortypcds.json
+      urlpath: https://carbonplan.blob.core.windows.net/carbonplan-forests/offsets/archive/inputs/ancillary/arb_fortypcds.json
+      decoder: 'json.loads'
+
+  fia_fortyp_to_common_name:
+    description: Transcribed from appendix D of the FIA user handbook
+    driver: textfiles
+    args:
+      urlpath: https://carbonplan.blob.core.windows.net/carbonplan-forests/offsets/archive/inputs/ancillary/fia_fortyp_to_common_name.json
       decoder: 'json.loads'
 
   prism:
@@ -172,10 +173,10 @@ sources:
         allowed: [conus, ak]
     driver: rasterio
     args:
-      urlpath: https://carbonplan.blob.core.windows.net/carbonplan-data/processed/prism/normals/{{ region }}/4000m/{{ var }}.tif
+      urlpath: https://carbonplan.blob.core.windows.net/carbonplan-forests/offsets/archive/inputs/prism/{{ region }}_{{ var }}.nc
 
   ecomap_sections:
     description: boundaries of ecosections, as defined by the USFS ECOMAP 2007 project. Downloaded from https://data.fs.usda.gov/geodata/edw/edw_resources/shp/S_USA.EcomapSections.zip.
     driver: geojson
     args:
-      urlpath: https://carbonplan.blob.core.windows.net/carbonplan-retro/ancillary/ecomap_sections.json
+      urlpath: https://carbonplan.blob.core.windows.net/carbonplan-forests/offsets/archive/inputs/ancillary/ecomap_sections.json

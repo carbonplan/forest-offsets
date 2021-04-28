@@ -7,15 +7,9 @@
 
 **retrospective analysis of complience IFM forest offset projects**
 
-[![GitHub][github-badge]][github]
-[![Build Status]][actions]
-![MIT License][]
+[![CI](https://github.com/carbonplan/forest-offsets/actions/workflows/main.yaml/badge.svg)](https://github.com/carbonplan/forest-offsets/actions/workflows/main.yaml)
+[![MIT License](https://badgen.net/badge/license/MIT/blue)](./LICENSE)
 
-[github]: https://github.com/carbonplan/forest-offsets
-[github-badge]: https://badgen.net/badge/-/github?icon=github&label
-[build status]: https://github.com/carbonplan/forest-offsets/actions/workflows/main.yaml/badge.svg
-[actions]: https://github.com/carbonplan/forest-offsets/actions/workflows/main.yaml
-[mit license]: https://badgen.net/badge/license/MIT/blue
 
 This repository includes our libraries and scripts for the retrospective synthesis and analysis of the complience forest carbon offsets market.
 
@@ -33,17 +27,18 @@ or from source:
 pip install git+https://github.com/carbonplan/forest-offsets.git
 ```
 
-## usage
-
-TODO
-
 ## data sources
 
-TODO
+All data sources used in this project are described in [this](./carbonplan_forest_offsets/data/catalog.yaml) Intake Catalog. A schematic representing the primary input datasets and outputs is shown below for reference.
+
+![offsets-dag](./offsets-dag.png)
 
 ## data products
 
-TODO
+See the following Zenodo archives for descriptions of the data products produced by this project:
+
+- G. Badgley, J. Freeman, J. J. Hamman, B. Haya, D. Cullenward, California improved forest management offset project database (Version 1.0) https://doi.org/10.5281/zenodo.4630684.
+- G. Badgley, et al., Systematic over-crediting in California’s forest carbon offsets program (Version 1.0) https://doi.org/10.5281/zenodo.4630712.
 
 ## environments
 
