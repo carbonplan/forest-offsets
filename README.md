@@ -5,13 +5,13 @@
 
 # carbonplan / forest-offsets
 
-**retrospective analysis of complience IFM forest offset projects**
+**analysis of forest offset projects**
 
 [![CI](https://github.com/carbonplan/forest-offsets/actions/workflows/main.yaml/badge.svg)](https://github.com/carbonplan/forest-offsets/actions/workflows/main.yaml)
 [![MIT License](https://badgen.net/badge/license/MIT/blue)](./LICENSE)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4628605.svg)](https://doi.org/10.5281/zenodo.4628605)
 
-This repository includes our libraries and scripts for the retrospective synthesis and analysis of the complience forest carbon offsets market.
+This repository includes our libraries and scripts for analyzing California's compliance forest carbon offsets program. This work is described in more detail in a [web article](https://carbonplan.org/research/forest-offsets-explainer) and a [preprint](). See the [carbonplan/forest-offsets-paper](https://github.com/carbonplan/forest-offsets-paper) repository for Jupyter notebooks that specifically recreate the figures in the paper. You can also browse some of these data and results in an [interactive web map](https://carbonplan.org/research/forest-offsets).
 
 ## install
 
@@ -37,8 +37,8 @@ All data sources used in this project are described in [this](./carbonplan_fores
 
 See the following Zenodo archives for descriptions of the data products produced by this project:
 
-- G. Badgley, J. Freeman, J. J. Hamman, B. Haya, D. Cullenward, California improved forest management offset project database (Version 1.0) https://doi.org/10.5281/zenodo.4630684.
-- G. Badgley, et al., Systematic over-crediting in California’s forest carbon offsets program (Version 1.0) https://doi.org/10.5281/zenodo.4630712.
+- G Badgley, J Freeman, J J Hamman, B Haya, D Cullenward (2021) California improved forest management offset project database (Version 1.0) https://doi.org/10.5281/zenodo.4630684.
+- G Badgley, et al. (2021) Systematic over-crediting in California’s forest carbon offsets program (Version 1.0) https://doi.org/10.5281/zenodo.4630712.
 
 ## environments
 
