@@ -9,7 +9,9 @@
 
 [![CI](https://github.com/carbonplan/forest-offsets/actions/workflows/main.yaml/badge.svg)](https://github.com/carbonplan/forest-offsets/actions/workflows/main.yaml)
 [![MIT License](https://badgen.net/badge/license/MIT/blue)](./LICENSE)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4628605.svg)](https://doi.org/10.5281/zenodo.4628605)
+[![DOI](https://img.shields.io/badge/code-10.5281/zenodo.4628605-6aa3d5?link=https://doi.org/10.5281/zenodo.4628605)](https://doi.org/10.5281/zenodo.4628605)
+[![DOI:10.1101/2021.04.28.441870](http://img.shields.io/badge/preprint-10.1101/2021.04.28.441870-9f3a44.svg)](https://doi.org/10.1101/2021.04.28.441870)
+
 
 This repository includes our libraries and scripts for analyzing California's compliance forest carbon offsets program. This work is described in more detail in a [web article](https://carbonplan.org/research/forest-offsets-explainer) and a [preprint](https://doi.org/10.1101/2021.04.28.441870). See the [carbonplan/forest-offsets-paper](https://github.com/carbonplan/forest-offsets-paper) repository for Jupyter notebooks that specifically recreate all the figures in the preprint. You can also browse some of these data and results in an [interactive web map](https://carbonplan.org/research/forest-offsets-map).
 
