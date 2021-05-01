@@ -13,7 +13,7 @@
 [![DOI:10.1101/2021.04.28.441870](http://img.shields.io/badge/preprint-10.1101/2021.04.28.441870-9f3a44.svg)](https://doi.org/10.1101/2021.04.28.441870)
 
 
-This repository includes our libraries and scripts for analyzing California's compliance forest carbon offsets program. This work is described in more detail in a [web article](https://carbonplan.org/research/forest-offsets-explainer) and a [preprint](https://doi.org/10.1101/2021.04.28.441870). See the [carbonplan/forest-offsets-paper](https://github.com/carbonplan/forest-offsets-paper) repository for Jupyter notebooks that specifically recreate all the figures in the preprint. You can also browse some of these data and results in an [interactive web map](https://carbonplan.org/research/forest-offsets-map).
+This repository includes our libraries and scripts for analyzing California's compliance forest carbon offsets program. This work is described in more detail in a [web article](https://carbonplan.org/research/forest-offsets-explainer) and a [preprint](https://doi.org/10.1101/2021.04.28.441870). See the [carbonplan/forest-offsets-paper](https://github.com/carbonplan/forest-offsets-paper) repository for Jupyter notebooks that specifically recreate all the figures in the preprint. You can also browse some of these data and results in an [interactive web map](https://carbonplan.org/research/forest-offsets).
 
 ## install
 
