@@ -55,22 +55,23 @@ def calculate_allocation(
     calculated_allocation.name = 'opdr_calculated'
     return calculated_allocation
 
+
 def get_rp1_arbocs(opr_id, baseline_components, rp_components):
     """Handles three projects where project harvest > baseline harvest
-    Systematically handling this edge case would require additional data entry of harvest volumes per RP. 
-    
+    Systematically handling this edge case would require additional data entry of harvest volumes per RP.
+
     Here, we get around those data limitations by codifying logic we have confirmed manuallly. This approach
     will not scale to subsequent reporting periods.
     """
-    
+
     # Equation C.8 of 2015 protocol: if project harvest > baseline harvest, exclude landfill
     if opr_id in ['CAR1217', 'ACR247', 'ACR276']:
         baseline_components['ifm_8'] = 0
         rp_components['ifm_8'] = 0
-    
+
     arbocs = get_arbocs(baseline_components, rp_components)
     return arbocs
-    
+
 
 def get_arbocs(baseline_components, rp_components):
     """recalcualte arbocs as a function of predicted ifm1
