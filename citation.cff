@@ -2,37 +2,37 @@ cff-version: 1.2.0
 message: If you use this software, please cite it as below.
 title: carbonplan / forest-offsets
 abstract: This repository includes our libraries and scripts for analyzing California's compliance forest carbon offsets program.
-  authors:
-  - family-names: "Badgley"
-    given-names: "Grayson"
-    orcid: https://orcid.org/0000-0003-1011-4573
-  - family-names: "Freeman"
-    given-names: "Jeremy"
-    orcid: https://orcid.org/0000-0001-7077-7972
-  - family-names: "Hamman"
-    given-names: "Joseph J."
-    orcid: https://orcid.org/0000-0001-7479-8439
-  - family-names: "Haya"
-    given-names: "Barbara"
-    orcid: https://orcid.org/0000-0002-7010-3908
-  - family-names: "Trugman"
-    given-names: "Anna T."
-    orcid: https://orcid.org/0000-0002-7903-9711
-  - family-names: "Anderegg"
-    given-names: "William R.L."
-    orcid: https://orcid.org/0000-0001-6551-3331
-  - family-names: "Cullenward"
-    given-names: "Danny"
-    orcid: https://orcid.org/0000-0002-6803-9572
+authors:
+- family-names: "Badgley"
+  given-names: "Grayson"
+  orcid: https://orcid.org/0000-0003-1011-4573
+- family-names: "Freeman"
+  given-names: "Jeremy"
+  orcid: https://orcid.org/0000-0001-7077-7972
+- family-names: "Hamman"
+  given-names: "Joseph J."
+  orcid: https://orcid.org/0000-0001-7479-8439
+- family-names: "Haya"
+  given-names: "Barbara"
+  orcid: https://orcid.org/0000-0002-7010-3908
+- family-names: "Trugman"
+  given-names: "Anna T."
+  orcid: https://orcid.org/0000-0002-7903-9711
+- family-names: "Anderegg"
+  given-names: "William R.L."
+  orcid: https://orcid.org/0000-0001-6551-3331
+- family-names: "Cullenward"
+  given-names: "Danny"
+  orcid: https://orcid.org/0000-0002-6803-9572
 license: MIT, CC-BY-4.0
-
-
-
+repository-code: "https://github.com/carbonplan/forest-offsets"
+version: 1.1.0
+doi: 10.5281/zenodo.4628604
 
 preferred-citation:
-  title: "Systematic over-crediting in California’s forest carbon offsets program"
-  abstract: "Carbon offsets are widely used by individuals, corporations, and governments to mitigate their greenhouse gas emissions on the assumption that offsets reflect equivalent climate benefits achieved elsewhere. These climate-equivalence claims depend on offsets providing real and additional climate benefits beyond what would have happened, counterfactually, without the offsets project. Here, we evaluate the design of California’s prominent forest carbon offsets program and demonstrate that its climate-equivalence claims fall far short on the basis of directly observable evidence. By design, California’s program awards large volumes of offset credits to forest projects with carbon stocks that exceed regional averages. This paradigm allows for adverse selection, which could occur if project developers preferentially select forests that are ecologically distinct from unrepresentative regional averages. By digitizing and analyzing comprehensive offset project records alongside detailed forest inventory data, we provide direct evidence that comparing projects against coarse regional carbon averages has led to systematic over-crediting of 30.0 million tCO2e (90% CI: 20.5 to 38.6 million tCO2e) or 29.4% of the credits we analyzed (90% CI: 20.1 to 37.8%). These excess credits are worth an estimated $410 million (90% CI: $280 to $528 million) at recent market prices. Rather than improve forest management to store additional carbon, California’s forest offsets program creates incentives to generate offset credits that do not reflect real climate benefits."
-  type: paper
+  title: "Systematic over-crediting in California's forest carbon offsets program "
+  abstract: "Carbon offsets are widely used by individuals, corporations, and governments to mitigate their greenhouse gas emissions on the assumption that offsets reflect equivalent climate benefits achieved elsewhere. These climate-equivalence claims depend on offsets providing real and additional climate benefits beyond what would have happened, counterfactually, without the offsets project. Here, we evaluate the design of California's prominent forest carbon offsets program and demonstrate that its climate-equivalence claims fall far short on the basis of directly observable evidence. By design, California's program awards large volumes of offset credits to forest projects with carbon stocks that exceed regional averages. This paradigm allows for adverse selection, which could occur if project developers preferentially select forests that are ecologically distinct from unrepresentative regional averages. By digitizing and analyzing comprehensive offset project records alongside detailed forest inventory data, we provide direct evidence that comparing projects against coarse regional carbon averages has led to systematic over-crediting of 30.0 million tCO2e (90% CI: 20.5–38.6 million tCO2e) or 29.4% of the credits we analyzed (90% CI: 20.1%–37.8%). These excess credits are worth an estimated $410 million (90% CI: $280–$528 million) at recent market prices. Rather than improve forest management to store additional carbon, California's forest offsets program creates incentives to generate offset credits that do not reflect real climate benefits."
+  type: article
   year: 2021
   journal: Global Change Biology
   URL: https://onlinelibrary.wiley.com/doi/10.1111/gcb.15943
@@ -61,37 +61,10 @@ preferred-citation:
     given-names: "Danny"
     orcid: https://orcid.org/0000-0002-6803-9572
 
-
-
-repository:
-  - description: "This archive includes a database of California improved forest management (IFM) offset projects. The database was created by manually transcribing the "offset project data reports" (OPDRs). The full database includes: 1) the digitized project records in CSV and JSON format, 2) ancillary files such as the offsets issuance table, 3) project specific files used to create the digitized database, 4) a glossary."
-    title: "California improved forest management offset project database"
-    type: doi
-    value: https://doi.org/10.5281/zenodo.4630684
-  authors:
-  - family-names: "Badgley"
-    given-names: "Grayson"
-    orcid: https://orcid.org/0000-0003-1011-4573
-  - family-names: "Freeman"
-    given-names: "Jeremy"
-    orcid: https://orcid.org/0000-0001-7077-7972
-  - family-names: "Hamman"
-    given-names: "Joseph J."
-    orcid: https://orcid.org/0000-0001-7479-8439
-  - family-names: "Haya"
-    given-names: "Barbara"
-    orcid: https://orcid.org/0000-0002-7010-3908
-  - family-names: "Cullenward"
-    given-names: "Danny"
-    orcid: https://orcid.org/0000-0002-6803-9572
-
-
-
-repository:
+references:
   - description: "A repository containing the input, intermediate, and final output data files underlying the analysis and figures in Badgley et al., “Systematic over-crediting in California’s forest carbon offsets program”."
-    title: "Systematic over-crediting in California's forest carbon offsets program"
     type: doi
-    value: https://doi.org/10.5281/zenodo.4630711
+    value: https://zenodo.org/record/5565457#.YZL1Z1NlBpR
   authors:
   - family-names: "Badgley"
     given-names: "Grayson"
@@ -111,6 +84,27 @@ repository:
   - family-names: "Anderegg"
     given-names: "William R.L."
     orcid: https://orcid.org/0000-0001-6551-3331
+  - family-names: "Cullenward"
+    given-names: "Danny"
+    orcid: https://orcid.org/0000-0002-6803-9572
+
+references:
+  - description: "This archive includes a database of California improved forest management (IFM) offset projects. The database was created by manually transcribing the "offset project data reports" (OPDRs). The full database includes: 1) the digitized project records in CSV and JSON format, 2) ancillary files such as the offsets issuance table, 3) project specific files used to create the digitized database, 4) a glossary."
+    type: doi
+    value: https://doi.org/10.5281/zenodo.4630684
+  authors:
+  - family-names: "Badgley"
+    given-names: "Grayson"
+    orcid: https://orcid.org/0000-0003-1011-4573
+  - family-names: "Freeman"
+    given-names: "Jeremy"
+    orcid: https://orcid.org/0000-0001-7077-7972
+  - family-names: "Hamman"
+    given-names: "Joseph J."
+    orcid: https://orcid.org/0000-0001-7479-8439
+  - family-names: "Haya"
+    given-names: "Barbara"
+    orcid: https://orcid.org/0000-0002-7010-3908
   - family-names: "Cullenward"
     given-names: "Danny"
     orcid: https://orcid.org/0000-0002-6803-9572
