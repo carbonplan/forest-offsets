@@ -25,15 +25,15 @@ serializer = prefect.engine.serializers.JSONSerializer()
 @prefect.task
 def get_object_ids() -> list:
 
-    params = {"where": "OBJECTID > 0", "returnIdsOnly": "true", "f": "pjson"}
+    params = {"where": "OBJECTID > 0", "returnIdsOnly": 'true', "f": "pjson"}
     r = requests.get(CARB_GIS_ENDPOINT, params=params)
-    return r.json()["objectIds"]
+    return r.json()['objectIds']
 
 
 @prefect.task(cache_for=datetime.timedelta(hours=1))
 def get_arb_id_to_opr_id_map():
-    df = load_issuance_table(forest_only=False, most_recent=True)[["opr_id", "arb_id"]].set_index(
-        "arb_id"
+    df = load_issuance_table(forest_only=False, most_recent=True)[['opr_id', 'arb_id']].set_index(
+        'arb_id'
     )
     return df.opr_id.to_dict()
 
@@ -50,24 +50,24 @@ def get_project_geometry(object_id, name_map) -> geopandas.GeoDataFrame:
     r = requests.get(CARB_GIS_ENDPOINT, params=params)
     gdf = geopandas.GeoDataFrame.from_features(r.json())
 
-    arb_id = gdf.get("arb_id").item()
-    gdf["opr_id"] = name_map.get(arb_id)
+    arb_id = gdf.get('arb_id').item()
+    gdf['opr_id'] = name_map.get(arb_id)
     return gdf
 
 
 def generate_raw_target_name(project_geometry: geopandas.GeoDataFrame, **kwargs):
-    opr_id = project_geometry.get("opr_id").item()
+    opr_id = project_geometry.get('opr_id').item()
     return f"carb-geometries/raw/{opr_id}.json"
 
 
 def generate_topo_target_name(project_geometry: geopandas.GeoDataFrame, **kwargs):
-    opr_id = project_geometry.get("opr_id").item()
+    opr_id = project_geometry.get('opr_id').item()
     return f"carb-geometries/topo/{opr_id}.json"
 
 
 @prefect.task(
     target=generate_raw_target_name,
-    result=GCSResult(bucket="carbonplan-scratch", serializer=serializer),
+    result=GCSResult(bucket='carbonplan-scratch', serializer=serializer),
     checkpoint=True,
 )
 def cache_project_geometry(project_geometry: geopandas.GeoDataFrame) -> str:
@@ -78,7 +78,7 @@ def cache_project_geometry(project_geometry: geopandas.GeoDataFrame) -> str:
 
 @prefect.task(
     target=generate_topo_target_name,
-    result=GCSResult(bucket="carbonplan-scratch", serializer=serializer),
+    result=GCSResult(bucket='carbonplan-scratch', serializer=serializer),
     checkpoint=True,
 )
 def get_simplified_project_geometry(project_geometry: geopandas.GeoDataFrame) -> str:
