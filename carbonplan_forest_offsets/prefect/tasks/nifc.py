@@ -8,8 +8,9 @@ import geopandas
 import prefect
 from fsspec import get_filesystem_class
 
+NIFC_BUCKET = 'carbonplan-scratch/offset-fires'
 
-@prefect.task
+
 def get_nifc_filename(bucket: str, as_of: datetime = None) -> str:
     fs = get_filesystem_class("gcs")
     if as_of:
@@ -19,10 +20,16 @@ def get_nifc_filename(bucket: str, as_of: datetime = None) -> str:
     return "".join(["gcs://", fns[-1]])
 
 
-@prefect.task
 def load_nifc_data(nifc_filename: str) -> geopandas.GeoDataFrame:
     with fsspec.open(nifc_filename) as f:
         return geopandas.read_parquet(f)
+
+
+@prefect.task
+def load_nifc_asof(as_of: datetime = None) -> geopandas.GeoDataFrame:
+    fn = get_nifc_filename(NIFC_BUCKET, as_of)
+    perims = load_nifc_data(fn)
+    return perims
 
 
 @prefect.task
