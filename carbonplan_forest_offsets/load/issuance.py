@@ -1,3 +1,5 @@
+from functools import lru_cache
+
 import numpy as np
 import pandas as pd
 
@@ -100,21 +102,29 @@ ifm_opr_ids = [
 ]
 
 
-def load_issuance_table(forest_only: bool = True) -> pd.DataFrame:
-    """Load and clean ARB issuance table.
+@lru_cache(maxsize=None)
+def load_most_recent_issuance():
+    return pd.read_excel(
+        "https://ww3.arb.ca.gov/cc/capandtrade/offsets/issuance/arboc_issuance.xlsx",
+        sheet_name=3,
+    )
 
+
+def load_issuance_table(forest_only: bool = True, most_recent=False) -> pd.DataFrame:
+    """Load and clean ARB issuance table.
     Parameters
     ----------
-
     forest_only : bool, optional
         Return only forest projects.
-
     Returns
     -------
     df : pandas.DataFrame
         Issuance table returned as a Pandas.DataFrame
     """
-    df = cat.issuance_table.read()
+    if most_recent:
+        df = load_most_recent_issuance()
+    else:
+        df = cat.issuance_table.read()
 
     rename_d = {
         'OPR Project ID': 'opr_id',
