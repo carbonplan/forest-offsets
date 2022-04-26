@@ -2,7 +2,7 @@ name: carbonplan
 channels:
   - conda-forge
 dependencies:
-  - pangeo-notebook=2021.03.06
+  - pangeo-notebook
   - adlfs
   - bottleneck
   - cartopy
@@ -68,4 +68,3 @@ dependencies:
       - carbonplan-data
       - carbonplan-forests
       - carbonplan-styles
-      - git+https://github.com/jhamman/zarr.git@be323ac4fbe58d9af66ac96c51604f514ce0149d  # for current version of azure api
