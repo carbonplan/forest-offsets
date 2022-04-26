@@ -1,10 +1,13 @@
 import json
+from functools import lru_cache
 from pathlib import Path
 
 import gspread
 import numpy as np
 import pandas as pd
 from oauth2client.service_account import ServiceAccountCredentials
+
+from carbonplan_forest_offsets.data import cat
 
 LOCAL_DATA_PATH = Path(__file__).parents[2] / 'data'
 SECRET_FILE = Path(__file__).parents[2] / 'secrets/google-sheets-key.json'
@@ -21,6 +24,15 @@ def load_project_db(fn=None, save=True, use_cache=True):
             return load_project_db_from_sheets(fn=fn, save=save)
     else:
         return load_project_db_from_sheets(fn=fn, save=save)
+
+
+@lru_cache(maxsize=None)
+def load_retro_json():
+    return cat.project_db_json.read()
+
+
+def load_project_data(opr_id):
+    return [x for x in load_retro_json() if x["opr_id"] == opr_id][0]
 
 
 def load_project_db_from_disk(fn=None):

@@ -4,7 +4,6 @@ import json
 import geopandas
 import prefect
 import requests
-import topojson
 from prefect.engine.results import GCSResult
 
 from carbonplan_forest_offsets.load.issuance import load_issuance_table
@@ -108,22 +107,8 @@ def cache_project_geometry(project_geometry: geopandas.GeoDataFrame) -> str:
     )  # to_dict errors so just convert to_json string and back
 
 
-@prefect.task(
-    target=generate_topo_target_name,
-    result=result,
-    checkpoint=True,
-)
-def get_simplified_project_geometry(project_geometry: geopandas.GeoDataFrame) -> str:
-    topo = topojson.Topology(project_geometry)
-    simplified = topo.toposimplify(0.001, prevent_oversimplify=True)
-    return json.loads(
-        simplified.to_json()
-    )  # to_dict errors so just convert to_json string and back
-
-
 with prefect.Flow(name="download-carb-geometries") as flow:
     name_map = get_arb_id_to_opr_id_map()
     object_ids = get_object_ids()
     geometries = get_project_geometry.map(object_id=object_ids, name_map=prefect.unmapped(name_map))
     cache_project_geometry.map(geometries)
-    simplified = get_simplified_project_geometry.map(geometries)
