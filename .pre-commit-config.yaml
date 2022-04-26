@@ -1,3 +1,7 @@
+ci:
+  autoupdate_schedule: quarterly
+  autofix_prs: false
+
 exclude: ^(secrets/)
 
 repos:
