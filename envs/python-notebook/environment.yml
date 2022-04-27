@@ -48,6 +48,7 @@ dependencies:
   - pyproj
   - pystac
   - pytest
+  - pytest-rerunfailures
   - python-graphviz
   - python-wget
   - rasterio
