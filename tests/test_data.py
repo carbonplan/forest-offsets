@@ -3,6 +3,7 @@ import pytest
 from carbonplan_forest_offsets.data import cat
 
 
+@pytest.mark.flaky(reruns=5)
 @pytest.mark.parametrize("key", list(cat))
 def test_load_catalog_entries(key):
     try:
