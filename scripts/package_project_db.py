@@ -32,21 +32,21 @@ import shutil
 import click
 import geopandas
 import pandas as pd
-import shapely
 from tqdm import tqdm
 
+from carbonplan_forest_offsets import utils
 from carbonplan_forest_offsets.analysis import allocation
 from carbonplan_forest_offsets.data import get_retro_bucket
 from carbonplan_forest_offsets.load.issuance import load_issuance_table
 from carbonplan_forest_offsets.load.project_db import load_project_db
 
-DB_VERSION = 'v1.0'
+DB_VERSION = "v1.0"
 script_dir = os.path.dirname(os.path.realpath(__file__))
 
 
 def write_shapes(opr_ids, project_dir, target_dir):
 
-    print('writing shapes')
+    print("writing shapes")
     for i, proj in tqdm(enumerate(opr_ids)):
         src = f"{project_dir}/shapes/{proj}.json"
         dst = f"{target_dir}/projects/{proj}"
@@ -68,7 +68,7 @@ def write_shapes(opr_ids, project_dir, target_dir):
 
 
 def write_opdrs(opr_ids, project_dir, target_dir):
-    print('writing opdrs')
+    print("writing opdrs")
     for i, proj in tqdm(enumerate(opr_ids)):
         src = f"{project_dir}/carbonplan-retro/packaged_opdrs/{proj}.zip"
         dst = f"{target_dir}/projects/{proj}"
@@ -78,7 +78,7 @@ def write_opdrs(opr_ids, project_dir, target_dir):
 
 
 def write_ancillary_files(project_dir, target_dir):
-    dst = f'{target_dir}/ancillary/'
+    dst = f"{target_dir}/ancillary/"
     for fname in [
         "arboc_issuance_2020-09-09.xlsx",
         "assessment_area_lookup.csv",
@@ -91,26 +91,14 @@ def write_ancillary_files(project_dir, target_dir):
 
 
 def copy_doc_files(target_dir):
-    for fname in ["README.md", "forest-offsets-database-schema-v1.0.json", "glossary.md"]:
+    for fname in [
+        "README.md",
+        "forest-offsets-database-schema-v1.0.json",
+        "glossary.md",
+    ]:
         src = f"{script_dir}/{fname}"
         dst = f"{target_dir}/{fname}"
         shutil.copyfile(src, dst)
-
-
-def get_centroids(gdf):
-    crs = "+proj=aea +lat_0=23 +lon_0=-96 +lat_1=29.5 +lat_2=45.5 +x_0=0 +y_0=0 +ellps=WGS84 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs +type=crs"
-    geom = gdf.to_crs(crs).simplify(8000).buffer(8000).to_crs("lonlat").geometry.item()
-
-    if isinstance(geom, shapely.geometry.multipolygon.MultiPolygon):
-        areas = [g.area for g in geom]
-        centroids = [[g.centroid.x, g.centroid.y] for g in geom]
-        # sort by area (largest first)
-        centroids = [x for _, x in sorted(zip(areas, centroids), reverse=True)]
-    elif isinstance(geom, shapely.geometry.polygon.Polygon):
-        centroids = [[geom.centroid.x, geom.centroid.y]]
-    else:
-        raise ValueError("geom was not a polygon/multipolygon: %s" % type(geom))
-    return centroids
 
 
 def make_rp_1(row):
@@ -262,9 +250,9 @@ def write_project_db_csv(db, output):
 
 
 @click.command()
-@click.option('--project-dir')
-@click.option('--target-dir')
-@click.option('--exclude-graduated-projects/--no-exclude-graduated-projects', default=True)
+@click.option("--project-dir")
+@click.option("--target-dir")
+@click.option("--exclude-graduated-projects/--no-exclude-graduated-projects", default=True)
 def main(project_dir, target_dir, exclude_graduated_projects=True):
     fs_prefix, fs_kwargs = get_retro_bucket()
 
@@ -320,10 +308,10 @@ def main(project_dir, target_dir, exclude_graduated_projects=True):
 
     # Here we extract the centroid of each project from the project geometries.
     coords = []
-    print('getting project centroids')
+    print("getting project centroids")
     for i, proj in tqdm(enumerate(project_db.index)):
         gdf = geopandas.GeoDataFrame.from_file(f"{target_dir}/projects/{proj}/shape.json")
-        coords.append(get_centroids(gdf))
+        coords.append(utils.get_centroids(gdf))
     # add project centroids from shapefiles to a new column
     project_db[("project", "shape_centroid", "")] = coords
 
@@ -339,5 +327,5 @@ def main(project_dir, target_dir, exclude_graduated_projects=True):
     copy_doc_files(target_dir)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
