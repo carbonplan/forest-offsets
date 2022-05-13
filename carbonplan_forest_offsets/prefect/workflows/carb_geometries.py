@@ -42,6 +42,18 @@ def get_arb_id_to_opr_id_map() -> dict:
     return df.opr_id.to_dict()
 
 
+def get_carb_object(object_id):
+    params = {
+        "objectIds": f"{object_id}",
+        "outFields": "arb_id",
+        "geometryPrecision": "5",
+        "f": "geojson",
+    }
+    r = requests.get(CARB_GIS_ENDPOINT, params=params)
+    gdf = geopandas.GeoDataFrame.from_features(r.json())
+    return gdf
+
+
 @prefect.task
 def get_project_geometry(object_id: int, name_map: dict) -> geopandas.GeoDataFrame:
     """Download project geometry and append metadata
@@ -53,14 +65,8 @@ def get_project_geometry(object_id: int, name_map: dict) -> geopandas.GeoDataFra
     Returns:
         geopandas.GeoDataFrame -- [description]
     """
-    params = {
-        "objectIds": f"{object_id}",
-        "outFields": "arb_id",
-        "geometryPrecision": "5",
-        "f": "geojson",
-    }
-    r = requests.get(CARB_GIS_ENDPOINT, params=params)
-    gdf = geopandas.GeoDataFrame.from_features(r.json())
+
+    gdf = get_carb_object(object_id)
 
     arb_id = gdf.get("arb_id").item()
     gdf["opr_id"] = name_map.get(arb_id)
