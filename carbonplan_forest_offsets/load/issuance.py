@@ -105,7 +105,7 @@ ifm_opr_ids = [
 @lru_cache(maxsize=None)
 def load_most_recent_issuance():
     return pd.read_excel(
-        "https://ww3.arb.ca.gov/cc/capandtrade/offsets/issuance/arboc_issuance.xlsx",
+        "https://ww2.arb.ca.gov/sites/default/files/2022-07/nc-arboc_issuance.xlsx",
         sheet_name=3,
     )
 
