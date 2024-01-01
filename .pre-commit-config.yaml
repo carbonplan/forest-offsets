@@ -7,7 +7,7 @@ exclude: ^(secrets/)
 repos:
 
 -   repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.4.0
+    rev: v4.5.0
     hooks:
     - id: trailing-whitespace
     - id: end-of-file-fixer
@@ -18,13 +18,13 @@ repos:
       args: ["--autofix", "--indent=2", "--no-sort-keys"]
 
 -   repo: https://github.com/psf/black
-    rev: 23.3.0
+    rev: 23.12.1
     hooks:
     - id: black
       args: ["--line-length", "100", "--skip-string-normalization"]
 
 -   repo: https://github.com/PyCQA/flake8
-    rev: 6.0.0
+    rev: 6.1.0
     hooks:
     - id: flake8
 
@@ -33,7 +33,7 @@ repos:
     hooks:
     - id: seed-isort-config
 -   repo: https://github.com/PyCQA/isort
-    rev: 5.12.0
+    rev: 5.13.2
     hooks:
     - id: isort
 
